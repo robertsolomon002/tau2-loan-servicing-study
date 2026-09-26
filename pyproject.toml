@@ -1,0 +1,30 @@
+[project]
+name = "tau2-loan-servicing-study"
+version = "0.1.0"
+description = "English vs Quebec French policy-compliance study on a loan-servicing domain for tau2-bench"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+license = "MIT"
+dependencies = [
+    "tau2",
+    # tau2 at the pinned commit imports websockets from core code, but only
+    # declares it in its optional "voice" extra; without it `import tau2` fails.
+    "websockets>=13.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "ruff>=0.9.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+# Rob's fork of sierra-research/tau2-bench, pinned by commit.
+tau2 = { git = "https://github.com/robertsolomon002/tau2-bench", rev = "b7ea9074c1cba482b30687fecdb5c8425fd6f619" }
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"

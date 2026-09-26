@@ -1,0 +1,13 @@
+# Secrets
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Large or regenerable outputs (trajectories go to Hugging Face)
+results/raw/
+data/simulations/
