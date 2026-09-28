@@ -5,6 +5,7 @@
 - Fork gotcha: `import tau2` needs `websockets` (only in the `voice` extra). In the fork, run `uv pip install websockets` after `uv sync`, and use `uv run --no-sync` so it isn't removed. `make` is not installed, so run the Makefile's commands directly.
 - Windows gotcha: set `PYTHONUTF8=1` and `PYTHONIOENCODING=utf-8` before `tau2 run`, or it crashes printing to the console.
 - The study repo imports the fork by pinned commit (`pyproject.toml` `rev`). After pushing domain code to the fork, bump `rev` and run `uv sync`. Regenerate the DB with `uv run python scripts/generate_db.py` (writes the fork's `db.json` and `data/planted_cases.json`); look up task ids in `planted_cases.json`.
+- Tasks are generated: edit `scripts/task_specs.py`, then run `uv run python scripts/build_tasks.py` (replays every task and writes the fork's `tasks.json`, `split_tasks.json`, and `docs/TASKS.md`). Never edit `tasks.json` by hand. `scripts/lint_tasks.py` and `pytest` must pass.
 - Never guess tau2-bench internals: read the fork's source and `docs/TAU2_NOTES.md` (written in Stage 0.3).
 - Budget: about $50 of API spend total, hard cap $60. Print projected cost before any run over 20 conversations. Prefer free models. Verify model ids and prices in provider docs; never assume them.
 - `communicate_info` must be language-neutral (codes like `BF-12345` or whole numbers under 1000). EN and FR task variants must have identical evaluation criteria.

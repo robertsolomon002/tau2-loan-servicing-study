@@ -27,6 +27,7 @@ from datetime import date, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 
+import study_env  # noqa: F401  (must come before tau2 imports)
 from tau2.domains.loan_servicing.data_model import LoanServicingDB
 
 TODAY = date(2026, 3, 16)
