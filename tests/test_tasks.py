@@ -18,7 +18,7 @@ from build_tasks import (
     tasks_doc,
 )
 from lint_tasks import lint, load
-from task_specs import SPECS
+from task_specs import END, SPECS
 from tau2.data_model.tasks import Task
 
 COMMITTED_TASKS, COMMITTED_SPLITS = load()
@@ -61,3 +61,11 @@ def test_category_balance():
     # transfers and partial actions make up the rest of the "not a plain
     # action" half).
     assert 0.25 <= len(no_change) / len(SPECS) <= 0.6
+
+
+def test_every_task_has_the_closing_rules():
+    # Pilot 1 (Stage 2.2): without these, the simulated user ended the
+    # conversation in the same message as a confirmation, or accepted
+    # unrelated changes the agent offered.
+    for task in COMMITTED_TASKS:
+        assert task["user_scenario"]["instructions"]["task_instructions"].endswith(END)

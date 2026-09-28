@@ -35,7 +35,13 @@ class Spec:
 
 
 NO_HUMAN = "Do not ask for a human agent."
-END = "End the conversation once your request is handled or clearly refused."
+END = (
+    "Apart from what these instructions describe, do not ask for or agree to any "
+    "other change, even if the agent offers one. After you confirm an action, "
+    "wait for the agent to tell you it is done; never end the conversation in "
+    "the same message as a confirmation. End the conversation only once the "
+    "agent has told you the outcome of your request (done or refused)."
+)
 
 SPECS = [
     # ---------------- Information ----------------

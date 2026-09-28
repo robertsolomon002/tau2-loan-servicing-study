@@ -10,3 +10,5 @@ from pathlib import Path
 
 FORK = Path(__file__).resolve().parents[2] / "tau2-bench"
 os.environ.setdefault("TAU2_DATA_DIR", str(FORK / "data"))
+# tau2 logs its whole registry at DEBUG level on import; keep study output clean.
+os.environ.setdefault("LOGURU_LEVEL", "WARNING")
