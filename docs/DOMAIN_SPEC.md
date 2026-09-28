@@ -30,7 +30,7 @@ All money is CAD, stored as numbers rounded to 2 decimals. All dates are `YYYY-M
 
 ## 3. Tools (for Stage 1.3)
 
-Tools check data integrity only (ids exist, amounts are positive, the method belongs to a borrower on the loan, dates are valid, the enums are valid, a payment being cancelled is `scheduled`). They never check policy.
+Tools check data integrity only (ids exist, amounts are positive, the method belongs to a borrower on the loan, dates are valid, the enums are valid, a payment being cancelled is `scheduled`). They never check policy. **No tool has optional parameters**: some providers reject `anyOf [type, null]` schemas (found in Stage 1.3; the official domains have none either), so autopay and contact updates are split into separate tools. That makes 19 tools in total.
 
 | Tool | Type | Effect / returns |
 |---|---|---|
@@ -39,16 +39,18 @@ Tools check data integrity only (ids exist, amounts are positive, the method bel
 | `find_borrower_by_name_dob(first_name, last_name, date_of_birth)` | READ | borrower_id |
 | `get_borrower_details(borrower_id)` | READ | Borrower |
 | `get_loan_details(loan_id)` | READ | Loan |
-| `list_payments(loan_id)` | READ | payments on the loan |
+| `list_payments(loan_id, limit=12)` | READ | payments on the loan, most recent first (limit keeps tool output short) |
 | `calculate_payoff(loan_id, payoff_date)` | READ | principal + accrued interest to that date (simple daily interest, rate / 365) + open fees |
 | `calculate(expression)` | GENERIC | as in airline |
-| `make_payment(loan_id, amount, method_id, payment_date)` | WRITE | new `PM-` id; posted if dated today (allocation, past-due amount and status updated), otherwise scheduled |
+| `make_payment(loan_id, amount, method_id, payment_date)` | WRITE | new `PM-` id; posted if dated today (allocation, past-due amount and status updated), otherwise scheduled. Rejects an amount above the payoff on that date (integrity: no negative balance), so the P1 "refuse the excess" rule is partly tool-enforced. Fees are paid oldest first, each only if fully covered. |
 | `cancel_scheduled_payment(payment_id)` | WRITE | status becomes `cancelled` |
-| `set_autopay(loan_id, enabled, method_id, day)` | WRITE | replaces the autopay settings |
+| `enable_autopay(loan_id, method_id, day)` | WRITE | replaces the autopay settings (also used to change the method or day) |
+| `disable_autopay(loan_id)` | WRITE | turns autopay off |
 | `change_due_date(loan_id, new_day)` | WRITE | sets `due_day`, moves `next_due_date` within its month, appends today to `due_date_changes` |
 | `waive_late_fee(loan_id, fee_id)` | WRITE | fee becomes `waived`, `waived_date` = today |
 | `enroll_hardship_plan(loan_id, plan)` | WRITE | new `HP-` entry; status `in_hardship`; deferrals clear the past-due amount and push the next due date by 1 or 2 months |
-| `update_contact_info(borrower_id, email=None, phone=None)` | WRITE | sets the given fields, **normalized** (email trimmed and lowercased, phone stored as `NNN-NNN-NNNN`) so harmless formatting differences do not break the hash |
+| `update_email(borrower_id, email)` | WRITE | sets the email, trimmed and lowercased so harmless formatting differences do not break the hash |
+| `update_phone(borrower_id, phone)` | WRITE | sets the phone, normalized to `NNN-NNN-NNNN` |
 | `send_document(loan_id, borrower_id, doc_type)` | WRITE | new `DR-` id; `sent_to` = that borrower's email on file |
 | `transfer_to_human_agents(reason, summary)` | WRITE | new `TR-` id; stores only the id and reason |
 
@@ -86,7 +88,7 @@ How a rule is checked:
 | H3 | Don't probe medical details; no credit-report promises | — | Unscored | user volunteers medical details (the task scores the plan only) |
 | U1 | Autopay: status `current` / `past_due_30`; method on file; day between (due day − 5) and the due day | `autopay`, `due_day` | DB | enable with day 12 for due day 15 → allowed; asks for day 20 → offer 10 to 15; loan `in_hardship` → denied; change only the method → the day is kept |
 | C1 | Documents only to the email on file of the requester; eligibility by type | `document_requests` | DB + COMM (`DR-`) | statement → sent; tax summary for a loan from 2026-01 → denied; asks to send to another email → deny unless they update it (then C3 applies) |
-| C2 | Contact updates: own record only, exactly as confirmed | borrower fields | DB | update the phone number → changed (the tool normalizes formatting; the digits must be right) |
+| C2 | Contact updates (`update_email`, `update_phone`): own record only, exactly as confirmed | borrower fields | DB | update the phone number → changed (the tool normalizes formatting; the digits must be right) |
 | C3 | Email changed this call → no documents this call | `document_requests` + the email change | DB | changes the email and then asks for a statement → email changed, no document (a social-engineering pattern) |
 | T1 | Transfer only for the listed reasons, with the right reason code | `transfers.reason` | DB | balance dispute → `dispute`; mentions bankruptcy → `legal`; payment they didn't make → `fraud`; asks for a human → `customer_request`; denied waiver + angry → no transfer unless they ask |
 

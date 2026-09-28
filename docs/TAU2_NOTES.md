@@ -18,6 +18,7 @@ Read these first. Each one changes something we planned.
 10. **Infra errors.** Any termination other than `user_stop` or `agent_stop` scores 0.0 in the evaluator, but the run summary reports infrastructure errors separately and excludes them from its metrics. The study analysis must treat them as reruns, not failures (ROADMAP 4.1 exclusion rule).
 11. **Cerebras tool calls** (from Stage 0.1): `to_litellm_messages` adds a non-standard top-level `name` to each tool call (`src/tau2/utils/llm_utils.py:182`), which Cerebras rejects. Fix or avoid before using Cerebras.
 12. **File encoding.** `load_file` opens JSON without an `encoding`, and airline reads `policy.md` with a bare `open()`. On Windows without UTF-8 mode, accented text is misread. Our `db.json` is written with ASCII escapes (`\u00e9`); `environment.py` must read the policy with `encoding="utf-8"`; `tasks.json` with French text must also be written with ASCII escapes (found in Stage 1.2).
+13. **No optional tool parameters.** Tool parameters typed `Optional[...] = None` become `anyOf [type, null]` in the JSON schema. At least one OpenRouter provider (ModelRun, serving `qwen/qwen3.8-27b:free`) rejects this with a 400 error ("more than one JSON reading of the same emitted value"). None of the official domains' tools use optional parameters. Our tools don't either, and a test enforces it (found in Stage 1.3).
 
 Everything else in ROADMAP Section 2 matches the source.
 
