@@ -1,6 +1,6 @@
 # Upstream issue draft (Stage 0.2)
 
-To post at https://github.com/sierra-research/tau2-bench/issues/new
+Posted 2026-09-28 as https://github.com/sierra-research/tau2-bench/issues/579
 
 **Title:** Proposal: `loan_servicing` domain with English and French task variants
 
