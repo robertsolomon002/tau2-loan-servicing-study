@@ -116,7 +116,7 @@ About 60 borrowers and 90 loans. Most are ordinary; these specific cases must ex
 - **Plan choice** depends on what the user says (H2). User instructions must say exactly what the user says about one month or partial payment.
 - **Format noise in write arguments.** The hash compares exact values. Tools normalize the free-form inputs they store (email, phone), and every other stored argument is an id, enum, number, or date.
 
-## 7. Open questions for Rob
+## 7. Decisions confirmed by Rob (2026-09-28)
 
-1. Is the level of strictness right? For example, the waiver-before-payment ordering rule (F2) and the email-change security rule (C3) are realistic, but they are the "gotcha" rules most likely to trip agents.
-2. Boréal Finance's location is left unstated; postal codes will be Quebec and Ontario. Should the policy mention Quebec (for example "based in Montréal")? This could matter for the French framing in the report.
+1. Keep both strict rules: waiver before payment (F2) and no documents after an email change in the same call (C3).
+2. The policy states that Boréal Finance is based in Montréal and serves borrowers in Quebec and Ontario.

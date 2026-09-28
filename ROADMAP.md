@@ -67,6 +67,7 @@ Verified from the repo docs on 2026-09-23 (v1.0.1). Stage 0.3 re-verified agains
 12. **Authoring cost:** code, tasks, and translations are written with Claude Code or Cowork (Rob's subscription), which does not touch the $50 API budget. The API budget is only for benchmark runs.
 
 ## 4. Domain design: `loan_servicing`
+*Stage 1.1 (2026-09-28): `docs/DOMAIN_SPEC.md` supersedes 4.1 to 4.3 where they differ (no case notes, transfers stored with a reason code, reference-number ids, revised waiver and autopay rules).*
 
 ### 4.1 Database entities (`data_model.py`)
 
@@ -304,7 +305,7 @@ Minimum resume-ready cut if time runs short: the domain and PR (Stages 0 to 3 pl
 ## 13. Progress tracker
 
 - [x] 0.1 Fork and smoke test · [x] 0.2 Accounts and issue [Rob] · [x] 0.3 Internals notes
-- [ ] 1.1 Policy and spec · [ ] 1.2 Data model and DB · [ ] 1.3 Tools and registration
+- [x] 1.1 Policy and spec · [ ] 1.2 Data model and DB · [ ] 1.3 Tools and registration
 - [ ] 2.1 Tasks, linter, replay · [ ] 2.2 Solvability pilot · [ ] 2.3 Task review [Rob]
 - [ ] 3.1 French policy · [ ] 3.2 French tasks · [ ] 3.3 User simulator · [ ] 3.4 French review [Rob]
 - [ ] 4.1 Cost pilot and pre-registration (Rob approves) · [ ] 4.2 Runner · [ ] 4.3 Main runs
