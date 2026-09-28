@@ -305,7 +305,7 @@ Minimum resume-ready cut if time runs short: the domain and PR (Stages 0 to 3 pl
 ## 13. Progress tracker
 
 - [x] 0.1 Fork and smoke test · [x] 0.2 Accounts and issue [Rob] · [x] 0.3 Internals notes
-- [x] 1.1 Policy and spec · [ ] 1.2 Data model and DB · [ ] 1.3 Tools and registration
+- [x] 1.1 Policy and spec · [x] 1.2 Data model and DB · [ ] 1.3 Tools and registration
 - [ ] 2.1 Tasks, linter, replay · [ ] 2.2 Solvability pilot · [ ] 2.3 Task review [Rob]
 - [ ] 3.1 French policy · [ ] 3.2 French tasks · [ ] 3.3 User simulator · [ ] 3.4 French review [Rob]
 - [ ] 4.1 Cost pilot and pre-registration (Rob approves) · [ ] 4.2 Runner · [ ] 4.3 Main runs
