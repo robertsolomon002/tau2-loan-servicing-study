@@ -10,7 +10,7 @@ Hi! I'd like to contribute a new domain and wanted to check fit before opening a
 
 ## Problem / goal
 
-τ²-bench has no domain for **transactional** financial servicing. `banking_knowledge` tests retrieval over documents; this domain would test policy-constrained **actions** on a lender's database, in the same style as `airline` and `retail`. It would also add the first **non-English task variants**, so agents can be evaluated on whether they follow an English policy when the customer speaks another language (here, Quebec French).
+τ²-bench has no domain for **transactional** financial servicing. `banking_knowledge` tests retrieval over documents; this domain would test policy-constrained **actions** on a lender's database, in the same style as `airline` and `retail`. It would also add the first **task variants written entirely in another language** (today, one airline task has a user who mixes in French words), so agents can be evaluated on whether they follow an English policy when the customer speaks another language (here, Quebec French).
 
 ## Proposed solution
 
@@ -18,7 +18,7 @@ A `loan_servicing` domain: the borrower-support desk of a fictional Canadian len
 
 - **Tools** (single control, agent only). Read: look up a borrower (by email, phone, or name plus date of birth), get borrower and loan details, list payments, calculate payoff, calculate. Write: make or cancel a payment, set autopay, change the due date, waive a late fee, enroll in a hardship plan, update contact info, send a document, transfer to a human. As in the existing domains, tools enforce data integrity only, not policy.
 - **Policy** with testable rules: identity verification (name, date of birth and postal code must all match); co-borrowers vs listed third parties vs everyone else; confirmation before every write; payment amount and date limits; payoff quote windows; due date changes at most once per 12 months; late fee waivers (limits on amount and frequency); hardship eligibility (without the agent asking for medical details); and mandatory transfers (disputes, bankruptcy, fraud).
-- **About 40 tasks**, roughly half requiring an action and half a refusal, a partial action, or a transfer. Rewards use `DB` or `DB` plus `COMMUNICATE`.
+- **About 40 tasks**, roughly half requiring an action and half a refusal, a partial action, or a transfer. Rewards use `DB`, plus `COMMUNICATE` where the agent must state a specific value.
 - **French variants.** Each task gets an FR variant with a Quebec French `user_scenario` and **identical evaluation criteria**, in the same `tasks.json`, selected through `split_tasks.json` (`base`, `en_user`, `fr_user`). To keep scoring language-neutral, `communicate_info` only uses reference codes (like `BF-48213`) or whole numbers under 1000. French formatting of amounts and dates (`12 431,07 $`, `15 octobre`) would otherwise break substring matching.
 - Optionally, a French translation of the policy (`policy_fr.md`), for evaluating a fully localized deployment. It would be registered as a second domain name, `loan_servicing_fr`, using the same code, database and tasks, following the `telecom` / `telecom-workflow` pattern.
 
@@ -34,7 +34,7 @@ No new dependencies and no changes to core behavior.
 
 ## Timeline
 
-About 3 to 4 weeks. The English domain and tasks come first, then the French variants.
+About 1 to 2 weeks. The English domain and tasks come first, then the French variants.
 
 ## Questions
 
