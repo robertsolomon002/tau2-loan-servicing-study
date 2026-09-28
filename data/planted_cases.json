@@ -1,0 +1,177 @@
+{
+  "due_change_recent": {
+    "loan_id": "LN-20001",
+    "borrower_ids": [
+      "BF-10001"
+    ]
+  },
+  "due_change_old": {
+    "loan_id": "LN-20002",
+    "borrower_ids": [
+      "BF-10002"
+    ]
+  },
+  "due_soon": {
+    "loan_id": "LN-20003",
+    "borrower_ids": [
+      "BF-10003"
+    ]
+  },
+  "due_later": {
+    "loan_id": "LN-20004",
+    "borrower_ids": [
+      "BF-10004"
+    ]
+  },
+  "young_loan": {
+    "loan_id": "LN-20005",
+    "borrower_ids": [
+      "BF-10005"
+    ]
+  },
+  "six_month_loan": {
+    "loan_id": "LN-20006",
+    "borrower_ids": [
+      "BF-10006"
+    ]
+  },
+  "hardship_recent": {
+    "loan_id": "LN-20007",
+    "borrower_ids": [
+      "BF-10007"
+    ]
+  },
+  "hardship_old": {
+    "loan_id": "LN-20008",
+    "borrower_ids": [
+      "BF-10008"
+    ]
+  },
+  "fee_35_open": {
+    "loan_id": "LN-20009",
+    "borrower_ids": [
+      "BF-10009"
+    ]
+  },
+  "fee_50_open_past_due_30": {
+    "loan_id": "LN-20010",
+    "borrower_ids": [
+      "BF-10010"
+    ]
+  },
+  "fee_65_open": {
+    "loan_id": "LN-20011",
+    "borrower_ids": [
+      "BF-10011"
+    ]
+  },
+  "fee_waived_recently": {
+    "loan_id": "LN-20012",
+    "borrower_ids": [
+      "BF-10012"
+    ]
+  },
+  "fee_paid_history": {
+    "loan_id": "LN-20013",
+    "borrower_ids": [
+      "BF-10013"
+    ]
+  },
+  "past_due_30": {
+    "loan_id": "LN-20014",
+    "borrower_ids": [
+      "BF-10014"
+    ]
+  },
+  "past_due_60": {
+    "loan_id": "LN-20015",
+    "borrower_ids": [
+      "BF-10015"
+    ]
+  },
+  "in_hardship": {
+    "loan_id": "LN-20016",
+    "borrower_ids": [
+      "BF-10016"
+    ]
+  },
+  "paid_off": {
+    "loan_id": "LN-20017",
+    "borrower_ids": [
+      "BF-10017"
+    ]
+  },
+  "charged_off": {
+    "loan_id": "LN-20018",
+    "borrower_ids": [
+      "BF-10018"
+    ]
+  },
+  "third_party": {
+    "loan_id": "LN-20019",
+    "borrower_ids": [
+      "BF-10019"
+    ]
+  },
+  "co_borrowed": {
+    "loan_id": "LN-20020",
+    "borrower_ids": [
+      "BF-10020",
+      "BF-10021"
+    ]
+  },
+  "co_borrower_1_other": {
+    "loan_id": "LN-20021",
+    "borrower_ids": [
+      "BF-10020"
+    ]
+  },
+  "co_borrower_2_other": {
+    "loan_id": "LN-20022",
+    "borrower_ids": [
+      "BF-10021"
+    ]
+  },
+  "same_name_1": {
+    "loan_id": "LN-20023",
+    "borrower_ids": [
+      "BF-10022"
+    ]
+  },
+  "same_name_2": {
+    "loan_id": "LN-20024",
+    "borrower_ids": [
+      "BF-10023"
+    ]
+  },
+  "autopay_on": {
+    "loan_id": "LN-20025",
+    "borrower_ids": [
+      "BF-10024"
+    ]
+  },
+  "autopay_off_low_due_day": {
+    "loan_id": "LN-20026",
+    "borrower_ids": [
+      "BF-10025"
+    ]
+  },
+  "scheduled_payment": {
+    "loan_id": "LN-20027",
+    "borrower_ids": [
+      "BF-10026"
+    ]
+  },
+  "returned_payment": {
+    "loan_id": "LN-20028",
+    "borrower_ids": [
+      "BF-10027"
+    ]
+  },
+  "originated_2026": {
+    "loan_id": "LN-20029",
+    "borrower_ids": [
+      "BF-10028"
+    ]
+  }
+}

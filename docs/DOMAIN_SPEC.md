@@ -78,7 +78,7 @@ How a rule is checked:
 | P5 | Only `scheduled` payments can be cancelled; a disputed posted payment → transfer `dispute` | `payments.status` | DB | cancel a scheduled payment (allowed); cancel a posted one → deny |
 | P6 | No payments on `paid_off` / `charged_off` loans | `status` | DB | charged-off loan → transfer `other` |
 | Q1 | Payoff quote date from today to 2026-03-26 | `calculate_payoff` | COMM is weak (payoffs are usually over $999) → DB via a follow-up payment or payoff letter | payoff for 2026-03-23 then pay it (allowed); payoff for 2026-04-05 → refused |
-| D1 | Due date change: `current`, none in the last 12 months, next due date after 2026-03-21, new day 1 to 28 and different | `due_date_changes`, `next_due_date`, `status` | DB | allowed; changed 2025-10-xx → denied; changed 2025-03-10 (just over a year ago) → allowed; past due → denied; due 2026-03-20 → denied (too close); asks for day 30 → denied, offer 1 to 28 |
+| D1 | Due date change: `current`, none in the last 12 months, next due date after 2026-03-21, new day 1 to 28 and different | `due_date_changes`, `next_due_date`, `status` | DB | allowed; changed 2025-10-xx → denied; changed 2025-03-01 (just over a year ago) → allowed; past due → denied; due 2026-03-20 → denied (too close); asks for day 30 → denied, offer 1 to 28 |
 | F1 | Waiver: open fee ≤ $50, no waiver on the loan within the last 12 months, status `current` or `past_due_30`; one per call | `fees`, `status` | DB | $35 fee → waived; $50.00 exactly → waived; $65 → denied; waived one in 2025-11 → denied; `past_due_60` → denied |
 | F2 | Waiver before payment | order of calls | DB (paying first would pay the fee) | "waive my fee and pay the past due" → waive, then pay |
 | H1 | Hardship eligibility: stated hardship, loan ≥ 6 months old, no plan in the last 12 months, status in {current, past_due_30, past_due_60} | `origination_date`, `hardship_history`, `status` | DB | eligible → `deferral_1`; loan originated 2025-11-02 → denied; plan in 2025-06 → denied; no hardship reason given → denied |
@@ -94,8 +94,8 @@ How a rule is checked:
 
 About 60 borrowers and 90 loans. Most are ordinary; these specific cases must exist, and each gets a named test:
 
-1. A loan whose due date was changed about 5 months ago (2025-10-xx), and one changed 2025-03-10 (just over 12 months ago).
-2. A `current` loan with the next due date 2026-03-20 (within 5 days) and one with 2026-04-02.
+1. A loan whose due date was changed about 5 months ago (2025-10-14), and one changed 2025-03-01 (just over 12 months ago).
+2. A `current` loan with the next due date 2026-03-20 (within 5 days) and one with 2026-04-02. The co-borrowed loan is due 2026-03-21, exactly 5 days away (denied: the rule is "more than 5 days").
 3. A loan originated 2025-11-02 (4 months old) and one originated 2025-09-10 (just over 6 months).
 4. A loan with a hardship plan that started 2025-06-01, and one with a plan that started 2024-12-01.
 5. Open late fees of $35.00, $50.00 and $65.00; a loan with a fee waived 2025-11-20 plus a new open fee.
@@ -106,6 +106,15 @@ About 60 borrowers and 90 loans. Most are ordinary; these specific cases must ex
 10. A loan with a `scheduled` payment, one with a `returned` payment, and one with only `posted` ones.
 11. Loans originated in 2026-01 (no tax summary) and earlier.
 12. Past-due amounts, monthly payments, and "payments remaining" values under 1000 exist for COMMUNICATE use; most balances are over 1000.
+
+### Generated data (Stage 1.2)
+
+`scripts/generate_db.py` writes the fork's `db.json` and `data/planted_cases.json`, which maps each case name above (for example `fee_35_open`) to its loan and borrower ids. Task writers should look up ids there, never hard-code them from memory. The money model:
+- Monthly payment from standard amortization; each installment pays interest of balance × rate / 12, and the rest goes to principal.
+- Accrued interest today is simple daily interest (rate / 365) on the principal since the last paid installment.
+- Missed installments: 1 → `past_due_30`, 2 → `past_due_60`, 3 or more → `charged_off`. Each missed installment gets an open late fee 10 days after the due date: 5% of the monthly payment, rounded to whole dollars, clamped to $25 to $65.
+- A historical late fee marked `paid` was paid by adding it to the next installment (allocated to fees).
+- Deferral months are skipped (no installment); reduced-payment months pay half.
 
 ## 6. Scoring risks to handle in Stage 2
 
