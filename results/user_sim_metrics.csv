@@ -1,0 +1,7 @@
+candidate,user_model,lang,planned,completed,infra_errors,user_turns,short_turns,on_language_pct,convs_user_followed_agent_switch,agent_on_language_pct,convs_agent_switched,avg_user_turns,avg_messages,agent_reward,user_cost,agent_cost,endings
+nano,gpt-5.4-nano,en,10,10,0,65,7,91.4,2,90.9,2,6.5,22.6,0.9,0.0148,0.0908,user_stop
+nano,gpt-5.4-nano,fr,10,10,0,50,6,100.0,0,100.0,0,5.0,18.2,0.7,0.0125,0.0699,user_stop
+mini,gpt-5.4-mini,en,10,10,0,52,15,100.0,0,95.1,1,5.2,17.4,0.9,0.0333,0.0644,user_stop
+mini,gpt-5.4-mini,fr,10,10,0,49,9,100.0,0,100.0,0,4.9,17.8,0.9,0.0361,0.0689,user_stop
+gemini,gemini/gemini-3.1-flash-lite,en,10,10,0,46,0,100.0,0,94.4,2,4.6,17.8,0.9,0.0117,0.0642,user_stop
+gemini,gemini/gemini-3.1-flash-lite,fr,10,10,0,46,0,100.0,0,100.0,0,4.6,17.2,0.9,0.0132,0.0662,user_stop
