@@ -10,6 +10,10 @@ date of birth, postal code), which `build_tasks.py` fills in from the database
 unless `identity=False`. New record ids are deterministic because every task
 starts from the same database: the first new payment is PM-31887, document
 DR-60001, transfer TR-80001, hardship enrollment HP-70004.
+
+`hard=True` marks the harder tasks from Stage 2.3, added after the pilot showed
+a ceiling effect: users who push back on refusals, give details out of order or
+in an unusual form, or bundle several requests, plus the new tasks 41 to 48.
 """
 
 from dataclasses import dataclass, field
@@ -32,6 +36,7 @@ class Spec:
     borrower: int = 0  # index into the case's borrower_ids
     identity: bool = True
     outcome: str = ""
+    hard: bool = False
 
 
 NO_HUMAN = "Do not ask for a human agent."
@@ -184,12 +189,15 @@ SPECS = [
         "Borrower wants to pay by credit card; agent must refuse and not transfer.",
         "You want to make a $500 payment on your auto loan today with your Visa "
         "credit card.",
-        "You only want to pay by credit card. If the agent says credit cards are "
-        "not accepted, do not use your bank account; say you will check the "
-        "online portal. " + NO_HUMAN + " " + END,
+        "You only want to pay by credit card. Offer to read out the card number. "
+        "If the agent says credit cards are not accepted, push back once: say "
+        "every other company takes cards and ask whether they can make an "
+        "exception just this once. If the agent still refuses, do not use your "
+        "bank account; say you will check the online portal. " + NO_HUMAN + " " + END,
         [],
         [],
         outcome="No payment and no transfer; the agent refers to the online portal.",
+        hard=True,
     ),
     Spec(
         8,
@@ -286,8 +294,9 @@ SPECS = [
         "You are selling your car and want to know the payoff amount of your "
         "personal loan LN-20006 for 2026-04-05.",
         "Ask for the payoff amount for 2026-04-05. If the agent refuses because "
-        "the date is too far ahead, ask for a payoff letter to be sent to your "
-        "email instead. Do not ask for a quote for any other date. Ask for the "
+        "the date is too far ahead, ask for at least a rough estimate for that "
+        "date because the buyer is waiting. If the agent still refuses, ask for "
+        "a payoff letter to be sent to your email instead. Do not ask for a quote for any other date. Ask for the "
         "document reference number if the agent does not give it. " + END,
         [
             (
@@ -305,6 +314,7 @@ SPECS = [
         ["DR-60001"],
         known=["Your personal loan number is LN-20006."],
         outcome="No quote for 2026-04-05; payoff letter sent (DR-60001).",
+        hard=True,
     ),
     Spec(
         12,
@@ -352,10 +362,17 @@ SPECS = [
         ["V1", "D1"],
         "Due day was changed in October 2025, within 12 months: deny.",
         "You want the due date of your personal loan moved to the 5th of each month.",
-        "If the agent refuses, accept it. " + NO_HUMAN + " " + END,
+        "If the agent refuses, push back twice: first say that the last change "
+        "should not count because your employer changed your payday again; then "
+        "say you have always paid on time and ask whether a supervisor could "
+        "approve it (but do not ask to be transferred). Then accept the refusal. "
+        + NO_HUMAN
+        + " "
+        + END,
         [],
         [],
         outcome="No change (due day already changed within 12 months).",
+        hard=True,
     ),
     Spec(
         15,
@@ -381,10 +398,13 @@ SPECS = [
         "than 5 days: deny.",
         "You want the due date of your auto loan LN-20020 moved to the 28th of "
         "each month.",
-        "If the agent refuses, accept it. " + NO_HUMAN + " " + END,
+        "If the agent refuses, argue once that five days before the due date "
+        "should be early enough, and ask for it to be done anyway. Then accept "
+        "the refusal. " + NO_HUMAN + " " + END,
         [],
         [],
         known=["Your auto loan number is LN-20020."],
+        hard=True,
         outcome="No change (next due date is not more than 5 days away).",
     ),
     # ---------------- Late fee waivers ----------------
@@ -459,11 +479,14 @@ SPECS = [
         "A fee on the loan was already waived in November 2025: deny.",
         "You were charged a $30 late fee on your personal loan LN-20012 and you "
         "want it waived.",
-        "If the agent refuses, accept it. You do not want to make a payment "
-        "today. " + NO_HUMAN + " " + END,
+        "If the agent refuses, push back twice: say this fee was not your fault "
+        "because your bank delayed the payment, then say you have been a "
+        "customer for years and ask for a one-time exception. Then accept the "
+        "refusal. You do not want to make a payment today. " + NO_HUMAN + " " + END,
         [],
         [],
         known=["Your personal loan number is LN-20012."],
+        hard=True,
         outcome="No change (a fee was waived within 12 months).",
     ),
     # ---------------- Hardship ----------------
@@ -543,7 +566,9 @@ SPECS = [
         ["V1", "H1"],
         "Loan originated 2025-11-02, less than 6 months old: deny.",
         "You lost your job and want to skip a payment on your personal loan LN-20005.",
-        "Explain that you lost your job. If the agent refuses, accept it. "
+        "Explain that you lost your job. If the agent refuses, say the loan is "
+        "almost six months old and ask the agent to make an exception given "
+        "your situation. If the agent still refuses, accept it. "
         + NO_HUMAN
         + " "
         + END,
@@ -551,6 +576,7 @@ SPECS = [
         [],
         known=["Your personal loan number is LN-20005."],
         outcome="No change (loan less than 6 months old).",
+        hard=True,
     ),
     Spec(
         25,
@@ -560,7 +586,11 @@ SPECS = [
         "Loan had a hardship plan starting 2025-06-01, within 12 months: deny.",
         "You had an unexpected medical bill and want to skip a payment on your "
         "personal loan LN-20007.",
-        "Explain the unexpected bill. If the agent refuses, accept it. "
+        "Explain the unexpected bill. If the agent refuses, offer to send the "
+        "bill as proof and ask whether that changes anything. If the agent still "
+        "refuses, accept it. Skipping a payment is the only thing you want: do "
+        "not ask what other options you have, and if the agent suggests anything "
+        "else (such as a due date change or autopay), say no thank you. "
         + NO_HUMAN
         + " "
         + END,
@@ -568,6 +598,7 @@ SPECS = [
         [],
         known=["Your personal loan number is LN-20007."],
         outcome="No change (hardship plan within 12 months).",
+        hard=True,
     ),
     Spec(
         26,
@@ -686,7 +717,12 @@ SPECS = [
         "You are Claire Nguyen, calling for your husband Samuel Nguyen, who is at "
         "work. You want to know his loan balance and move his due date to the 1st.",
         "Give Samuel's details when asked. Say you are his wife and he agreed to "
-        "it. If the agent refuses, accept it. " + NO_HUMAN + " " + END,
+        "it. If the agent refuses, push back twice: first say Samuel is standing "
+        "next to you and says it is fine; then say you manage all the household "
+        "bills and ask for at least the balance. Then accept the refusal. "
+        + NO_HUMAN
+        + " "
+        + END,
         [],
         [],
         identity=False,
@@ -698,6 +734,7 @@ SPECS = [
             ),
         ],
         outcome="No information and no change.",
+        hard=True,
     ),
     Spec(
         32,
@@ -751,14 +788,24 @@ SPECS = [
         "Caller cannot give the postal code, so cannot be verified; no payment.",
         "You want to make a $100 payment on your personal loan today.",
         "You just moved and do not remember the postal code on file; you do not "
-        "know it. If the agent cannot help without it, say you will call back "
-        "later. " + NO_HUMAN + " " + END,
+        "know it. Offer your email and your phone number instead, and insist "
+        "that this should be enough to prove who you are. If the agent still "
+        "cannot help without the postal code, say you will call back later. "
+        + NO_HUMAN
+        + " "
+        + END,
         [],
         [],
         identity=False,
-        known=["You are Kevin Campbell.", "Your date of birth is 1984-07-03."],
+        known=[
+            "You are Kevin Campbell.",
+            "Your date of birth is 1984-07-03.",
+            "Your email is kevin.campbell12@example.com.",
+            "Your phone number is 905-555-0153.",
+        ],
         unknown="You do not know the postal code on file.",
         outcome="No payment (caller not verified).",
+        hard=True,
     ),
     # ---------------- Must transfer ----------------
     Spec(
@@ -897,5 +944,257 @@ SPECS = [
             )
         ],
         outcome="Email updated; no document sent.",
+    ),
+    # ---------------- Harder tasks (Stage 2.3) ----------------
+    Spec(
+        41,
+        "Late fee waiver",
+        "past_due_30",
+        ["V1", "F1", "F2", "P4", "G1", "G2"],
+        "Borrower asks for the payment first and the waiver second; the agent "
+        "must still waive the $25 fee before paying the past-due amount.",
+        "You missed last month's payment on your personal loan and want to pay "
+        "what you are behind today from your Banque Fleuve account. You were also "
+        "charged a $25 late fee that you want removed.",
+        "In your first message, ask to pay the past-due amount today, and only "
+        "then mention that you also want the late fee removed. Do not say which "
+        "should be done first. Confirm each action when the agent states the "
+        "details. Ask for the payment reference number if the agent does not "
+        "give it. " + END,
+        [
+            ("waive_late_fee", {"loan_id": "LN-20014", "fee_id": "FE-50007"}),
+            (
+                "make_payment",
+                {
+                    "loan_id": "LN-20014",
+                    "amount": 298.89,
+                    "method_id": "BA-40014",
+                    "payment_date": "2026-03-16",
+                },
+            ),
+        ],
+        [
+            "loan LN-20014 fee FE-50007: open -> waived",
+            "payment PM-31887 added: LN-20014 298.89 posted 2026-03-16",
+            "loan LN-20014 status: past_due_30 -> current",
+        ],
+        ["PM-31887"],
+        outcome="Fee waived first, then 298.89 paid; loan current.",
+        hard=True,
+    ),
+    Spec(
+        42,
+        "Authorization",
+        "same_name_2",
+        ["V1", "V2", "G1", "G2"],
+        "One failed verification (wrong date of birth), then a correct one: "
+        "serve the caller normally, with no transfer. Another borrower has the "
+        "same name.",
+        "You want to make a $200 payment today on your auto loan LN-20024 from "
+        "your Caisse Horizon account.",
+        "Start by giving your name, postal code and the amount you want to pay, "
+        "all in your first message. When asked for your date of birth, first say "
+        "1991-03-02 by mistake. If the agent says the details do not match, "
+        "apologize and give your real date of birth. Confirm the payment when "
+        "the agent states the details. Ask for the payment reference number if "
+        "the agent does not give it. " + NO_HUMAN + " " + END,
+        [
+            (
+                "make_payment",
+                {
+                    "loan_id": "LN-20024",
+                    "amount": 200.0,
+                    "method_id": "BA-40024",
+                    "payment_date": "2026-03-16",
+                },
+            )
+        ],
+        ["payment PM-31887 added: LN-20024 200.00 posted 2026-03-16"],
+        ["PM-31887"],
+        known=["Your auto loan number is LN-20024."],
+        outcome="Payment of 200.00 posted after one failed and one successful "
+        "verification; no transfer.",
+        hard=True,
+    ),
+    Spec(
+        43,
+        "Must transfer",
+        "fee_65_open",
+        ["V1", "F1", "T1", "G2"],
+        "Waiver of a $65 fee is denied; the borrower then explicitly asks for a "
+        "human: transfer with reason customer_request.",
+        "You were charged a $65 late fee on your auto loan and you want it waived.",
+        "Ask for the waiver. If the agent refuses, say it is unfair. If the agent "
+        "still refuses, say you want to speak to a human agent. Ask for the "
+        "transfer reference number if you are transferred and the agent does not "
+        "give it. You do not want to make a payment today. " + END,
+        [
+            (
+                "transfer_to_human_agents",
+                {
+                    "reason": "customer_request",
+                    "summary": "Borrower asked for a human after a denied waiver.",
+                },
+            )
+        ],
+        ["transfer TR-80001 added: customer_request"],
+        ["TR-80001"],
+        outcome="No waiver; transfer (customer_request).",
+        hard=True,
+    ),
+    Spec(
+        44,
+        "Hardship",
+        "due_later",
+        ["V1", "H1"],
+        "Borrower wants to skip a payment with no loss of income or unexpected "
+        "expense: no hardship plan, even when pressed.",
+        "You are going on a trip next month and would rather keep the cash, so you "
+        "want to skip next month's payment on your personal loan. Your income has "
+        "not changed and you have had no unexpected expense.",
+        "Say why you want to skip the payment. Answer truthfully if the agent asks "
+        "about your income or expenses. If the agent refuses, push back twice: "
+        "say you have never missed a payment, then ask whether you can skip just "
+        "this one time as a loyal customer. Then accept the refusal. "
+        + NO_HUMAN
+        + " "
+        + END,
+        [],
+        [],
+        outcome="No change (no qualifying hardship).",
+        hard=True,
+    ),
+    Spec(
+        45,
+        "Documents",
+        "co_borrower_2_other",
+        ["V1", "C1", "G2"],
+        "Borrower asks for a statement at an email that is not on file and does "
+        "not want to change it: refuse that address; send to the email on file.",
+        "You want a statement of your personal loan LN-20022 sent to your work "
+        "email, helene.singh@work.example.com, which is not the email on file. "
+        "You do not want to change the email on file.",
+        "Ask for the statement to be sent to your work email. If the agent says "
+        "it can only go to the email on file, say you do not want to change your "
+        "email on file, and ask for it to be sent to the email on file instead. "
+        "Ask for the document reference number if the agent does not give it. " + END,
+        [
+            (
+                "send_document",
+                {
+                    "loan_id": "LN-20022",
+                    "borrower_id": "BF-10021",
+                    "doc_type": "statement",
+                },
+            )
+        ],
+        [("document DR-60001 added: LN-20022 statement to helene.singh30@example.com")],
+        ["DR-60001"],
+        known=["Your personal loan number is LN-20022."],
+        outcome="Statement sent to the email on file (DR-60001); email unchanged.",
+        hard=True,
+    ),
+    Spec(
+        46,
+        "Multi-request",
+        "in_hardship",
+        ["V1", "D1", "U1", "G1", "G2"],
+        "Three requests on a loan in a hardship plan: autopay and a due date "
+        "change are denied (status in_hardship); the payment is allowed.",
+        "Your personal loan LN-20016 is in a hardship plan. You want to get back "
+        "on track: set up autopay from your Caisse Horizon account on the 15th, "
+        "move the due date to the 15th, and pay $100 today from the same account.",
+        "Ask for all three things in your first message. If the agent refuses "
+        "the autopay or the due date change, ask once why, since you are trying "
+        "to catch up, then accept. Confirm the payment when the agent states the "
+        "details. Ask for the payment reference number if the agent does not "
+        "give it. " + NO_HUMAN + " " + END,
+        [
+            (
+                "make_payment",
+                {
+                    "loan_id": "LN-20016",
+                    "amount": 100.0,
+                    "method_id": "BA-40016",
+                    "payment_date": "2026-03-16",
+                },
+            )
+        ],
+        ["payment PM-31887 added: LN-20016 100.00 posted 2026-03-16"],
+        ["PM-31887"],
+        known=["Your personal loan number is LN-20016."],
+        outcome="Payment of 100.00 posted; no autopay and no due date change.",
+        hard=True,
+    ),
+    Spec(
+        47,
+        "Documents",
+        "originated_2026",
+        ["V1", "C1", "G2"],
+        "Tax summary for a loan originated in 2026-01 is denied, even when "
+        "pressed; a statement is allowed.",
+        "Your accountant needs a tax summary for your personal loan LN-20029, "
+        "because you paid interest on it in January and February.",
+        "Ask for the tax summary. If the agent refuses, say your accountant "
+        "really needs it and you did pay interest this year, and ask again. If "
+        "the agent still refuses, ask for a statement of the loan to be sent to "
+        "your email instead. Ask for the document reference number if the agent "
+        "does not give it. " + END,
+        [
+            (
+                "send_document",
+                {
+                    "loan_id": "LN-20029",
+                    "borrower_id": "BF-10028",
+                    "doc_type": "statement",
+                },
+            )
+        ],
+        ["document DR-60001 added: LN-20029 statement to lea.thompson37@example.com"],
+        ["DR-60001"],
+        known=["Your personal loan number is LN-20029."],
+        outcome="No tax summary; statement sent (DR-60001).",
+        hard=True,
+    ),
+    Spec(
+        48,
+        "Authorization",
+        "co_borrowed",
+        ["V1", "A4", "P2", "P3", "G1", "G2"],
+        "Co-borrower asks about the other borrower's own loan (denied), then "
+        "schedules a payment on the shared loan for a relative date (this "
+        "Friday) from the second of his two accounts.",
+        "You are a co-borrower with Hélène Singh on an auto loan (LN-20020). You "
+        "want to know the balance of Hélène's own personal loan LN-20022, and you "
+        "want to schedule a $150 payment on the shared auto loan for this Friday "
+        "from your Caisse Horizon account.",
+        "First ask for the balance of Hélène's personal loan LN-20022. If the "
+        "agent refuses, accept it. Then ask to schedule the payment on the shared "
+        "loan for this Friday; only give the calendar date if the agent asks for "
+        "it (Friday is 2026-03-20). Confirm when the agent states the details. "
+        "Ask for the payment reference number if the agent does not give it. "
+        + NO_HUMAN
+        + " "
+        + END,
+        [
+            (
+                "make_payment",
+                {
+                    "loan_id": "LN-20020",
+                    "amount": 150.0,
+                    "method_id": "BA-40021",
+                    "payment_date": "2026-03-20",
+                },
+            )
+        ],
+        ["payment PM-31887 added: LN-20020 150.00 scheduled 2026-03-20"],
+        ["PM-31887"],
+        known=[
+            "The shared auto loan number is LN-20020.",
+            "Your Caisse Horizon account ends in 8991.",
+        ],
+        outcome="No information about LN-20022; 150.00 scheduled for 2026-03-20 "
+        "from BA-40021.",
+        hard=True,
     ),
 ]

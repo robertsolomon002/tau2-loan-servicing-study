@@ -56,7 +56,10 @@ def test_replay_matches_expected_changes(task):
 
 def test_category_balance():
     no_change = [s for s in SPECS if not s.actions]
-    assert 35 <= len(SPECS) <= 45
+    # About 40 planned; Stage 2.3 added 8 harder tasks (48).
+    assert 35 <= len(SPECS) <= 50
+    # Stage 2.3: enough harder tasks to lift the pilot's ceiling.
+    assert sum(s.hard for s in SPECS) >= 12
     # A good share of tasks must be refusals with no DB change (ROADMAP 4.4;
     # transfers and partial actions make up the rest of the "not a plain
     # action" half).

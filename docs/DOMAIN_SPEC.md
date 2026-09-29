@@ -126,7 +126,7 @@ About 60 borrowers and 90 loans. Most are ordinary; these specific cases must ex
 - **The user simulator asking for a human** creates a `customer_request` transfer, which fails tasks that don't expect one. Task instructions should say when (if ever) the user asks for a human.
 - **Plan choice** depends on what the user says (H2). User instructions must say exactly what the user says about one month or partial payment.
 - **Format noise in write arguments.** The hash compares exact values. Tools normalize the free-form inputs they store (email, phone), and every other stored argument is an id, enum, number, or date.
-- **Do-nothing baseline.** 12 of the 40 English tasks are refusals whose correct end state is the unchanged DB, so an agent that never acts scores 30% (airline has the same property). The report must show this baseline next to every pass^1 figure.
+- **Do-nothing baseline.** 13 of the 48 English tasks have the unchanged DB as their correct end state: 11 refusals scored on DB only, and 2 information tasks (1 and 2) that also need a reference id read out. An agent that never calls a write tool can score up to 27% (13/48), and one that also never reads out an id scores 23% (11/48). Before Stage 2.3 these were 12 and 10 of 40 (30% and 25%). Airline has the same property. The report must show this baseline next to every pass^1 figure.
 
 ## 7. Decisions confirmed by Rob (2026-09-28)
 
