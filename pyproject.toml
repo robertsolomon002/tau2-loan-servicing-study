@@ -23,7 +23,7 @@ package = false
 
 [tool.uv.sources]
 # Rob's fork of sierra-research/tau2-bench, pinned by commit.
-tau2 = { git = "https://github.com/robertsolomon002/tau2-bench", rev = "5e80a4fff6be8b5b8053ff1a31f5f86a6d7f0164" }
+tau2 = { git = "https://github.com/robertsolomon002/tau2-bench", rev = "784f63c11a6f32d80bec1e9c27de75f0833af9e6" }
 
 [tool.ruff]
 line-length = 88
