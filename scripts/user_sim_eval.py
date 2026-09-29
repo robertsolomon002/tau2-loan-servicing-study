@@ -313,12 +313,18 @@ def error_summary() -> list[dict]:
     return rows
 
 
-def review() -> None:
-    """Write docs/USER_SIM_REVIEW.md: 10 EN and 10 FR conversations to check."""
+def review_keys() -> list[str]:
+    """The review sample: every flagged conversation plus REVIEW_CLEAN."""
     labels = load_labels()
     flagged = [k for k, v in labels.items() if v]
     keys = flagged + [k for k in REVIEW_CLEAN if k not in flagged]
-    keys.sort(key=lambda k: (k.endswith("_fr"), k))
+    return sorted(keys, key=lambda k: (k.endswith("_fr"), k))
+
+
+def review() -> None:
+    """Write docs/USER_SIM_REVIEW.md: 10 EN and 10 FR conversations to check."""
+    labels = load_labels()
+    keys = review_keys()
     counts = {lang: sum(k.endswith(f"_{lang}") for k in keys) for lang in LANGS}
     lines = [
         "# User-simulator label review (Stage 3.3, for Rob in 3.4)",
