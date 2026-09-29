@@ -11,7 +11,10 @@ Checks:
   user scenario (the agent must find it, not repeat it).
 - Every reference action is a write tool of the domain, with known arguments.
 - Once any French task exists: every task has both variants and each EN/FR
-  pair has identical `evaluation_criteria`.
+  pair has identical `evaluation_criteria`. The pair's user scenarios contain
+  the same values (ids, ISO dates, emails, phone numbers, postal codes,
+  amounts in either language's format, other numbers, and the DB's person and
+  bank names), and only the FR task has a persona (the language line).
 - Splits: `base` exists, `en_user` / `fr_user` list exactly the EN / FR tasks,
   every split id exists, and every task is in `base` or a language split.
 
@@ -33,6 +36,48 @@ from tau2.environment.toolkit import ToolType
 DOMAIN_DATA = study_env.FORK / "data" / "tau2" / "domains" / "loan_servicing"
 TASK_ID = re.compile(r"^ls_\d{3}_(en|fr)$")
 COMMUNICATE = re.compile(r"^([A-Z]{2}-\d{4,6}|\d{1,3})$")
+
+# Values that must survive translation unchanged, in the order they are
+# removed from the text (emails and postal codes contain digits).
+EXACT_VALUES = [
+    re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"),  # email
+    re.compile(r"\b[A-Z]{2}-\d{4,6}\b"),  # id
+    re.compile(r"\b\d{4}-\d{2}-\d{2}\b"),  # ISO date
+    re.compile(r"\b\d{3}-\d{3}-\d{4}\b"),  # phone
+    re.compile(r"\b[A-Z]\d[A-Z] \d[A-Z]\d\b"),  # postal code
+]
+# "$4,000.50" in English; "4 000,50 $" in French (\s also covers no-break
+# spaces, which French typography uses as the thousands separator).
+AMOUNT_EN = re.compile(r"\$(\d[\d,]*(?:\.\d+)?)")
+AMOUNT_FR = re.compile(r"(\d{1,3}(?:\s\d{3})*(?:,\d+)?)\s?\$")
+
+
+def scenario_values(text: str, names: set[str]) -> set[str]:
+    """Language-independent values in a user scenario, normalized."""
+    values = set()
+    for pattern in EXACT_VALUES:
+        values |= set(pattern.findall(text))
+        text = pattern.sub(" ", text)
+    for match in AMOUNT_EN.finditer(text):
+        values.add(f"${float(match.group(1).replace(',', '')):.2f}")
+    text = AMOUNT_EN.sub(" ", text)
+    for match in AMOUNT_FR.finditer(text):
+        number = re.sub(r"\s", "", match.group(1)).replace(",", ".")
+        values.add(f"${float(number):.2f}")
+    text = AMOUNT_FR.sub(" ", text)
+    values |= {f"#{n}" for n in re.findall(r"\d+", text)}
+    values |= {name for name in names if name in text}
+    return values
+
+
+def db_names() -> set[str]:
+    """Person and bank names from the DB, which must not be translated."""
+    db = json.loads((DOMAIN_DATA / "db.json").read_text("ascii"))
+    names = set()
+    for b in db["borrowers"].values():
+        names |= {b["first_name"], b["last_name"], *b["authorized_third_parties"]}
+        names |= {a["bank_name"] for a in b["bank_accounts"]}
+    return names
 
 
 def write_tools() -> dict[str, set[str]]:
@@ -90,11 +135,30 @@ def lint(tasks: list[dict], splits: dict[str, list[str]]) -> list[str]:
         stems_fr = {i[:-3] for i in fr}
         for stem in sorted(stems_en ^ stems_fr):
             problems.append(f"{stem}: missing its EN or FR variant")
+        names = db_names()
         for stem in sorted(stems_en & stems_fr):
-            a = by_id[f"{stem}_en"]["evaluation_criteria"]
-            b = by_id[f"{stem}_fr"]["evaluation_criteria"]
+            task_en, task_fr = by_id[f"{stem}_en"], by_id[f"{stem}_fr"]
+            a = task_en["evaluation_criteria"]
+            b = task_fr["evaluation_criteria"]
             if json.dumps(a, sort_keys=True) != json.dumps(b, sort_keys=True):
                 problems.append(f"{stem}: EN and FR evaluation_criteria differ")
+            values_en, values_fr = (
+                scenario_values(
+                    json.dumps(t["user_scenario"]["instructions"], ensure_ascii=False),
+                    names,
+                )
+                for t in (task_en, task_fr)
+            )
+            if values_en != values_fr:
+                problems.append(
+                    f"{stem}: scenario values differ: EN only "
+                    f"{sorted(values_en - values_fr)}, FR only "
+                    f"{sorted(values_fr - values_en)}"
+                )
+            if task_en["user_scenario"]["persona"] is not None:
+                problems.append(f"{stem}_en: EN tasks have no persona")
+            if not task_fr["user_scenario"]["persona"]:
+                problems.append(f"{stem}_fr: FR tasks need the language persona")
 
     if "base" not in splits:
         problems.append("splits: 'base' is missing")

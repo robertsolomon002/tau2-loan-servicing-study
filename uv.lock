@@ -1290,7 +1290,7 @@ wheels = [
 [[package]]
 name = "tau2"
 version = "1.0.1"
-source = { git = "https://github.com/robertsolomon002/tau2-bench?rev=784f63c11a6f32d80bec1e9c27de75f0833af9e6#784f63c11a6f32d80bec1e9c27de75f0833af9e6" }
+source = { git = "https://github.com/robertsolomon002/tau2-bench?rev=66e179c8ca6cbf18a0af1f047086615c64890c85#66e179c8ca6cbf18a0af1f047086615c64890c85" }
 dependencies = [
     { name = "addict" },
     { name = "deepdiff" },
@@ -1330,7 +1330,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "tau2", git = "https://github.com/robertsolomon002/tau2-bench?rev=784f63c11a6f32d80bec1e9c27de75f0833af9e6" },
+    { name = "tau2", git = "https://github.com/robertsolomon002/tau2-bench?rev=66e179c8ca6cbf18a0af1f047086615c64890c85" },
     { name = "websockets", specifier = ">=13.0" },
 ]
 

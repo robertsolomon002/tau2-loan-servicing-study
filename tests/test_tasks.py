@@ -10,8 +10,10 @@ import json
 
 import pytest
 from build_tasks import (
+    FR_REVIEW_DOC,
     TASKS_DOC,
     build,
+    fr_review_doc,
     load_db,
     replay,
     summarize_changes,
@@ -19,10 +21,11 @@ from build_tasks import (
 )
 from lint_tasks import lint, load
 from task_specs import END, SPECS
+from task_specs_fr import END_FR, PERSONA_FR
 from tau2.data_model.tasks import Task
 
 COMMITTED_TASKS, COMMITTED_SPLITS = load()
-SPEC_BY_ID = {f"ls_{s.num:03d}_en": s for s in SPECS}
+SPEC_BY_ID = {f"ls_{s.num:03d}_{lang}": s for s in SPECS for lang in ("en", "fr")}
 
 
 def test_lint_passes():
@@ -34,6 +37,7 @@ def test_committed_files_match_builder():
     assert json.loads(json.dumps(tasks)) == COMMITTED_TASKS
     assert splits == COMMITTED_SPLITS
     assert TASKS_DOC.read_text(encoding="utf-8") == tasks_doc(tasks)
+    assert FR_REVIEW_DOC.read_text(encoding="utf-8") == fr_review_doc(tasks)
 
 
 def test_tasks_validate_against_tau2_schema():
@@ -71,4 +75,27 @@ def test_every_task_has_the_closing_rules():
     # conversation in the same message as a confirmation, or accepted
     # unrelated changes the agent offered.
     for task in COMMITTED_TASKS:
-        assert task["user_scenario"]["instructions"]["task_instructions"].endswith(END)
+        end = END_FR if task["id"].endswith("_fr") else END
+        assert task["user_scenario"]["instructions"]["task_instructions"].endswith(end)
+
+
+def test_every_task_has_an_fr_twin_with_the_language_persona():
+    ids = {t["id"] for t in COMMITTED_TASKS}
+    assert len(ids) == 2 * len(SPECS)
+    for spec in SPECS:
+        assert f"ls_{spec.num:03d}_en" in ids and f"ls_{spec.num:03d}_fr" in ids
+    for task in COMMITTED_TASKS:
+        expected = PERSONA_FR if task["id"].endswith("_fr") else None
+        assert task["user_scenario"]["persona"] == expected
+
+
+def test_lint_catches_a_changed_value_in_a_french_scenario():
+    tasks = json.loads(json.dumps(COMMITTED_TASKS))
+    fr = next(t for t in tasks if t["id"] == "ls_003_fr")
+    instructions = fr["user_scenario"]["instructions"]
+    instructions["reason_for_call"] = instructions["reason_for_call"].replace(
+        "150 $", "15 $"
+    )
+    assert any(
+        "ls_003: scenario values differ" in p for p in lint(tasks, COMMITTED_SPLITS)
+    )
