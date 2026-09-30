@@ -273,6 +273,8 @@ def report() -> list[dict]:
 
 LABELS = REPO / "data" / "user_sim_labels.json"
 REVIEW_DOC = REPO / "docs" / "USER_SIM_REVIEW.md"
+# Rob's answers from scripts/label_user_sim.py (Stage 3.4).
+ROB_LABELS = REPO / "data" / "user_sim_labels_rob.json"
 # Clean conversations of the recommended simulator on the hardest tasks, added
 # to the review so Rob also checks for missed errors (not only flagged ones).
 REVIEW_CLEAN = [f"mini/ls_{n:03d}_{lang}" for lang in LANGS for n in (31, 33, 42)]
@@ -321,9 +323,32 @@ def review_keys() -> list[str]:
     return sorted(keys, key=lambda k: (k.endswith("_fr"), k))
 
 
+def rob_line(answer: dict | None) -> str:
+    """Rob's verdict for one conversation, as written in the review doc."""
+    if answer is None:
+        return ""
+    if answer["verdict"] == "agree":
+        text = "agree"
+    else:
+        own = "; ".join(
+            f"**{e['type']}** ({e['severity']})"
+            + (f": {e['note']}" if e["note"] else "")
+            for e in answer["errors"]
+        )
+        text = f"disagree; {own or 'no simulator error'}"
+    if answer.get("comment"):
+        text += f". Comment: {answer['comment']}"
+    return " " + text
+
+
 def review() -> None:
     """Write docs/USER_SIM_REVIEW.md: 10 EN and 10 FR conversations to check."""
     labels = load_labels()
+    rob = (
+        json.loads(ROB_LABELS.read_text(encoding="utf-8"))
+        if ROB_LABELS.exists()
+        else {}
+    )
     keys = review_keys()
     counts = {lang: sum(k.endswith(f"_{lang}") for k in keys) for lang in LANGS}
     lines = [
@@ -341,8 +366,9 @@ def review() -> None:
         ),
         "",
         (
-            "For each conversation, write `agree`, or the label you would give, "
-            "after **Rob:**. Claude then computes the agreement."
+            "Rob labelled each conversation with `scripts/label_user_sim.py` "
+            "(answers in `data/user_sim_labels_rob.json`), shown after **Rob:**. "
+            "The agreement is in `docs/USER_SIM.md`."
         ),
         "",
     ]
@@ -359,7 +385,7 @@ def review() -> None:
             "",
             f"**Claude:** {label or 'no simulator error'}",
             "",
-            "**Rob:**",
+            f"**Rob:**{rob_line(rob.get(key))}",
             "",
             "<details><summary>Transcript</summary>",
             "",

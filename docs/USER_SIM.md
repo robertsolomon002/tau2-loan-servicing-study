@@ -2,7 +2,7 @@
 
 Date: 2026-09-29. Fork 66e179c. Script: `scripts/user_sim_eval.py` (`plan`, `run`, `report`, `review`). Metrics: `results/user_sim_metrics.csv`. Labels: `data/user_sim_labels.json`. Review sample for Rob: `docs/USER_SIM_REVIEW.md`. Raw trajectories (git-ignored): `results/raw/stage3_3/`.
 
-**Recommendation: `gpt-5.4-mini` as the one user simulator for every condition and agent model.** It made no simulator errors in 20 conversations and kept the task's language in 100% of user turns in both languages, including when the agent switched language. It would cost about $6 for the whole study. Rob confirms this choice in Stage 3.4 (ROADMAP decision 8).
+**Recommendation: `gpt-5.4-mini` as the one user simulator for every condition and agent model.** It made no simulator errors in 20 conversations and kept the task's language in 100% of user turns in both languages, including when the agent switched language. It would cost about $6 for the whole study. **Rob confirmed this choice on 2026-09-30 (Stage 3.4, ROADMAP decision 8).**
 
 ## Setup
 
@@ -56,11 +56,24 @@ Claude read all 60 transcripts and labeled only the simulated user's behaviour. 
 - **Gemini** follows scenarios well, but ends early. Once it sent `###TRANSFER###` before any transfer happened (major), and twice it asked a question and ended in the same message.
 - **mini** followed every scripted beat in both languages: push-backs in order, the wrong-then-right date of birth, the relative date "ce vendredi", and clean endings. Its French is natural Quebec register (« pis », « faque »).
 
-**Agreement with Rob:** pending. Rob labels the 20 conversations in `docs/USER_SIM_REVIEW.md` in Stage 3.4:
-- all 14 that Claude flagged, 7 EN and 7 FR;
+**Agreement with Rob (Stage 3.4, 2026-09-30).** Rob labelled the 20 conversations in `docs/USER_SIM_REVIEW.md` with `scripts/label_user_sim.py`. His answers are in `data/user_sim_labels_rob.json`. The sample was:
+- all 14 conversations that Claude flagged, 7 EN and 7 FR;
 - 6 clean mini conversations on the hardest tasks (31, 33, 42 in EN and FR), to check for missed errors.
 
-Claude then reports the agreement here.
+| Measure | Result |
+|---|---|
+| Full agreement with Claude's label (types and severities) | 20 / 20 |
+| Error versus no error | 20 / 20 (100%), Cohen's kappa 1.00 |
+| Errors Claude missed in the 6 clean mini conversations | 0 |
+
+Caveats:
+- **One rater.** Rob is the only human rater.
+- **Not fully independent.** Rob discussed 3 of the 20 with Claude before answering, and Claude explained its label each time (conversations 1, 3 and 9). The other 17 were labelled alone, and they also agree 17 / 17.
+- **Display problems, fixed on 2026-09-30.** During labelling, the script showed only the first line of a multi-line user message as the user's. It also hid the shared closing rules (`[NO_HUMAN]`, `[END]`). The first problem hid the request behind the label on conversation 9 until Rob asked about it. Both are now fixed.
+
+Taken together, the labels are a sanity check rather than a strong reliability estimate. They still support the ranking mini < Gemini < nano on simulator errors.
+
+Rob's comment on conversation 8 (nano, EN task 22, where the agent and then nano switched to French): the switch may come from the borrower's French name. The agent switched right after verification, which is when it reads `preferred_language: fr` (finding 1 below). That points to the DB field, but the name is present from the first turn, so the two causes aren't separated. Stage 5.2 can check whether agents also switch with French-named borrowers whose `preferred_language` is `en`.
 
 ## Cost per error-free conversation
 

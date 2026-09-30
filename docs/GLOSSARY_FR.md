@@ -1,6 +1,6 @@
 # French glossary (Stage 3.1)
 
-These are the fixed terms for everything in French in this study: `policy_fr.md` (fork, `data/tau2/domains/loan_servicing/`), the FR task variants (Stage 3.2), and any French in the report. Use them exactly, so the agent's policy and the user's scenario name things the same way. Rob reviews this list in Stage 3.4.
+These are the fixed terms for everything in French in this study: `policy_fr.md` (fork, `data/tau2/domains/loan_servicing/`), the FR task variants (Stage 3.2), and any French in the report. Use them exactly, so the agent's policy and the user's scenario name things the same way. Rob approved this list without changes in Stage 3.4 (2026-09-30).
 
 ## Conventions
 

@@ -68,13 +68,17 @@ def save_rob(answers: dict) -> None:
 def instructions(task_id: str, tasks: dict) -> str:
     ins = tasks[task_id]["user_scenario"]["instructions"]
     steps = ins["task_instructions"]
-    for tail in (END, END_FR, NO_HUMAN, NO_HUMAN_FR):
+    # The shared closing rules bind the customer too, so show them separately
+    # rather than dropping them.
+    shared = [t for t in (NO_HUMAN, NO_HUMAN_FR, END, END_FR) if t in steps]
+    for tail in shared:
         steps = steps.replace(tail, "").strip()
     parts = [
         ("Reason", ins["reason_for_call"]),
         ("Knows", ins["known_info"]),
         ("Doesn't know", ins["unknown_info"]),
         ("Steps", steps),
+        ("Always", " ".join(shared)),
     ]
     return "\n".join(
         textwrap.fill(f"{label}: {text}", 100, subsequent_indent="    ")
@@ -87,18 +91,24 @@ def transcript(key: str) -> str:
     c, tid = key.split("/")
     text = (RAW / "transcripts" / f"{c}_{tid}.md").read_text(encoding="utf-8")
     out = []
+    # A message can span several lines; continuation lines keep the style of
+    # the message they belong to, so every customer line stays highlighted.
+    style = DIM
     for line in text.split("\n", 2)[2].splitlines():
         if line.startswith("AGENT:"):
+            style = DIM
             short = line if len(line) <= AGENT_CHARS else line[:AGENT_CHARS] + " [...]"
-            out.append(f"{DIM}{short}{RESET}")
+            out.append(f"{style}{short}{RESET}")
         elif line.startswith("USER"):
-            out.append(f"{CYAN}{BOLD}{line}{RESET}")
+            style = CYAN + BOLD
+            out.append(f"{style}{line}{RESET}")
         elif line.strip().startswith("[tool]"):
-            out.append(f"{DIM}{line}{RESET}")
+            style = DIM
+            out.append(f"{style}{line}{RESET}")
         elif line.strip().startswith("[result]"):
             continue
         else:
-            out.append(f"{DIM}{line}{RESET}")
+            out.append(f"{style}{line}{RESET}")
     return "\n".join(out)
 
 

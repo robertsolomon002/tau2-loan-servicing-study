@@ -1,0 +1,191 @@
+{
+  "gemini/ls_033_en": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "wrong_end",
+        "severity": "major",
+        "note": "Sent ###TRANSFER### (with a request for the transfer number) before the agent had transferred; the conversation ended with no transfer."
+      }
+    ],
+    "comment": ""
+  },
+  "mini/ls_031_en": {
+    "verdict": "agree",
+    "errors": [],
+    "comment": ""
+  },
+  "mini/ls_033_en": {
+    "verdict": "agree",
+    "errors": [],
+    "comment": ""
+  },
+  "mini/ls_042_en": {
+    "verdict": "agree",
+    "errors": [],
+    "comment": ""
+  },
+  "nano/ls_011_en": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "contradiction",
+        "severity": "minor",
+        "note": "Asked for a document reference for the quote and then a payoff letter, although the agent never refused the quote (the scenario only asks for the letter after a refusal)."
+      }
+    ],
+    "comment": ""
+  },
+  "nano/ls_014_en": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "contradiction",
+        "severity": "minor",
+        "note": "Put both push-back arguments in the first push-back, then repeated them instead of making the second one."
+      }
+    ],
+    "comment": ""
+  },
+  "nano/ls_018_en": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "language_switch",
+        "severity": "major",
+        "note": "Answered in French after the agent switched to French; the EN task's user should keep speaking English."
+      }
+    ],
+    "comment": ""
+  },
+  "nano/ls_022_en": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "language_switch",
+        "severity": "major",
+        "note": "Followed the agent into French for the rest of the conversation (4 turns)."
+      }
+    ],
+    "comment": "Could be switching languages because they see her name? idk just a theory"
+  },
+  "nano/ls_031_en": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "contradiction",
+        "severity": "major",
+        "note": "After the due-date refusal, asked which days were allowed and requested a change to day 22, although the scenario rules out asking for any other change."
+      }
+    ],
+    "comment": ""
+  },
+  "nano/ls_033_en": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "early_reveal",
+        "severity": "minor",
+        "note": "Gave both postal codes in one message instead of trying the second only after the first failed."
+      },
+      {
+        "type": "wrong_end",
+        "severity": "minor",
+        "note": "After the transfer, kept asking the agent to check the balance with the transfer number for five turns, then ended with OUT-OF-SCOPE instead of TRANSFER."
+      }
+    ],
+    "comment": ""
+  },
+  "gemini/ls_022_fr": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "wrong_end",
+        "severity": "minor",
+        "note": "Asked whether everything was settled and ended the conversation in the same message, without waiting for the answer."
+      }
+    ],
+    "comment": ""
+  },
+  "gemini/ls_033_fr": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "wrong_end",
+        "severity": "minor",
+        "note": "The agent announced a transfer without calling the tool; the user asked for the transfer number and sent ###TRANSFER### in the same message instead of waiting for it."
+      }
+    ],
+    "comment": ""
+  },
+  "mini/ls_031_fr": {
+    "verdict": "agree",
+    "errors": [],
+    "comment": ""
+  },
+  "mini/ls_033_fr": {
+    "verdict": "agree",
+    "errors": [],
+    "comment": ""
+  },
+  "mini/ls_042_fr": {
+    "verdict": "agree",
+    "errors": [],
+    "comment": ""
+  },
+  "nano/ls_011_fr": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "contradiction",
+        "severity": "minor",
+        "note": "Same as EN: asked for a reference number for the quote, then the payoff letter, although the agent never refused the quote."
+      }
+    ],
+    "comment": ""
+  },
+  "nano/ls_014_fr": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "contradiction",
+        "severity": "minor",
+        "note": "Put both push-back arguments in a single message, then accepted: one push-back instead of two."
+      }
+    ],
+    "comment": ""
+  },
+  "nano/ls_022_fr": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "contradiction",
+        "severity": "major",
+        "note": "Said 'Oui, je veux bien que vous l'inscriviez' to the one-month deferral in the same message as asking for two months; an agent could have enrolled deferral_1."
+      }
+    ],
+    "comment": ""
+  },
+  "nano/ls_033_fr": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "contradiction",
+        "severity": "major",
+        "note": "Used the postal code H9J 2M4 that the agent wrongly revealed, although the scenario says the user knows no other postal code; this got the caller verified."
+      }
+    ],
+    "comment": ""
+  },
+  "nano/ls_042_fr": {
+    "verdict": "agree",
+    "errors": [
+      {
+        "type": "contradiction",
+        "severity": "major",
+        "note": "Gave the wrong date of birth while saying in the same sentence that it was a mistake, and never gave the real one."
+      }
+    ],
+    "comment": ""
+  }
+}

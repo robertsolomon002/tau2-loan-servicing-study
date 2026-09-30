@@ -64,3 +64,5 @@ The rest were kept on purpose:
 ## For Rob (Stage 3.4)
 
 Read `policy_fr.md` as a Quebec lender's document. The open wording choices are "annuler des frais de retard" (versus "renoncer à"), "plan d'aide financière", "montant de remboursement intégral", and "agent" versus "conseiller".
+
+**Rob's review (2026-09-30):** approved as is. All four open choices keep their current wording: "annuler des frais de retard", "plan d'aide financière", "montant de remboursement intégral" and "agent". `docs/GLOSSARY_FR.md` and the FR task texts in `docs/TASKS_FR_REVIEW.md` were approved without changes too.
