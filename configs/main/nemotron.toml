@@ -1,0 +1,9 @@
+# Free open model 2 (docs/EXPERIMENT_PLAN.md Section 4.2).
+name = "nemotron"
+agent_llm = "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free"
+user_llm = "gpt-5.4-mini"
+trials = 4
+conditions = ["C1", "C2", "C3"]
+# Projected $ per conversation (plan Section 8.2).
+agent_cost_per_conv = 0.0
+user_cost_per_conv = 0.0032

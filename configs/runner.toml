@@ -1,0 +1,73 @@
+# Settings shared by every run of scripts/run_matrix.py (Stage 4.2).
+# Numbers come from docs/EXPERIMENT_PLAN.md Section 8.
+
+# Each cell stops at this multiple of its projected cost, unless its config
+# sets cell_budget.
+budget_factor = 1.5
+
+# A conversation that fails for provider reasons (or a user-simulator crash) is
+# attempted at most this many times in total, then reported as missing
+# (plan Section 7, rule 1).
+max_attempts = 6
+
+# Seconds to wait after a 429, 5xx, timeout or connection error before the next
+# try of the same LLM call; the call fails after the last one (about 1 hour).
+backoff_seconds = [20, 60, 120, 300, 600, 900, 1800]
+
+# Seconds to pause when a whole pass over a model's pending conversations made
+# no progress (every attempt failed for provider reasons).
+idle_pause_seconds = 1800
+
+# Budget accounts. `already_spent` is spend before the main runs; `stop_at`
+# is the cap on already_spent + metered spend; `meter_factor` multiplies
+# LiteLLM's cost (OpenRouter's meter reads about 25% higher).
+[accounts.cash]
+# OpenAI, plus anything not covered by the two prepaid accounts below.
+# $11.05 to the end of Stage 4.1, plus $0.01 for the Stage 4.2 runner tests.
+already_spent = 11.06
+stop_at = 45.0
+meter_factor = 1.0
+
+[accounts.openrouter]
+# Prepaid credit: $7.06 left after Stage 4.1. Its purchase is already in cash.
+already_spent = 0.0
+stop_at = 6.50
+meter_factor = 1.25
+
+[accounts.vertex]
+# Google Cloud trial credit ($300); Vertex bills at list price. $0.29 for the
+# Stage 4.1 Vertex test plus $0.01 for the Stage 4.2 runner test.
+already_spent = 0.30
+stop_at = 90.0
+meter_factor = 1.0
+
+# Request pacing per provider. rpm: requests per rolling minute; rpd: requests
+# per rolling 24 hours (persisted across restarts). Every request counts,
+# including failed ones.
+[providers.openrouter_free]
+# OpenRouter: 20 requests/min on free models, 1,000/day with $10+ of credit
+# bought. Shared by every free model on the account.
+rpm = 16
+rpd = 950
+
+[providers.openrouter]
+rpm = 60
+
+[providers.openai]
+rpm = 300
+
+[providers.vertex]
+rpm = 60
+
+[providers.gemini_studio]
+rpm = 10
+rpd = 450
+
+# List prices in $ per 1M tokens (input, output), checked 2026-09-30 in
+# OpenRouter's models API and Google's and OpenAI's pricing pages. Used only
+# when LiteLLM reports a cost of 0 for a paid model, so spend is never hidden.
+[prices]
+"gpt-5.4-mini" = [0.75, 4.50]
+"openrouter/deepseek/deepseek-v4-flash" = [0.079, 0.157]
+"vertex_ai/gemini-3.1-flash-lite" = [0.25, 1.50]
+"vertex_ai/gemini-3.1-pro-preview" = [2.00, 12.00]

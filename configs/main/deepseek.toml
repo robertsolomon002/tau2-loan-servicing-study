@@ -1,0 +1,10 @@
+# Near-free open model (docs/EXPERIMENT_PLAN.md Section 4.2).
+name = "deepseek"
+agent_llm = "openrouter/deepseek/deepseek-v4-flash"
+user_llm = "gpt-5.4-mini"
+trials = 4
+conditions = ["C1", "C2", "C3"]
+# Projected $ per conversation (plan Section 8.2), before the OpenRouter
+# meter factor (0.0029 metered).
+agent_cost_per_conv = 0.0023
+user_cost_per_conv = 0.0032

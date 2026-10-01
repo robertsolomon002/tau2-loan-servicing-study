@@ -1,0 +1,13 @@
+# Stage 4.2 runner test: tau2's mock domain, free agent, 2 tasks x 2 trials.
+name = "test_mock_qwen"
+agent_llm = "openrouter/qwen/qwen3.8-27b:free"
+user_llm = "gpt-5.4-mini"
+trials = 2
+agent_cost_per_conv = 0.0
+user_cost_per_conv = 0.002
+
+[[cells]]
+condition = "mock"
+domain = "mock"
+split = "base"
+task_ids = ["create_task_1", "update_task_1"]

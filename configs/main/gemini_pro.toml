@@ -1,0 +1,9 @@
+# Frontier model, on Vertex AI (docs/EXPERIMENT_PLAN.md Section 4.2).
+name = "gemini_pro"
+agent_llm = "vertex_ai/gemini-3.1-pro-preview"
+user_llm = "gpt-5.4-mini"
+trials = 4
+conditions = ["C1", "C2", "C3"]
+# Projected $ per conversation (plan Section 8.2).
+agent_cost_per_conv = 0.093
+user_cost_per_conv = 0.0032

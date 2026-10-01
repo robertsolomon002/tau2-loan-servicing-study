@@ -227,4 +227,10 @@ Money comes from three places: **cash** (the $50 budget, hard cap $60), the **Op
 
 ## Amendments
 
-None yet.
+### Amendment 1 (2026-10-01, Stage 4.2, before any main run): how reruns work
+
+The runner (`scripts/run_matrix.py`, `docs/RUNNER.md`) applies Section 7's rules with different mechanics than rule 1 describes. The rules themselves are unchanged.
+- **Retries happen per LLM call, not per conversation.** tau2's `--max-retries 4 --retry-delay 65` restarts a whole conversation. Instead, a 429, 5xx, timeout or connection error makes the runner wait and retry that one call (20 s, then 1, 2, 5, 10, 15 and 30 min). If it still fails, the conversation is rerun later. A conversation gets **at most 6 attempts in all**, then it is reported as missing (rule 1).
+- **A user-simulator crash is rerun.** This means an empty user reply, or an error in a user-simulator call. It isn't the agent's failure, so it is treated like a provider failure (rule 1). Rule 4 is about simulator *behaviour* in finished conversations and is unchanged.
+- **Which model failed** is taken from the LLM call that failed, or whose reply tau2 rejected. Agent-side output errors count as failures (rules 2 and 3).
+- **The budget is metered per call**, so failed attempts count toward the caps. The caps are those of Section 8.
