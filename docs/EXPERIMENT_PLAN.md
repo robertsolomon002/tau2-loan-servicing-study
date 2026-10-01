@@ -1,6 +1,11 @@
 # Experiment plan (pre-registration, Stage 4.1)
 
-**Written:** 2026-10-01, before any main run. **Status:** draft for Rob's approval; nothing in Stage 4.3 runs until Rob approves. Any later change is a dated amendment at the end of this file, never a silent edit.
+**Written:** 2026-10-01, before any main run. **Status: approved by Rob on 2026-10-01.** Any later change is a dated amendment at the end of this file, never a silent edit.
+
+**Changes from the first draft (`004f15e`), agreed with Rob before approval:**
+- Both Gemini models run directly on Google Cloud **Vertex AI** (project `tau-loan-study`), paid from Rob's Google Cloud free-trial credit, not through OpenRouter. A 3-conversation Vertex test of Gemini 3.1 Pro worked (Section 4.1), and Rob confirmed in the billing console that it came off the trial credit.
+- With the trial credit, **Gemini 3.1 Pro gets the full design** (C1–C3 × 4 trials), the same as the other models.
+- **No OpenRouter top-up.** OpenRouter now carries only DeepSeek (paid from the $7.06 left) and the free models.
 
 **Versions:** study repo `630ed89` plus this commit; fork `66e179c` (pinned in `pyproject.toml`); 48 tasks in English (`en_user`) and Quebec French (`fr_user`).
 
@@ -43,7 +48,7 @@ The tasks, the database, the tools and the scoring are identical across conditio
 - 5 tasks (1, 18, 26, 36, 46) × C1 and C2 × 1 trial, per candidate.
 - User simulator gpt-5.4-mini.
 - Script: `scripts/cost_pilot.py`; metrics: `results/cost_pilot_metrics.csv`.
-- Prices were checked on 2026-09-30 in OpenRouter's models API, and for gpt-5.4-mini in OpenAI's pricing docs (2026-09-28).
+- Prices were checked on 2026-09-30 in OpenRouter's models API, and for gpt-5.4-mini in OpenAI's pricing docs (2026-09-28). Google's own list prices for Gemini 3.1 Pro ($2.00 / $12.00 per 1M input / output tokens, $0.20 cached input) and Flash-Lite ($0.25 / $1.50) match OpenRouter's; LiteLLM carries the same prices for the `vertex_ai/` ids.
 
 | Candidate (LiteLLM id) | Tier | Completed / 10 | Rate-limited first tries | Solved | Tool errors / calls | Agent in C1 language | Agent $ per conv* | Min per conv |
 |---|---|---|---|---|---|---|---|---|
@@ -67,6 +72,7 @@ The tasks, the database, the tools and the scoring are identical across conditio
 - **Free pools are unreliable from day to day.** Gemma was rate-limited upstream on all 10 tries, even with 4 retries 65 s apart. Qwen, which failed in Pilot 2, worked this time.
 - **OpenRouter limits new accounts to 20 requests per minute on Anthropic models.** Haiku and Sonnet needed retries with pauses.
 - **Gemini 3.5 Flash-Lite returned empty messages.** On task 46 (C1) it did so four times in a row; tau2 records that as an "infrastructure error", but it is a model failure (Section 7).
+- **Vertex AI test (2026-10-01):** `vertex_ai/gemini-3.1-pro-preview` on tasks 18, 26 and 46 (C1): 3/3 solved, 31–48 s each, agent $0.091–0.102 per conversation (LiteLLM), against about $0.101 for the same tasks through OpenRouter. Gemini's automatic caching saved about 13%. The charge (about $0.29) came off the trial credit. Raw results: `results/raw/stage4_1/vertex_test_pro.json`.
 - **The C1 language switch from Stage 3.3 is real across models.** Gemini Flash-Lite, Gemini 3.5 Flash-Lite, gpt-5.4-mini, Claude Sonnet 5.5 and both Nemotrons all answered English callers in French on tasks 1, 18 or 26, whose borrowers have `preferred_language: fr`.
 
 ### 4.2 Final model list
@@ -76,19 +82,21 @@ The tasks, the database, the tools and the scoring are identical across conditio
 | Free open model 1 | `openrouter/qwen/qwen3.8-27b:free` | 10/10, no tool errors, no rate-limit failures in this pilot |
 | Free open model 2 | `openrouter/nvidia/nemotron-3-ultra-550b-a55b:free` | 10/10, no tool errors, no rate-limit failures; about 3 times faster than Nemotron 3 Super (the backup if Ultra's free pool fails), and far larger than Qwen, which widens the range of model sizes for H3 |
 | Near-free open model | `openrouter/deepseek/deepseek-v4-flash` | 10/10, no tool errors, about $0.002 per conversation, no rate limits; a dependable open model if the free pools fail |
-| Cheap closed model | `openrouter/google/gemini-3.1-flash-lite` (paid, through OpenRouter) | 10/10 on the free tier. It is not OpenAI, so it is not a same-model pair with the user. It solved every task it ran in Pilot 1 and 15 of 16 in Pilot 2. The Google free tier allows about 13 conversations a day, too few for 576 |
-| Frontier model | `openrouter/google/gemini-3.1-pro-preview` | 10/10, no tool errors, no rate limits, and about 25% cheaper than Claude Sonnet 5.5 |
+| Cheap closed model | `vertex_ai/gemini-3.1-flash-lite` (Vertex AI, trial credit) | 10/10 on the free tier. It is not OpenAI, so it is not a same-model pair with the user. It solved every task it ran in Pilot 1 and 15 of 16 in Pilot 2. The Google AI Studio free tier allows about 13 conversations a day, too few for 576, so it runs on Vertex |
+| Frontier model | `vertex_ai/gemini-3.1-pro-preview` (Vertex AI, trial credit) | 10/10 through OpenRouter and 3/3 through Vertex, no tool errors, no rate limits, about 25% cheaper than Claude Sonnet 5.5. Chosen by Rob |
 
 **Dropped:**
 - **Gemma 4 31B (free):** 0/10, rate-limited.
 - **Gemini 3.5 Flash-Lite:** empty replies, tool errors and language mismatch.
 - **Claude Haiku 4.5:** reliable, but about $0.07 per conversation, about 6 times Gemini Flash-Lite. A full 576-conversation run would cost about $43, which the budget can't cover.
 - **gpt-5.4-mini as agent:** a same-model pair with the user simulator (Stage 3.4 discussion with Rob).
-- **Claude Sonnet 5.5 as frontier:** it is the alternative to Gemini 3.1 Pro (Section 9), at about $5 more for the frontier cells.
+- **Claude Sonnet 5.5 as frontier:** Rob chose Gemini 3.1 Pro, which the trial credit pays for; Sonnet would be cash through OpenRouter.
 
 **Notes:**
 - Two Google models (Flash-Lite and Pro) make H3 partly a within-family size comparison, which helps its interpretation.
-- Gemini 3.1 Pro is a "preview" model and could change or be withdrawn. Its C1 and C2 cells therefore run early (Section 8), and the model id and run dates are recorded.
+- Gemini 3.1 Pro is a "preview" model and could change or be withdrawn. Its cells therefore run early (Section 8), and the model id and run dates are recorded.
+- `vertex_ai/gemini-3.1-flash-lite` has not been called through Vertex yet (only through the AI Studio free tier). The Stage 4.2 runner test includes one Vertex Flash-Lite conversation before its cells start.
+- Trial accounts can have lower Vertex quotas. The runner backs off on 429 errors like any other provider (Section 7).
 
 ## 5. Trials per cell
 
@@ -98,8 +106,8 @@ The tasks, the database, the tools and the scoring are identical across conditio
 | Nemotron 3 Ultra (free) | C1, C2, C3 | 4 | 576 |
 | DeepSeek V4 Flash | C1, C2, C3 | 4 | 576 |
 | Gemini 3.1 Flash-Lite | C1, C2, C3 | 4 | 576 |
-| Gemini 3.1 Pro | C1, C2, then C3 if the budget allows (Section 8) | 1 | 144 |
-| **Total** | | | **2,448** |
+| Gemini 3.1 Pro | C1, C2, C3 | 4 | 576 |
+| **Total** | | | **2,880** |
 
 ## 6. Metrics and tests
 
@@ -117,7 +125,7 @@ Every pass^1 figure is shown next to the **do-nothing baseline**: an agent that 
 
 ### 6.2 Secondary metrics
 
-- **pass^k for k = 1 to 4** (the 4-trial models): tau2's formula, mean over tasks of C(successes, k) / C(trials, k).
+- **pass^k for k = 1 to 4** (every model): tau2's formula, mean over tasks of C(successes, k) / C(trials, k).
 - **pass^1 per task category** (11 categories), and for the 17 hard tasks versus the 31 others.
 - **Language adherence.** The share of agent text turns in the customer's language, using `lingua` with the Stage 3.3 cleaning (ids, numbers, emails, postal codes, DB names and markdown removed; tau2's fixed English greeting and turns with fewer than two words skipped). Also the share of conversations with at least one agent turn in the other language.
 - **Mean turns, tool calls and tool errors per conversation.**
@@ -129,10 +137,10 @@ Every pass^1 figure is shown next to the **do-nothing baseline**: an agent that 
 Two comparisons per model: **C1 vs C2** (H1) and **C2 vs C3** (H2).
 
 1. **Difference in pass^1** with a 95% paired-bootstrap interval (Section 6.1). This is the main result: an effect size with an interval.
-2. **McNemar exact test** (two-sided binomial test on discordant tasks) on per-task majority success. A task counts as solved in a condition if it succeeded in at least 3 of 4 trials (the frontier model: its single trial). A sensitivity check uses at least 2 of 4.
+2. **McNemar exact test** (two-sided binomial test on discordant tasks) on per-task majority success. A task counts as solved in a condition if it succeeded in at least 3 of 4 trials. A sensitivity check uses at least 2 of 4.
 3. **Multiplicity:** 2 comparisons × 5 models = 10 tests. Holm-adjusted p-values are reported next to the raw ones. Conclusions rest on the intervals, not on p < 0.05.
 
-**H3:** the C1 − C2 gap of each smaller or open model minus the frontier model's gap, with a paired-bootstrap interval over tasks. For the 4-trial models, this uses only trial 1, so that both sides have one trial per task; all 4 trials are also reported.
+**H3:** the C1 − C2 gap of each smaller or open model minus the frontier model's gap, with a paired-bootstrap interval over tasks, using all 4 trials on both sides.
 
 **H4:** the Stage 5.2 failure taxonomy is applied to every failed conversation in C2 and C3, and to the failed C1 conversations as the comparison. Counts per type and condition are reported. H4 holds if "skipped or wrong verification" and "language mismatch" are the two types with the largest increase from C1 to the French conditions.
 
@@ -144,7 +152,6 @@ Two comparisons per model: **C1 vs C2** (H1) and **C2 vs C3** (H2).
 
 - **Size of a detectable difference.** With 48 paired tasks, a 95% interval on a pass^1 difference is roughly ±10 points, assuming a per-task standard deviation of the difference of about 0.35.
 - **What this means for small effects.** Differences under about 10 points will not be distinguishable from zero, and the report must say so.
-- **The frontier model.** With one trial per task, its intervals are wider.
 
 ## 7. Exclusion and rerun rules
 
@@ -161,57 +168,62 @@ Two comparisons per model: **C1 vs C2** (H1) and **C2 vs C3** (H2).
 
 ## 8. Run order and budget
 
+Money comes from three places: **cash** (the $50 budget, hard cap $60), the **OpenRouter credit** already bought (part of the cash spent), and **Google Cloud trial credit** (outside the cash budget; $300, used only for the two Gemini models).
+
 ### 8.1 Spend so far
 
-| Item | $ |
+| Item | Cash $ |
 |---|---|
 | OpenRouter credit (bought, Stage 0) | 10.00 |
 | OpenAI: Stages 0.1 to 3.3 | 0.71 |
-| OpenAI: this pilot (user simulator and mini agent) | 0.33 |
-| **Spent** | **11.04** |
+| OpenAI: the 4.1 pilot (user simulator and mini agent) | 0.33 |
+| OpenAI: the Vertex test (user simulator) | 0.01 |
+| **Spent** | **11.05** |
 
-The pilot used $2.94 of the OpenRouter credit, leaving $7.06 on it. Total pilot spend was $3.27 ($2.94 OpenRouter + $0.33 OpenAI), within its $5 cap.
-
-The budget is $50 (hard cap $60). After a **$5 reserve**, **$33.96** is left for the main runs.
+- The pilot used $2.94 of the OpenRouter credit, leaving **$7.06** on it. Total pilot spend was $3.27, within its $5 cap.
+- The Vertex test used about **$0.29 of trial credit**.
 
 ### 8.2 Projected cost per cell
 
 **Per-conversation assumptions:**
-- **User simulator:** $0.0032 (pilot mean $0.0027 × 1.2 for the harder full task set).
-- **Agent:** the pilot cost × 1.2 for the harder tasks, and × 1.25 for OpenRouter's meter: DeepSeek $0.0029, Gemini Flash-Lite $0.0116, Gemini Pro $0.117. Free models are $0.
+- **User simulator (OpenAI, cash):** $0.0032 (pilot mean $0.0027 × 1.2 for the harder full task set).
+- **Agent:** the pilot cost × 1.2 for the harder tasks. DeepSeek also × 1.25 for OpenRouter's meter: $0.0029. Gemini on Vertex is billed at Google's list price, with no OpenRouter factor: Flash-Lite $0.0092, Pro $0.093 (the Vertex test measured $0.091–0.102 on three longer-than-average tasks). Free models are $0.
 
-| Cell | Conversations | Agent $ | User $ | Cell $ |
-|---|---|---|---|---|
-| Qwen C1 / C2 / C3 | 192 each | 0 | 0.61 each | 1.84 |
-| Nemotron Ultra C1 / C2 / C3 | 192 each | 0 | 0.61 each | 1.84 |
-| DeepSeek C1 / C2 / C3 | 192 each | 0.56 each | 0.61 each | 3.51 |
-| Gemini Flash-Lite C1 / C2 / C3 | 192 each | 2.23 each | 0.61 each | 8.52 |
-| Gemini Pro C1 | 48 | 5.62 | 0.15 | 5.77 |
-| Gemini Pro C2 | 48 | 5.62 | 0.15 | 5.77 |
-| Gemini Pro C3 | 48 | 5.62 | 0.15 | 5.77 |
-| **Total** | **2,448** | | | **33.02** |
+| Cell (each of C1 / C2 / C3) | Conversations | Agent $ (paid from) | User $ (cash) |
+|---|---|---|---|
+| Qwen | 192 | 0 (free) | 0.61 |
+| Nemotron Ultra | 192 | 0 (free) | 0.61 |
+| DeepSeek | 192 | 0.56 (OpenRouter credit) | 0.61 |
+| Gemini Flash-Lite | 192 | 1.77 (trial credit) | 0.61 |
+| Gemini Pro | 192 | 17.90 (trial credit) | 0.61 |
+| **Total, 15 cells** | **2,880** | | **9.22** |
 
-**Margins:** projected total spend is $11.04 + $33.02 = **$44.06**. That leaves $0.94 of slack plus the $5 reserve.
+| Source | Projected main-run cost | Total with spend so far | Limit |
+|---|---|---|---|
+| **Cash** (OpenAI) | $9.22 | **$20.27** | $50 budget, $60 hard cap |
+| OpenRouter credit (already paid) | $1.67 (DeepSeek) | $4.61 of $10 | key limit $10 |
+| **Google trial credit** | $59.03 (Flash-Lite $5.32, Pro $53.71) | **$59.32** | $300 |
 
-**Where the money is spent:**
-- About $25.20 of the agent cost goes through OpenRouter. The OpenRouter credit has $7.06 left, so it needs about **$20 more**, and the key's $10 limit must be raised to match.
-- About $7.80 of user-simulator cost goes to OpenAI.
+**What has to be in each account before Stage 4.3:**
+- **OpenAI:** at least $12 of prepaid balance, auto-recharge off.
+- **OpenRouter:** nothing to add; $7.06 covers DeepSeek with margin.
+- **Google trial:** nothing to add. The budget alert should sit above the projected $59, for example at $100.
 
 **Order:**
 1. **Free cells (Qwen, Nemotron) start first** and run in the background for several days. 1,152 free conversations at about 9 requests each is about 10,400 requests, or about 10 days at OpenRouter's 1,000 free requests per day.
-2. **Gemini Pro C1 and C2 run early,** because the model is a preview.
+2. **Gemini Pro runs early** (all three conditions), because the model is a preview.
 3. **Then DeepSeek and Gemini Flash-Lite.**
-4. **Gemini Pro C3 runs last,** and only if the measured spend leaves at least its projected $5.77 plus the $5 reserve. If it doesn't, C3 for the frontier model is skipped and the report says so (H2 is then tested on the four other models only).
 
 **Stop rules (Stage 4.2 runner):**
 - Each cell stops at 1.5 × its projected cost.
-- The whole run stops when total spend reaches $45. That keeps the $5 reserve under the $50 budget, and well under the $60 hard cap.
+- Cash: the whole run stops when total cash spend reaches $45. That keeps a $5 reserve under the $50 budget, and well under the $60 hard cap.
+- Trial credit: the Gemini cells stop when Vertex spend reaches $90 (1.5 × the projection). If the trial credit ever stops covering Vertex, the Gemini cells pause and the change is recorded as an amendment.
 
-## 9. Decisions for Rob
+## 9. Decisions (resolved 2026-10-01)
 
-1. **Approve this plan** (models, trials, metrics, rules, budget).
-2. **Frontier model:** Gemini 3.1 Pro (recommended). The alternative is Claude Sonnet 5.5: about $0.155 per conversation (about $7.60 per cell, about $5.50 more over three cells). It also needs pauses for OpenRouter's 20-requests-per-minute limit on new accounts. Choosing it would mean dropping its C3 cell or one cheaper cell.
-3. **Top up OpenRouter by about $20** with auto-reload off, and raise the API key's limit to match. Also check that the OpenAI balance covers about $8.
+1. **Plan:** approved by Rob.
+2. **Frontier model:** Gemini 3.1 Pro, through Vertex AI, with the full 4-trial design.
+3. **Money:** no OpenRouter top-up. Gemini runs on the Google trial credit (Rob confirmed in the billing console that the Vertex test was charged to it). The only cash still to add is the OpenAI balance (at least $12) before Stage 4.3.
 
 ## Amendments
 

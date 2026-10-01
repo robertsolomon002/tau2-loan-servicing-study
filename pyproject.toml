@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12,<3.14"
 license = "MIT"
 dependencies = [
+    "google-auth>=2.59.1",
     "lingua-language-detector>=2.2.0",
     "tau2",
     # tau2 at the pinned commit imports websockets from core code, but only
