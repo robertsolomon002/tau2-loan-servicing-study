@@ -15,6 +15,35 @@ uv run --no-sync python scripts/run_matrix.py collect configs/main/*.toml  # one
 
 To run only some models, pass only their configs, for example `configs/main/qwen.toml configs/main/nemotron.toml`.
 
+## Running it on the Google Cloud VM (the plan for Stage 4.3)
+
+The runs take about 11 days, because the free models share OpenRouter's 1,000 requests a day. So they run on a small VM in the `tau-loan-study` project instead of Rob's PC.
+
+**The VM (set up 2026-10-01):**
+- `tau-loan-runner`, zone `us-central1-a`, Debian 12.
+- Machine type `e2-micro` with a 30 GB standard disk. Both are inside Google's Always Free tier, which the docs say applies during the free trial. The external IP may cost a little trial credit.
+- 2 GB swap (the machine has 1 GB of memory), uv, git and tmux.
+- The repos are cloned to `~/tau-loan/`, with the fork at `66e179c`. Python 3.12 (`.python-version`).
+- `.env` holds only the OpenRouter and OpenAI keys and the Vertex project and location, with mode 600.
+- Vertex calls use the VM's service account (`821932985217-compute@developer.gserviceaccount.com`, scope `cloud-platform`), not a personal login. That account needs the role **Vertex AI User** (`roles/aiplatform.user`) in `tau-loan-study` before the Gemini models can run there.
+
+**Commands, from Rob's PC** (add `--project tau-loan-study --zone us-central1-a` to each):
+
+```
+gcloud compute ssh tau-loan-runner                                  # log in
+# on the VM: start the runs in tmux, so they survive logging out
+cd ~/tau-loan/tau2-loan-servicing-study && git pull
+tmux new -d -s runs 'PYTHONUTF8=1 .venv/bin/python scripts/run_matrix.py run configs/main/*.toml'
+tmux attach -t runs                                                 # watch it (detach: Ctrl+B then D)
+cat results/progress.md                                             # status
+touch results/raw/main/STOP                                         # clean stop
+
+gcloud compute scp --recurse tau-loan-runner:tau-loan/tau2-loan-servicing-study/results/raw/main results/raw/   # copy results back
+gcloud compute instances stop tau-loan-runner                       # stop the VM when the study is done
+```
+
+The VM test on 2026-10-01: 151 tests pass; `plan` matches the PC; the mock live run solved 4/4, and it rode out a real 429 from the free Qwen pool with the 20-second backoff.
+
 ## Running it unattended on Windows
 
 `tmux` doesn't exist on Windows. Start the runner as a hidden background process from PowerShell instead; it keeps running after the terminal closes:
