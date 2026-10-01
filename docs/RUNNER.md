@@ -27,20 +27,35 @@ The runs take about 11 days, because the free models share OpenRouter's 1,000 re
 - `.env` holds only the OpenRouter and OpenAI keys and the Vertex project and location, with mode 600.
 - Vertex calls use the VM's service account (`821932985217-compute@developer.gserviceaccount.com`, scope `cloud-platform`), not a personal login. That account needs the role **Vertex AI User** (`roles/aiplatform.user`) in `tau-loan-study` before the Gemini models can run there.
 
-**Commands, from Rob's PC** (add `--project tau-loan-study --zone us-central1-a` to each):
+**The runner is a systemd service** (`deploy/tau-loan-runner.service`, installed in `/etc/systemd/system/`). It starts at boot and restarts after a crash; after 5 crashes in an hour it gives up. A finished run, a STOP file or a fatal error exits cleanly and stays stopped.
+
+**Commands, from Rob's PC** (add `--project tau-loan-study --zone us-central1-a` to each `gcloud` command):
 
 ```
-gcloud compute ssh tau-loan-runner                                  # log in
-# on the VM: start the runs in tmux, so they survive logging out
-cd ~/tau-loan/tau2-loan-servicing-study && git pull
-tmux new -d -s runs 'PYTHONUTF8=1 .venv/bin/python scripts/run_matrix.py run configs/main/*.toml'
-tmux attach -t runs                                                 # watch it (detach: Ctrl+B then D)
-cat results/progress.md                                             # status
-touch results/raw/main/STOP                                         # clean stop
+gcloud compute ssh tau-loan-runner                       # log in, then on the VM:
+cd ~/tau-loan/tau2-loan-servicing-study
+cat results/progress.md                                  # status
+tail -20 results/raw/main/runner.log                     # latest conversations
+systemctl status tau-loan-runner                         # is the service running?
+sudo systemctl stop tau-loan-runner                      # clean stop (models finish their conversation)
+sudo systemctl start tau-loan-runner                     # resume
+sudo systemctl disable tau-loan-runner                   # don't start at boot any more
 
 gcloud compute scp --recurse tau-loan-runner:tau-loan/tau2-loan-servicing-study/results/raw/main results/raw/   # copy results back
-gcloud compute instances stop tau-loan-runner                       # stop the VM when the study is done
+gcloud compute instances stop tau-loan-runner            # stop the VM when the study is done
 ```
+
+**Alerts (healthchecks.io).** The check's ping URL is in the VM's `.env` as `HEALTHCHECK_URL`, never in git. The check is set to a 1-hour period with 1 hour of grace.
+- The runner pings it every 30 minutes; the ping carries the "N / 2,880 finished" line.
+- **The pings stop** if the VM is down, the process is dead or the service gave up. Rob gets a "down" email about 2 hours later.
+- **The runner sends a "fail" signal at once, and Rob gets an email,** when:
+  - a model stops on a fatal error (bad key, billing or quota);
+  - a cell or account hits its budget;
+  - a model's thread crashes;
+  - a cell passes 5% failed attempts, or 5% model-output failures;
+  - no LLM call has succeeded for 3 hours while no model is waiting on a request limit (a stall).
+- Each alert is sent once; the record is in `alerts_sent.json`, so restarts don't repeat them.
+- **When everything is done,** the runner sends a fail signal whose text starts with "FINISHED (not a failure)". The email arrives at once, and the check then stays down because the pings have stopped.
 
 The VM test on 2026-10-01: 151 tests pass; `plan` matches the PC; the mock live run solved 4/4, and it rode out a real 429 from the free Qwen pool with the 20-second backoff.
 

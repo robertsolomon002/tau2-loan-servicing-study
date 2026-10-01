@@ -18,6 +18,12 @@ backoff_seconds = [20, 60, 120, 300, 600, 900, 1800]
 # no progress (every attempt failed for provider reasons).
 idle_pause_seconds = 1800
 
+# Health checks (healthchecks.io, URL in .env as HEALTHCHECK_URL): ping every
+# heartbeat_seconds; alert if no LLM call has succeeded for stall_hours while
+# no model is waiting on a request limit. The check's period is 1 hour, grace 1 hour.
+heartbeat_seconds = 1800
+stall_hours = 3
+
 # Budget accounts. `already_spent` is spend before the main runs; `stop_at`
 # is the cap on already_spent + metered spend; `meter_factor` multiplies
 # LiteLLM's cost (OpenRouter's meter reads about 25% higher).

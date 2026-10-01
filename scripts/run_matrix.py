@@ -27,12 +27,14 @@ import json
 import os
 import random
 import re
+import signal
 import subprocess
 import sys
 import threading
 import time
 import tomllib
 import traceback
+import urllib.request
 import uuid
 from collections import deque
 from dataclasses import dataclass, field
@@ -156,22 +158,32 @@ class Limiter:
         return max(waits)
 
     def acquire(self) -> None:
-        announced = False
-        while True:
-            with self.lock:
-                now = self.clock()
-                wait = self.wait_time(now)
-                if wait <= 0:
-                    self.minute.append(now)
-                    if self.rpd:
-                        self.day.append(now)
-                    return
-            if wait > 120 and not announced:
-                log(f"[{self.name}] request limit reached; waiting {wait / 60:.0f} min")
-                announced = True
-            if STOP.is_set():
-                raise KeyboardInterrupt("stop requested")
-            self.sleep(min(wait, 30))
+        announced = waiting = False
+        try:
+            while True:
+                with self.lock:
+                    now = self.clock()
+                    wait = self.wait_time(now)
+                    if wait <= 0:
+                        self.minute.append(now)
+                        if self.rpd:
+                            self.day.append(now)
+                        return
+                if not waiting:
+                    # A thread waiting on a limit is not stalled (heartbeat).
+                    waiting = True
+                    RUN.set_waiting(+1)
+                if wait > 120 and not announced:
+                    log(
+                        f"[{self.name}] request limit reached; waiting {wait / 60:.0f} min"
+                    )
+                    announced = True
+                if STOP.is_set():
+                    raise KeyboardInterrupt("stop requested")
+                self.sleep(min(wait, 30))
+        finally:
+            if waiting:
+                RUN.set_waiting(-1)
 
     def cool_down(self, seconds: float) -> None:
         with self.lock:
@@ -245,6 +257,7 @@ def paced_completion(*args, **kwargs):
         except Exception as e:
             e.tau_loan_model = model
             raise
+        RUN.last_activity = time.time()
         if meter is not None:
             meter.add_cost(account_of(model), response_cost(model, response))
         return response
@@ -252,6 +265,63 @@ def paced_completion(*args, **kwargs):
 
 
 llm_utils.completion = paced_completion
+
+
+# ---------------------------------------------------------------------------
+# Health checks (healthchecks.io): heartbeat and alerts by email
+# ---------------------------------------------------------------------------
+
+
+def health_send(signal_name: str = "", body: str = "") -> None:
+    """Ping the check in HEALTHCHECK_URL ("" = alive, "fail" = alert email).
+    Without the variable (tests, local runs) nothing is sent."""
+    url = os.environ.get("HEALTHCHECK_URL")
+    if not url:
+        return
+    target = url.rstrip("/") + (f"/{signal_name}" if signal_name else "")
+    request = urllib.request.Request(target, data=body.encode()[:10_000], method="POST")
+    try:
+        urllib.request.urlopen(request, timeout=15).close()
+    except Exception as e:  # noqa: BLE001  (a lost ping must never stop the runs)
+        log(f"[health] ping failed: {e}")
+
+
+def alert(key: str, text: str) -> None:
+    """Email Rob once per key (persisted, so restarts don't repeat alerts)."""
+    with RUN.lock:
+        if key in RUN.alerts_sent:
+            return
+        RUN.alerts_sent.add(key)
+        atomic_write(RUN.out / "alerts_sent.json", json.dumps(sorted(RUN.alerts_sent)))
+    log(f"[health] ALERT: {text}")
+    health_send(
+        "fail", f"tau-loan runner: {text}\n\nSee results/progress.md on the VM."
+    )
+
+
+def overall_line() -> str:
+    units = [u for c in RUN.cells for u in RUN.units[c.name].values()]
+    finished = sum(u.status in ("done", "model_failure") for u in units)
+    return f"{finished} / {len(units)} conversations finished"
+
+
+def heartbeat_loop(done: threading.Event) -> None:
+    """Ping every heartbeat_seconds while the runner is alive. If no LLM call
+    has succeeded for stall_hours and no thread is waiting on a request limit,
+    the runner is stuck: alert instead."""
+    interval = RUN.settings.get("heartbeat_seconds", 1800)
+    stall = RUN.settings.get("stall_hours", 3) * 3600
+    while True:
+        idle = time.time() - RUN.last_activity
+        if idle > stall and RUN.waiting == 0:
+            alert(
+                f"stall-{int(RUN.last_activity)}",
+                f"no LLM activity for {idle / 3600:.1f} hours; the runner may be stuck",
+            )
+        else:
+            health_send("", overall_line())
+        if done.wait(interval):
+            return
 
 
 # ---------------------------------------------------------------------------
@@ -384,6 +454,14 @@ class RunState:
         self.lane_status: dict[str, str] = {}
         self.max_conversations: int | None = None
         self.conversations_run = 0
+        self.last_activity = time.time()  # last successful LLM call
+        self.waiting = 0  # threads waiting on a request limit
+        self.alerts_sent: set[str] = set()
+        self.current_alerts: list[tuple[str, str]] = []
+
+    def set_waiting(self, delta: int) -> None:
+        with self.lock:
+            self.waiting += delta
 
     def configure(self, settings: dict, out: Path, progress: Path) -> None:
         self.settings = settings
@@ -403,6 +481,9 @@ class RunState:
         ):
             self.limiters.setdefault(name, Limiter(name))
         self.load_rate_state()
+        alerts = out / "alerts_sent.json"
+        if alerts.exists():
+            self.alerts_sent = set(json.loads(alerts.read_text(encoding="utf-8")))
 
     def factor(self, account: str) -> float:
         return self.settings["accounts"][account].get("meter_factor", 1.0)
@@ -702,6 +783,9 @@ def lane_loop(lane: str, cells: list[Cell]) -> None:
                         if block:
                             cell.stopped = block
                             log(f"[{cell.name}] stopped: {block}")
+                            alert(
+                                f"budget-{cell.name}", f"{cell.name} stopped: {block}"
+                            )
                             write_progress()
                             break
                         pending = True
@@ -738,11 +822,13 @@ def lane_loop(lane: str, cells: list[Cell]) -> None:
     except FatalError as e:
         RUN.lane_status[lane] = f"stopped: {e}"[:200]
         log(f"[{lane}] FATAL, model stopped: {e}")
+        alert(f"fatal-{lane}", f"model {lane} stopped: {e}")
     except KeyboardInterrupt:
         RUN.lane_status[lane] = "stopped (STOP requested)"
     except Exception as e:  # noqa: BLE001  (a runner bug: keep other models going)
         RUN.lane_status[lane] = f"crashed: {type(e).__name__}: {e}"[:200]
         log(f"[{lane}] CRASH: {traceback.format_exc()}")
+        alert(f"crash-{lane}", f"model {lane} crashed: {type(e).__name__}: {e}")
     finally:
         write_progress()
 
@@ -755,6 +841,9 @@ def lane_loop(lane: str, cells: list[Cell]) -> None:
 def write_progress() -> None:
     with RUN.lock:
         atomic_write(RUN.progress_path, progress_markdown())
+        new = [(k, t) for k, t in RUN.current_alerts if k not in RUN.alerts_sent]
+    for key, text in new:  # outside the lock: a ping can take seconds
+        alert(key, text)
 
 
 def progress_markdown() -> str:
@@ -789,7 +878,7 @@ def progress_markdown() -> str:
         ),
         "|---|---|---|---|---|---|---|---|---|",
     ]
-    alerts = []
+    alerts: list[tuple[str, str]] = []  # (key for de-duplication, text)
     totals = {"planned": 0, "final": 0}
     for cell in RUN.cells:
         units = RUN.units[cell.name].values()
@@ -807,17 +896,14 @@ def progress_markdown() -> str:
         failed = sum(v for k, v in counts.items() if k not in ("done", "model_failure"))
         rate = failed / attempts if attempts else 0.0
         if attempts >= 10 and rate > 0.05:
-            alerts.append(
-                f"{cell.name}: {rate:.0%} of attempts failed for provider or runner reasons (over 5%)."
-            )
+            text = f"{cell.name}: {rate:.0%} of attempts failed (provider/runner)."
+            alerts.append((f"rate-{cell.name}", text))
         if done + model_fail >= 10 and model_fail / (done + model_fail) > 0.05:
-            alerts.append(
-                f"{cell.name}: {model_fail} model-output failures; check they are the model's fault."
-            )
+            text = f"{cell.name}: {model_fail} model-output failures; check them."
+            alerts.append((f"modelfail-{cell.name}", text))
         if counts.get("runner_error"):
-            alerts.append(
-                f"{cell.name}: {counts['runner_error']} runner errors (see attempts.jsonl tracebacks)."
-            )
+            text = f"{cell.name}: {counts['runner_error']} runner errors (tracebacks)."
+            alerts.append((f"runnererr-{cell.name}", text))
         lane_status = RUN.lane_status.get(cell.lane, "not running")
         if cell.stopped:
             status = f"stopped: {cell.stopped}"
@@ -866,7 +952,8 @@ def progress_markdown() -> str:
             used = sum(1 for t in lim.day if now - t < 86_400)
             lines.append(f"| {name} | {used} | {lim.rpd} |")
     lines += ["", "## Alerts", ""]
-    lines += [f"- {a}" for a in alerts] or ["None."]
+    RUN.current_alerts = alerts
+    lines += [f"- {text}" for _, text in alerts] or ["None."]
     return "\n".join(lines) + "\n"
 
 
@@ -951,6 +1038,12 @@ def run(cells: list[Cell]) -> None:
     for cell in cells:
         lanes.setdefault(cell.lane, []).append(cell)
     log(f"Starting {len(lanes)} model thread(s): {', '.join(lanes)}")
+    # systemctl stop sends SIGTERM: finish the current conversations, then exit.
+    previous = signal.signal(signal.SIGTERM, lambda *_: STOP.set())
+    beat_done = threading.Event()
+    threading.Thread(
+        target=heartbeat_loop, args=(beat_done,), name="heartbeat", daemon=True
+    ).start()
     threads = [
         threading.Thread(
             target=lane_loop, args=(lane, lane_cells), name=lane, daemon=True
@@ -968,10 +1061,15 @@ def run(cells: list[Cell]) -> None:
         STOP.set()
         for t in threads:
             t.join()
+    beat_done.set()
+    signal.signal(signal.SIGTERM, previous)
     write_progress()
-    log(
-        "Runner finished: " + "; ".join(f"{k}: {v}" for k, v in RUN.lane_status.items())
-    )
+    summary = "; ".join(f"{k}: {v}" for k, v in RUN.lane_status.items())
+    log(f"Runner finished: {summary}")
+    if all(v.startswith(("complete", "finished")) for v in RUN.lane_status.values()):
+        alert("finished", f"FINISHED (not a failure): {overall_line()}. {summary}")
+    else:
+        health_send("log", f"runner exited: {summary}")
 
 
 def collect(cells: list[Cell]) -> None:

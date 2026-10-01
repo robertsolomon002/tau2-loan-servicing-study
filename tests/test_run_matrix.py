@@ -102,10 +102,15 @@ def env(tmp_path, monkeypatch):
     run_matrix.STOP.clear()
     fake = FakeLLM()
     monkeypatch.setattr(run_matrix, "_original_completion", fake)
+    pings = []
+    monkeypatch.setattr(
+        run_matrix, "health_send", lambda sig="", body="": pings.append((sig, body))
+    )
 
     class Env:
         out = tmp_path / "out"
         llm = fake
+        pings_sent = pings
 
         def run(self, *extra, settings=None, config=None):
             monkeypatch.setattr(run_matrix, "RUN", run_matrix.RunState())
@@ -313,3 +318,50 @@ def test_stop_file_stops_after_the_current_conversation(env):
     state = env.run(config=config_toml(trials=1))
     assert len(env.sims()) == 1  # the conversation in progress finished
     assert state.lane_status["t"] == "stopped (STOP requested)"
+
+
+def fails(env):
+    return [body for sig, body in env.pings_sent if sig == "fail"]
+
+
+def test_health_heartbeat_and_finished_once(env):
+    env.run()
+    assert env.pings_sent[0][0] == ""  # heartbeat as soon as the run starts
+    assert len(fails(env)) == 1 and "FINISHED" in fails(env)[0]
+    env.run()  # a restart with nothing left does not repeat the email
+    assert len(fails(env)) == 1
+
+
+def test_health_alert_on_fatal_error(env):
+    def no_key(model):
+        raise litellm.AuthenticationError("bad key", llm_provider="openai", model=model)
+
+    env.llm.agent = no_key
+    env.run(config=config_toml(trials=1))
+    assert any("model t stopped: AuthenticationError" in b for b in fails(env))
+    assert not any("FINISHED" in b for b in fails(env))
+    assert any(
+        sig == "log" and body.startswith("runner exited") and "bad key" in body
+        for sig, body in env.pings_sent
+    )
+
+
+def test_health_alert_on_budget_stop(env):
+    env.run(config=config_toml(trials=1, cell_budget=0.005))
+    assert any("t_mock stopped: cell budget" in b for b in fails(env))
+
+
+def test_health_stall_alert(env, monkeypatch):
+    env.run("--max-conversations", "0")
+    state = run_matrix.RUN
+    state.last_activity = run_matrix.time.time() - 4 * 3600
+    done = run_matrix.threading.Event()
+    done.set()  # one pass of the loop only
+    run_matrix.heartbeat_loop(done)
+    assert any("no LLM activity for 4.0 hours" in b for b in fails(env))
+    # A thread waiting on a request limit is not a stall.
+    env.pings_sent.clear()
+    state.alerts_sent.clear()
+    state.waiting = 1
+    run_matrix.heartbeat_loop(done)
+    assert fails(env) == [] and env.pings_sent[0][0] == ""

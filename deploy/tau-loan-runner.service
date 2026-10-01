@@ -1,0 +1,25 @@
+# systemd service for the main runs on the Google Cloud VM (docs/RUNNER.md).
+# Install: sudo cp deploy/tau-loan-runner.service /etc/systemd/system/
+#          sudo systemctl daemon-reload && sudo systemctl enable --now tau-loan-runner
+[Unit]
+Description=tau-Loan main experiment runner (scripts/run_matrix.py)
+After=network-online.target
+Wants=network-online.target
+# Give up after 5 crashes in an hour instead of restarting forever.
+StartLimitIntervalSec=3600
+StartLimitBurst=5
+
+[Service]
+User=rober
+WorkingDirectory=/home/rober/tau-loan/tau2-loan-servicing-study
+Environment=PYTHONUTF8=1 PYTHONIOENCODING=utf-8
+ExecStart=/home/rober/tau-loan/tau2-loan-servicing-study/.venv/bin/python scripts/run_matrix.py run configs/main/qwen.toml configs/main/nemotron.toml configs/main/deepseek.toml configs/main/flash_lite.toml configs/main/gemini_pro.toml
+# Restart after a crash (and start again after a reboot, via enable); a
+# finished run, a STOP file or a fatal error exits with 0 and stays stopped.
+Restart=on-failure
+RestartSec=120
+# systemctl stop sends SIGTERM: models finish their current conversation.
+TimeoutStopSec=1200
+
+[Install]
+WantedBy=multi-user.target
