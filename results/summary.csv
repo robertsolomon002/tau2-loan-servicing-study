@@ -1,0 +1,349 @@
+section,model,condition,comparison,metric,value,ci_low,ci_high,n,detail
+data,qwen,C1,,conversations_pending,145,,,,
+data,qwen,C1,,conversations_done,47,,,,
+data,qwen,C1,,failed_attempts,1,,,,
+data,qwen,C2,,conversations_pending,173,,,,
+data,qwen,C2,,conversations_done,19,,,,
+data,qwen,C2,,failed_attempts,0,,,,
+data,qwen,C3,,conversations_pending,192,,,,
+data,qwen,C3,,failed_attempts,0,,,,
+data,nemotron,C1,,conversations_pending,144,,,,
+data,nemotron,C1,,conversations_done,48,,,,
+data,nemotron,C1,,failed_attempts,0,,,,
+data,nemotron,C2,,conversations_pending,192,,,,
+data,nemotron,C2,,failed_attempts,0,,,,
+data,nemotron,C3,,conversations_pending,192,,,,
+data,nemotron,C3,,failed_attempts,0,,,,
+data,deepseek,C1,,conversations_done,192,,,,
+data,deepseek,C1,,failed_attempts,0,,,,
+data,deepseek,C2,,conversations_done,192,,,,
+data,deepseek,C2,,failed_attempts,0,,,,
+data,deepseek,C3,,conversations_done,192,,,,
+data,deepseek,C3,,failed_attempts,0,,,,
+data,flash_lite,C1,,conversations_done,192,,,,
+data,flash_lite,C1,,failed_attempts,0,,,,
+data,flash_lite,C2,,conversations_done,192,,,,
+data,flash_lite,C2,,failed_attempts,0,,,,
+data,flash_lite,C3,,conversations_done,192,,,,
+data,flash_lite,C3,,failed_attempts,0,,,,
+data,gemini_pro,C1,,conversations_done,192,,,,
+data,gemini_pro,C1,,failed_attempts,0,,,,
+data,gemini_pro,C2,,conversations_done,192,,,,
+data,gemini_pro,C2,,failed_attempts,0,,,,
+data,gemini_pro,C3,,conversations_done,192,,,,
+data,gemini_pro,C3,,failed_attempts,0,,,,
+confirmatory,deepseek,C1,,pass^1,0.979167,0.942708,1,48,n = tasks; paired bootstrap over tasks
+confirmatory,deepseek,C2,,pass^1,0.958333,0.901042,1,48,n = tasks; paired bootstrap over tasks
+confirmatory,deepseek,C3,,pass^1,0.963542,0.916667,1,48,n = tasks; paired bootstrap over tasks
+confirmatory,flash_lite,C1,,pass^1,0.921875,0.864583,0.96875,48,n = tasks; paired bootstrap over tasks
+confirmatory,flash_lite,C2,,pass^1,0.901042,0.817708,0.96875,48,n = tasks; paired bootstrap over tasks
+confirmatory,flash_lite,C3,,pass^1,0.84375,0.739583,0.932292,48,n = tasks; paired bootstrap over tasks
+confirmatory,gemini_pro,C1,,pass^1,0.927083,0.848958,0.989583,48,n = tasks; paired bootstrap over tasks
+confirmatory,gemini_pro,C2,,pass^1,0.9375,0.854167,1,48,n = tasks; paired bootstrap over tasks
+confirmatory,gemini_pro,C3,,pass^1,0.921875,0.848958,0.979167,48,n = tasks; paired bootstrap over tasks
+confirmatory,deepseek,,C1-C2,pass^1 difference,0.0208333,-0.00520833,0.0572917,,H1
+confirmatory,deepseek,,C1-C2,mcnemar_p,1,,,,H1; majority >=3/4; b=1 c=0
+confirmatory,deepseek,,C1-C2,mcnemar_p_holm,1,,,,H1; Holm over 6 tests
+confirmatory,deepseek,,C1-C2,mcnemar_p_sensitivity,1,,,,H1; majority >=2/4
+confirmatory,deepseek,,C3-C2,pass^1 difference,0.00520833,-0.0416667,0.0520833,,H2
+confirmatory,deepseek,,C3-C2,mcnemar_p,1,,,,H2; majority >=3/4; b=1 c=1
+confirmatory,deepseek,,C3-C2,mcnemar_p_holm,1,,,,H2; Holm over 6 tests
+confirmatory,deepseek,,C3-C2,mcnemar_p_sensitivity,1,,,,H2; majority >=2/4
+confirmatory,flash_lite,,C1-C2,pass^1 difference,0.0208333,-0.0572917,0.109375,,H1
+confirmatory,flash_lite,,C1-C2,mcnemar_p,0.726562,,,,H1; majority >=3/4; b=3 c=5
+confirmatory,flash_lite,,C1-C2,mcnemar_p_holm,1,,,,H1; Holm over 6 tests
+confirmatory,flash_lite,,C1-C2,mcnemar_p_sensitivity,0.375,,,,H1; majority >=2/4
+confirmatory,flash_lite,,C3-C2,pass^1 difference,-0.0572917,-0.119792,-0.00520833,,H2
+confirmatory,flash_lite,,C3-C2,mcnemar_p,0.5,,,,H2; majority >=3/4; b=0 c=2
+confirmatory,flash_lite,,C3-C2,mcnemar_p_holm,1,,,,H2; Holm over 6 tests
+confirmatory,flash_lite,,C3-C2,mcnemar_p_sensitivity,0.25,,,,H2; majority >=2/4
+confirmatory,gemini_pro,,C1-C2,pass^1 difference,-0.0104167,-0.0260417,0,,H1
+confirmatory,gemini_pro,,C1-C2,mcnemar_p,1,,,,H1; majority >=3/4; b=0 c=0
+confirmatory,gemini_pro,,C1-C2,mcnemar_p_holm,1,,,,H1; Holm over 6 tests
+confirmatory,gemini_pro,,C1-C2,mcnemar_p_sensitivity,1,,,,H1; majority >=2/4
+confirmatory,gemini_pro,,C3-C2,pass^1 difference,-0.015625,-0.0572917,0.015625,,H2
+confirmatory,gemini_pro,,C3-C2,mcnemar_p,1,,,,H2; majority >=3/4; b=0 c=1
+confirmatory,gemini_pro,,C3-C2,mcnemar_p_holm,1,,,,H2; Holm over 6 tests
+confirmatory,gemini_pro,,C3-C2,mcnemar_p_sensitivity,1,,,,H2; majority >=2/4
+confirmatory,deepseek,,(C1-C2) - frontier (C1-C2),gap minus frontier gap,0.03125,0,0.0729167,,H3
+confirmatory,flash_lite,,(C1-C2) - frontier (C1-C2),gap minus frontier gap,0.03125,-0.046875,0.114583,,H3
+secondary,deepseek,C1,,pass^1,0.979167,,,48,
+secondary,deepseek,C1,,pass^2,0.96875,,,48,
+secondary,deepseek,C1,,pass^3,0.963542,,,48,
+secondary,deepseek,C1,,pass^4,0.958333,,,48,
+secondary,deepseek,C2,,pass^1,0.958333,,,48,
+secondary,deepseek,C2,,pass^2,0.947917,,,48,
+secondary,deepseek,C2,,pass^3,0.942708,,,48,
+secondary,deepseek,C2,,pass^4,0.9375,,,48,
+secondary,deepseek,C3,,pass^1,0.963542,,,48,
+secondary,deepseek,C3,,pass^2,0.947917,,,48,
+secondary,deepseek,C3,,pass^3,0.942708,,,48,
+secondary,deepseek,C3,,pass^4,0.9375,,,48,
+secondary,flash_lite,C1,,pass^1,0.921875,,,48,
+secondary,flash_lite,C1,,pass^2,0.875,,,48,
+secondary,flash_lite,C1,,pass^3,0.854167,,,48,
+secondary,flash_lite,C1,,pass^4,0.854167,,,48,
+secondary,flash_lite,C2,,pass^1,0.901042,,,48,
+secondary,flash_lite,C2,,pass^2,0.878472,,,48,
+secondary,flash_lite,C2,,pass^3,0.864583,,,48,
+secondary,flash_lite,C2,,pass^4,0.854167,,,48,
+secondary,flash_lite,C3,,pass^1,0.84375,,,48,
+secondary,flash_lite,C3,,pass^2,0.822917,,,48,
+secondary,flash_lite,C3,,pass^3,0.807292,,,48,
+secondary,flash_lite,C3,,pass^4,0.791667,,,48,
+secondary,gemini_pro,C1,,pass^1,0.927083,,,48,
+secondary,gemini_pro,C1,,pass^2,0.916667,,,48,
+secondary,gemini_pro,C1,,pass^3,0.90625,,,48,
+secondary,gemini_pro,C1,,pass^4,0.895833,,,48,
+secondary,gemini_pro,C2,,pass^1,0.9375,,,48,
+secondary,gemini_pro,C2,,pass^2,0.9375,,,48,
+secondary,gemini_pro,C2,,pass^3,0.9375,,,48,
+secondary,gemini_pro,C2,,pass^4,0.9375,,,48,
+secondary,gemini_pro,C3,,pass^1,0.921875,,,48,
+secondary,gemini_pro,C3,,pass^2,0.895833,,,48,
+secondary,gemini_pro,C3,,pass^3,0.885417,,,48,
+secondary,gemini_pro,C3,,pass^4,0.875,,,48,
+secondary,deepseek,C1,,pass^1 by category,1,,,2,Information
+secondary,deepseek,C2,,pass^1 by category,1,,,2,Information
+secondary,deepseek,C3,,pass^1 by category,1,,,2,Information
+secondary,flash_lite,C1,,pass^1 by category,1,,,2,Information
+secondary,flash_lite,C2,,pass^1 by category,1,,,2,Information
+secondary,flash_lite,C3,,pass^1 by category,1,,,2,Information
+secondary,gemini_pro,C1,,pass^1 by category,1,,,2,Information
+secondary,gemini_pro,C2,,pass^1 by category,1,,,2,Information
+secondary,gemini_pro,C3,,pass^1 by category,1,,,2,Information
+secondary,deepseek,C1,,pass^1 by category,1,,,7,Payments
+secondary,deepseek,C2,,pass^1 by category,1,,,7,Payments
+secondary,deepseek,C3,,pass^1 by category,1,,,7,Payments
+secondary,flash_lite,C1,,pass^1 by category,1,,,7,Payments
+secondary,flash_lite,C2,,pass^1 by category,0.857143,,,7,Payments
+secondary,flash_lite,C3,,pass^1 by category,0.857143,,,7,Payments
+secondary,gemini_pro,C1,,pass^1 by category,1,,,7,Payments
+secondary,gemini_pro,C2,,pass^1 by category,1,,,7,Payments
+secondary,gemini_pro,C3,,pass^1 by category,1,,,7,Payments
+secondary,deepseek,C1,,pass^1 by category,1,,,3,Payoff
+secondary,deepseek,C2,,pass^1 by category,1,,,3,Payoff
+secondary,deepseek,C3,,pass^1 by category,1,,,3,Payoff
+secondary,flash_lite,C1,,pass^1 by category,1,,,3,Payoff
+secondary,flash_lite,C2,,pass^1 by category,1,,,3,Payoff
+secondary,flash_lite,C3,,pass^1 by category,1,,,3,Payoff
+secondary,gemini_pro,C1,,pass^1 by category,1,,,3,Payoff
+secondary,gemini_pro,C2,,pass^1 by category,1,,,3,Payoff
+secondary,gemini_pro,C3,,pass^1 by category,1,,,3,Payoff
+secondary,deepseek,C1,,pass^1 by category,0.8125,,,4,Due date change
+secondary,deepseek,C2,,pass^1 by category,0.75,,,4,Due date change
+secondary,deepseek,C3,,pass^1 by category,0.9375,,,4,Due date change
+secondary,flash_lite,C1,,pass^1 by category,0.75,,,4,Due date change
+secondary,flash_lite,C2,,pass^1 by category,0.8125,,,4,Due date change
+secondary,flash_lite,C3,,pass^1 by category,0.5,,,4,Due date change
+secondary,gemini_pro,C1,,pass^1 by category,0.75,,,4,Due date change
+secondary,gemini_pro,C2,,pass^1 by category,0.75,,,4,Due date change
+secondary,gemini_pro,C3,,pass^1 by category,0.8125,,,4,Due date change
+secondary,deepseek,C1,,pass^1 by category,1,,,5,Late fee waiver
+secondary,deepseek,C2,,pass^1 by category,0.85,,,5,Late fee waiver
+secondary,deepseek,C3,,pass^1 by category,0.85,,,5,Late fee waiver
+secondary,flash_lite,C1,,pass^1 by category,1,,,5,Late fee waiver
+secondary,flash_lite,C2,,pass^1 by category,0.85,,,5,Late fee waiver
+secondary,flash_lite,C3,,pass^1 by category,0.6,,,5,Late fee waiver
+secondary,gemini_pro,C1,,pass^1 by category,0.8,,,5,Late fee waiver
+secondary,gemini_pro,C2,,pass^1 by category,0.8,,,5,Late fee waiver
+secondary,gemini_pro,C3,,pass^1 by category,0.8,,,5,Late fee waiver
+secondary,deepseek,C1,,pass^1 by category,0.964286,,,7,Hardship
+secondary,deepseek,C2,,pass^1 by category,1,,,7,Hardship
+secondary,deepseek,C3,,pass^1 by category,1,,,7,Hardship
+secondary,flash_lite,C1,,pass^1 by category,0.928571,,,7,Hardship
+secondary,flash_lite,C2,,pass^1 by category,0.821429,,,7,Hardship
+secondary,flash_lite,C3,,pass^1 by category,0.892857,,,7,Hardship
+secondary,gemini_pro,C1,,pass^1 by category,1,,,7,Hardship
+secondary,gemini_pro,C2,,pass^1 by category,1,,,7,Hardship
+secondary,gemini_pro,C3,,pass^1 by category,1,,,7,Hardship
+secondary,deepseek,C1,,pass^1 by category,1,,,3,Autopay
+secondary,deepseek,C2,,pass^1 by category,1,,,3,Autopay
+secondary,deepseek,C3,,pass^1 by category,1,,,3,Autopay
+secondary,flash_lite,C1,,pass^1 by category,1,,,3,Autopay
+secondary,flash_lite,C2,,pass^1 by category,1,,,3,Autopay
+secondary,flash_lite,C3,,pass^1 by category,1,,,3,Autopay
+secondary,gemini_pro,C1,,pass^1 by category,0.916667,,,3,Autopay
+secondary,gemini_pro,C2,,pass^1 by category,1,,,3,Autopay
+secondary,gemini_pro,C3,,pass^1 by category,0.75,,,3,Autopay
+secondary,deepseek,C1,,pass^1 by category,1,,,7,Authorization
+secondary,deepseek,C2,,pass^1 by category,1,,,7,Authorization
+secondary,deepseek,C3,,pass^1 by category,0.892857,,,7,Authorization
+secondary,flash_lite,C1,,pass^1 by category,0.821429,,,7,Authorization
+secondary,flash_lite,C2,,pass^1 by category,1,,,7,Authorization
+secondary,flash_lite,C3,,pass^1 by category,0.928571,,,7,Authorization
+secondary,gemini_pro,C1,,pass^1 by category,0.821429,,,7,Authorization
+secondary,gemini_pro,C2,,pass^1 by category,0.857143,,,7,Authorization
+secondary,gemini_pro,C3,,pass^1 by category,0.821429,,,7,Authorization
+secondary,deepseek,C1,,pass^1 by category,1,,,5,Must transfer
+secondary,deepseek,C2,,pass^1 by category,1,,,5,Must transfer
+secondary,deepseek,C3,,pass^1 by category,1,,,5,Must transfer
+secondary,flash_lite,C1,,pass^1 by category,1,,,5,Must transfer
+secondary,flash_lite,C2,,pass^1 by category,1,,,5,Must transfer
+secondary,flash_lite,C3,,pass^1 by category,0.95,,,5,Must transfer
+secondary,gemini_pro,C1,,pass^1 by category,1,,,5,Must transfer
+secondary,gemini_pro,C2,,pass^1 by category,1,,,5,Must transfer
+secondary,gemini_pro,C3,,pass^1 by category,1,,,5,Must transfer
+secondary,deepseek,C1,,pass^1 by category,1,,,3,Multi-request
+secondary,deepseek,C2,,pass^1 by category,0.916667,,,3,Multi-request
+secondary,deepseek,C3,,pass^1 by category,1,,,3,Multi-request
+secondary,flash_lite,C1,,pass^1 by category,0.666667,,,3,Multi-request
+secondary,flash_lite,C2,,pass^1 by category,0.666667,,,3,Multi-request
+secondary,flash_lite,C3,,pass^1 by category,0.666667,,,3,Multi-request
+secondary,gemini_pro,C1,,pass^1 by category,1,,,3,Multi-request
+secondary,gemini_pro,C2,,pass^1 by category,1,,,3,Multi-request
+secondary,gemini_pro,C3,,pass^1 by category,1,,,3,Multi-request
+secondary,deepseek,C1,,pass^1 by category,1,,,2,Documents
+secondary,deepseek,C2,,pass^1 by category,1,,,2,Documents
+secondary,deepseek,C3,,pass^1 by category,1,,,2,Documents
+secondary,flash_lite,C1,,pass^1 by category,1,,,2,Documents
+secondary,flash_lite,C2,,pass^1 by category,1,,,2,Documents
+secondary,flash_lite,C3,,pass^1 by category,1,,,2,Documents
+secondary,gemini_pro,C1,,pass^1 by category,1,,,2,Documents
+secondary,gemini_pro,C2,,pass^1 by category,1,,,2,Documents
+secondary,gemini_pro,C3,,pass^1 by category,1,,,2,Documents
+secondary,deepseek,C1,,pass^1 by hard,1,,,31,False
+secondary,deepseek,C2,,pass^1 by hard,0.991935,,,31,False
+secondary,deepseek,C3,,pass^1 by hard,1,,,31,False
+secondary,flash_lite,C1,,pass^1 by hard,0.951613,,,31,False
+secondary,flash_lite,C2,,pass^1 by hard,0.919355,,,31,False
+secondary,flash_lite,C3,,pass^1 by hard,0.887097,,,31,False
+secondary,gemini_pro,C1,,pass^1 by hard,0.991935,,,31,False
+secondary,gemini_pro,C2,,pass^1 by hard,1,,,31,False
+secondary,gemini_pro,C3,,pass^1 by hard,0.975806,,,31,False
+secondary,deepseek,C1,,pass^1 by hard,0.941176,,,17,True
+secondary,deepseek,C2,,pass^1 by hard,0.897059,,,17,True
+secondary,deepseek,C3,,pass^1 by hard,0.897059,,,17,True
+secondary,flash_lite,C1,,pass^1 by hard,0.867647,,,17,True
+secondary,flash_lite,C2,,pass^1 by hard,0.867647,,,17,True
+secondary,flash_lite,C3,,pass^1 by hard,0.764706,,,17,True
+secondary,gemini_pro,C1,,pass^1 by hard,0.808824,,,17,True
+secondary,gemini_pro,C2,,pass^1 by hard,0.823529,,,17,True
+secondary,gemini_pro,C3,,pass^1 by hard,0.823529,,,17,True
+secondary,deepseek,C1,,agent turns in customer language,0.970297,,,707,
+secondary,deepseek,C1,,conversations with an agent turn in the other language,0.0364583,,,192,
+secondary,deepseek,C1,,user turns in task language,0.991678,,,721,
+secondary,deepseek,C1,,conversations with a user turn in the other language,0.015625,,,192,
+secondary,deepseek,C2,,agent turns in customer language,1,,,661,
+secondary,deepseek,C2,,conversations with an agent turn in the other language,0,,,192,
+secondary,deepseek,C2,,user turns in task language,1,,,738,
+secondary,deepseek,C2,,conversations with a user turn in the other language,0,,,192,
+secondary,deepseek,C3,,agent turns in customer language,1,,,664,
+secondary,deepseek,C3,,conversations with an agent turn in the other language,0,,,192,
+secondary,deepseek,C3,,user turns in task language,1,,,739,
+secondary,deepseek,C3,,conversations with a user turn in the other language,0,,,192,
+secondary,flash_lite,C1,,agent turns in customer language,0.836795,,,674,
+secondary,flash_lite,C1,,conversations with an agent turn in the other language,0.260417,,,192,
+secondary,flash_lite,C1,,user turns in task language,0.948905,,,685,
+secondary,flash_lite,C1,,conversations with a user turn in the other language,0.0833333,,,192,
+secondary,flash_lite,C2,,agent turns in customer language,1,,,647,
+secondary,flash_lite,C2,,conversations with an agent turn in the other language,0,,,192,
+secondary,flash_lite,C2,,user turns in task language,1,,,687,
+secondary,flash_lite,C2,,conversations with a user turn in the other language,0,,,192,
+secondary,flash_lite,C3,,agent turns in customer language,1,,,631,
+secondary,flash_lite,C3,,conversations with an agent turn in the other language,0,,,192,
+secondary,flash_lite,C3,,user turns in task language,1,,,690,
+secondary,flash_lite,C3,,conversations with a user turn in the other language,0,,,192,
+secondary,gemini_pro,C1,,agent turns in customer language,1,,,651,
+secondary,gemini_pro,C1,,conversations with an agent turn in the other language,0,,,192,
+secondary,gemini_pro,C1,,user turns in task language,0.992355,,,654,
+secondary,gemini_pro,C1,,conversations with a user turn in the other language,0.0260417,,,192,
+secondary,gemini_pro,C2,,agent turns in customer language,1,,,610,
+secondary,gemini_pro,C2,,conversations with an agent turn in the other language,0,,,192,
+secondary,gemini_pro,C2,,user turns in task language,1,,,631,
+secondary,gemini_pro,C2,,conversations with a user turn in the other language,0,,,192,
+secondary,gemini_pro,C3,,agent turns in customer language,1,,,623,
+secondary,gemini_pro,C3,,conversations with an agent turn in the other language,0,,,192,
+secondary,gemini_pro,C3,,user turns in task language,1,,,640,
+secondary,gemini_pro,C3,,conversations with a user turn in the other language,0,,,192,
+secondary,deepseek,C1,,mean turns,12.2031,,,192,
+secondary,deepseek,C1,,mean tool_calls,3.99479,,,192,
+secondary,deepseek,C1,,mean tool_errors,0.0416667,,,192,
+secondary,deepseek,C2,,mean turns,11.7083,,,192,
+secondary,deepseek,C2,,mean tool_calls,3.91146,,,192,
+secondary,deepseek,C2,,mean tool_errors,0.03125,,,192,
+secondary,deepseek,C3,,mean turns,11.6771,,,192,
+secondary,deepseek,C3,,mean tool_calls,3.83333,,,192,
+secondary,deepseek,C3,,mean tool_errors,0.0364583,,,192,
+secondary,flash_lite,C1,,mean turns,11.7812,,,192,
+secondary,flash_lite,C1,,mean tool_calls,3.76042,,,192,
+secondary,flash_lite,C1,,mean tool_errors,0.34375,,,192,
+secondary,flash_lite,C2,,mean turns,11.2969,,,192,
+secondary,flash_lite,C2,,mean tool_calls,3.55729,,,192,
+secondary,flash_lite,C2,,mean tool_errors,0.182292,,,192,
+secondary,flash_lite,C3,,mean turns,11.0469,,,192,
+secondary,flash_lite,C3,,mean tool_calls,3.47396,,,192,
+secondary,flash_lite,C3,,mean tool_errors,0.270833,,,192,
+secondary,gemini_pro,C1,,mean turns,11.25,,,192,
+secondary,gemini_pro,C1,,mean tool_calls,3.70312,,,192,
+secondary,gemini_pro,C1,,mean tool_errors,0.0208333,,,192,
+secondary,gemini_pro,C2,,mean turns,10.849,,,192,
+secondary,gemini_pro,C2,,mean tool_calls,3.63542,,,192,
+secondary,gemini_pro,C2,,mean tool_errors,0.0208333,,,192,
+secondary,gemini_pro,C3,,mean turns,10.8542,,,192,
+secondary,gemini_pro,C3,,mean tool_calls,3.58854,,,192,
+secondary,gemini_pro,C3,,mean tool_errors,0.0208333,,,192,
+secondary,deepseek,C1,,agent cost per conversation,0.00109508,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C1,,user simulator cost per conversation,0.00311439,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C1,,total cost,0.808219,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C1,,cost per success,0.00429904,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C2,,agent cost per conversation,0.00112302,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C2,,user simulator cost per conversation,0.0033259,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C2,,total cost,0.854192,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C2,,cost per success,0.00464235,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C3,,agent cost per conversation,0.00121858,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C3,,user simulator cost per conversation,0.00336608,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C3,,total cost,0.880255,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C3,,cost per success,0.00475814,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C1,,agent cost per conversation,0.00354856,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C1,,user simulator cost per conversation,0.0028369,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C1,,total cost,1.22601,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C1,,cost per success,0.0069266,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C2,,agent cost per conversation,0.00347522,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C2,,user simulator cost per conversation,0.00314511,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C2,,total cost,1.2711,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C2,,cost per success,0.00734742,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C3,,agent cost per conversation,0.0024236,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C3,,user simulator cost per conversation,0.00304698,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C3,,total cost,1.05035,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C3,,cost per success,0.00648365,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C1,,agent cost per conversation,0.0795431,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C1,,user simulator cost per conversation,0.00277268,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C1,,total cost,15.8046,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C1,,cost per success,0.0887901,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C2,,agent cost per conversation,0.0783712,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C2,,user simulator cost per conversation,0.00302594,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C2,,total cost,15.6282,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C2,,cost per success,0.0868236,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C3,,agent cost per conversation,0.0606689,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C3,,user simulator cost per conversation,0.0030914,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C3,,total cost,12.242,,,192,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C3,,cost per success,0.0691637,,,192,"USD, LiteLLM estimate, all attempts"
+sensitivity,deepseek,,C1-C2,pass^1 difference,0.0208333,-0.00520833,0.0572917,,rule 4(a): user turns in the wrong language dropped
+sensitivity,deepseek,,C3-C2,pass^1 difference,0.00520833,-0.0416667,0.0520833,,rule 4(a): user turns in the wrong language dropped
+sensitivity,deepseek,C1,,pass^1,0.979167,,,3,rule 4(a); n = conversations dropped
+sensitivity,deepseek,C2,,pass^1,0.958333,,,0,rule 4(a); n = conversations dropped
+sensitivity,deepseek,C3,,pass^1,0.963542,,,0,rule 4(a); n = conversations dropped
+sensitivity,flash_lite,,C1-C2,pass^1 difference,0.0191711,-0.0609526,0.104167,,rule 4(a): user turns in the wrong language dropped
+sensitivity,flash_lite,,C3-C2,pass^1 difference,-0.0572917,-0.119792,-0.00520833,,rule 4(a): user turns in the wrong language dropped
+sensitivity,flash_lite,C1,,pass^1,0.920213,,,16,rule 4(a); n = conversations dropped
+sensitivity,flash_lite,C2,,pass^1,0.901042,,,0,rule 4(a); n = conversations dropped
+sensitivity,flash_lite,C3,,pass^1,0.84375,,,0,rule 4(a); n = conversations dropped
+sensitivity,gemini_pro,,C1-C2,pass^1 difference,-0.0121528,-0.03125,0,,rule 4(a): user turns in the wrong language dropped
+sensitivity,gemini_pro,,C3-C2,pass^1 difference,-0.015625,-0.0572917,0.015625,,rule 4(a): user turns in the wrong language dropped
+sensitivity,gemini_pro,C1,,pass^1,0.925347,,,5,rule 4(a); n = conversations dropped
+sensitivity,gemini_pro,C2,,pass^1,0.9375,,,0,rule 4(a); n = conversations dropped
+sensitivity,gemini_pro,C3,,pass^1,0.921875,,,0,rule 4(a); n = conversations dropped
+exploratory,deepseek,,,C1 conversations with a French agent turn,0.0921053,,,76,preferred_language=fr
+exploratory,deepseek,,,C1 conversations with a French agent turn,0,,,116,preferred_language=en
+exploratory,flash_lite,,,C1 conversations with a French agent turn,0.657895,,,76,preferred_language=fr
+exploratory,flash_lite,,,C1 conversations with a French agent turn,0,,,116,preferred_language=en
+exploratory,gemini_pro,,,C1 conversations with a French agent turn,0,,,76,preferred_language=fr
+exploratory,gemini_pro,,,C1 conversations with a French agent turn,0,,,116,preferred_language=en
+exploratory,all,,,C1 conversations with a French agent turn,0.25,,,228,preferred_language=fr
+exploratory,all,,,C1 conversations with a French agent turn,0,,,348,preferred_language=en
+exploratory,all,,,C1 conversations with a French agent turn,0,,,60,preferred_language=en; surname=ambiguous
+exploratory,all,,,C1 conversations with a French agent turn,0,,,132,preferred_language=en; surname=french
+exploratory,all,,,C1 conversations with a French agent turn,0,,,156,preferred_language=en; surname=other
+exploratory,all,,,C1 conversations with a French agent turn,0.222222,,,72,preferred_language=fr; surname=french
+exploratory,all,,,C1 conversations with a French agent turn,0.262821,,,156,preferred_language=fr; surname=other
