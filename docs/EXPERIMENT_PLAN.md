@@ -234,3 +234,27 @@ The runner (`scripts/run_matrix.py`, `docs/RUNNER.md`) applies Section 7's rules
 - **A user-simulator crash is rerun.** This means an empty user reply, or an error in a user-simulator call. It isn't the agent's failure, so it is treated like a provider failure (rule 1). Rule 4 is about simulator *behaviour* in finished conversations and is unchanged.
 - **Which model failed** is taken from the LLM call that failed, or whose reply tau2 rejected. Agent-side output errors count as failures (rules 2 and 3).
 - **The budget is metered per call**, so failed attempts count toward the caps. The caps are those of Section 8.
+
+### Amendment 2 (2026-10-06, Stage 4.3, during the main runs): Qwen stopped at 2 trials
+
+**What happened.** On 2026-10-05 at 21:46:55 UTC, OpenRouter withdrew the free endpoint `openrouter/qwen/qwen3.8-27b:free`. The next request returned a 404: "This model is unavailable for free. The paid version is available now - use this slug instead: qwen/qwen3.8-27b". The runner treats this as a fatal error and stopped the Qwen model. The other models were not affected.
+
+**What Qwen completed.** Trials 1 and 2 of all 48 tasks in each of C1, C2 and C3, except one conversation per cell. Each of those three had hit rate-limit errors and was waiting for a rerun (Section 7 rule 1):
+- C1: `ls_034_en`, trial 1
+- C2: `ls_020_fr`, trial 1
+- C3: `ls_048_fr`, trial 2
+
+That makes 285 of Qwen's 576 planned conversations (95 per cell). Trials 3 and 4 were never run. The study total drops from 2,880 to 2,595 planned conversations.
+
+**Decision (Rob, 2026-10-06).** Stop Qwen and keep what it finished. Options not taken:
+- *Paid slug:* about $0.024 per conversation, measured from Qwen's finished conversations at OpenRouter's listed price of $0.425 / $2.55 per million input / output tokens (checked 2026-10-06). About $7 for the remaining 291, more than the OpenRouter credit left under the $6.50 cap. No OpenRouter top-up (Section 9).
+- *Another provider:* changing the serving stack partway through would confound trials 1 and 2 with trials 3 and 4.
+
+**Analysis changes, for Qwen only.** Every rule is the Section 6 rule applied with 2 trials:
+- The three conversations above are missing (Section 7 rule 1), so tasks 20, 34 and 48 are dropped from Qwen's paired analyses in every condition. That leaves 45 tasks.
+- pass^1 is the mean over tasks of each task's success rate across its 2 trials. pass^k is reported for k = 1 and 2 only.
+- McNemar majority: solved in both trials (2 of 2), in place of at least 3 of 4. The sensitivity check uses at least 1 of 2, in place of at least 2 of 4.
+- H3 compares Qwen's C1 − C2 pass^1 gap (2 trials) with the frontier model's (4 trials). The H3 pass^1 interval for Qwen is wider than for the 4-trial models, and the report says so.
+- The 10-test Holm correction is unchanged, since Qwen still gets both comparisons.
+
+The other four models keep the full design.
