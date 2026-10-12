@@ -1,0 +1,1073 @@
+{
+ "deepseek_C1__ls_014_en__t0": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "deepseek_C1__ls_014_en__t1": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "deepseek_C1__ls_014_en__t3": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "deepseek_C1__ls_044_en__t3": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 16,
+  "explanation": "After correctly refusing a hardship plan (no qualifying hardship), the agent transferred with reason other although the customer did not ask for a human.",
+  "sim_major": false
+ },
+ "deepseek_C2__ls_014_fr__t0": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "deepseek_C2__ls_014_fr__t1": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "deepseek_C2__ls_014_fr__t2": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "deepseek_C2__ls_014_fr__t3": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "deepseek_C2__ls_039_fr__t3": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 11,
+  "explanation": "The customer confirmed the autopay and ended the conversation (###STOP###) in the same message, against its instructions, so the agent never got to enable it.",
+  "sim_major": true
+ },
+ "deepseek_C2__ls_041_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 12,
+  "explanation": "The French customer asked only for the payment and raised the fee after it was posted (the FR instruction 'seulement ensuite mentionnez' reads as 'mention it later'), so the fee was already paid and could not be waived.",
+  "sim_major": false
+ },
+ "deepseek_C2__ls_041_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer mentioned the fee only after the payment was posted (FR instruction wording), so the agent paid first and the fee could no longer be waived.",
+  "sim_major": false
+ },
+ "deepseek_C2__ls_041_fr__t2": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer mentioned the fee only after the payment was posted (FR instruction wording), so the agent paid first and the fee could no longer be waived.",
+  "sim_major": false
+ },
+ "deepseek_C3__ls_014_fr__t3": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "deepseek_C3__ls_041_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer mentioned the fee only after the payment was posted (FR instruction wording), so the agent paid first and the fee could no longer be waived.",
+  "sim_major": false
+ },
+ "deepseek_C3__ls_041_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 16,
+  "explanation": "The customer mentioned the fee only after the payment was posted (FR instruction wording), so the agent paid first and the fee could no longer be waived.",
+  "sim_major": false
+ },
+ "deepseek_C3__ls_041_fr__t2": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer mentioned the fee only after the payment was posted (FR instruction wording), so the agent paid first and the fee could no longer be waived.",
+  "sim_major": false
+ },
+ "deepseek_C3__ls_048_fr__t1": {
+  "cause": "wrong_arguments",
+  "rule": "P2",
+  "turn": 16,
+  "explanation": "The agent took 'this Friday' to be 2026-03-21 (a Saturday) instead of 2026-03-20 and scheduled the payment for the wrong date.",
+  "sim_major": false
+ },
+ "deepseek_C3__ls_048_fr__t2": {
+  "cause": "wrong_arguments",
+  "rule": "P2",
+  "turn": 18,
+  "explanation": "The agent took 'this Friday' to be 2026-03-21 (a Saturday) instead of 2026-03-20 and scheduled the payment for the wrong date.",
+  "sim_major": false
+ },
+ "deepseek_C3__ls_048_fr__t3": {
+  "cause": "wrong_arguments",
+  "rule": "P2",
+  "turn": 16,
+  "explanation": "The agent took 'this Friday' to be 2026-03-21 (a Saturday) instead of 2026-03-20 and scheduled the payment for the wrong date.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_015_en__t0": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 20,
+  "explanation": "The agent refused the change, reading the 2025-03-01 change as within 12 months although the policy's window starts on 2025-03-16.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_015_en__t2": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 14,
+  "explanation": "The agent refused the change, reading the 2025-03-01 change as within 12 months although the policy's window starts on 2025-03-16.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_016_en__t0": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 18,
+  "explanation": "The agent changed the due day although the next due date (2026-03-21) is not more than 5 days away.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_016_en__t3": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 18,
+  "explanation": "The agent changed the due day although the next due date (2026-03-21) is not more than 5 days away.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_025_en__t0": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 10,
+  "explanation": "The agent enrolled deferral_1 although the loan had a hardship plan starting 2025-06-01, within 12 months.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_025_en__t2": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 10,
+  "explanation": "The agent enrolled deferral_1 although the loan had a hardship plan starting 2025-06-01, within 12 months.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_034_en__t0": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 10,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_034_en__t2": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 10,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_039_en__t2": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 10,
+  "explanation": "The agent waived the $30 fee although another fee on the loan was waived in 2025-11 (within 12 months); autopay was set correctly.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_039_en__t3": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 10,
+  "explanation": "The agent waived the $30 fee although another fee on the loan was waived in 2025-11 (within 12 months); autopay was set correctly.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_040_en__t1": {
+  "cause": "verification",
+  "rule": "V1",
+  "turn": 10,
+  "explanation": "The agent checked the caller's correct details against the wrong borrower record (BF-10002) and refused to verify them, so the email was never updated.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_040_en__t3": {
+  "cause": "rule_misapplied",
+  "rule": "C3",
+  "turn": 16,
+  "explanation": "The agent sent a statement right after the email was changed in the same conversation, which the security rule forbids.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_042_en__t1": {
+  "cause": "verification",
+  "rule": "V2",
+  "turn": 12,
+  "explanation": "The agent looked the caller up with a date of birth the caller never gave, counted that as a failed verification, and transferred after the second (also wrong) date instead of allowing the correct one.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_042_en__t2": {
+  "cause": "verification",
+  "rule": "V2",
+  "turn": 10,
+  "explanation": "The agent counted a lookup with a date of birth the caller never gave as a failed verification and transferred before the caller could give the correct date.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_042_en__t3": {
+  "cause": "verification",
+  "rule": "V2",
+  "turn": 12,
+  "explanation": "The agent counted a lookup with a date of birth the caller never gave as a failed verification and transferred before the caller could give the correct date.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_006_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 10,
+  "explanation": "The agent scheduled the payment for the requested 2026-04-20 without noticing it is past the latest allowed date (2026-04-15).",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_006_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 10,
+  "explanation": "The agent scheduled the payment for the requested 2026-04-20 without noticing it is past the latest allowed date (2026-04-15).",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_006_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 10,
+  "explanation": "The agent scheduled the payment for the requested 2026-04-20 without noticing it is past the latest allowed date (2026-04-15).",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_006_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 10,
+  "explanation": "The agent scheduled the payment for the requested 2026-04-20 without noticing it is past the latest allowed date (2026-04-15).",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_015_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 14,
+  "explanation": "The agent refused the change, reading the 2025-03-01 change as within 12 months although the policy's window starts on 2025-03-16.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_015_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 12,
+  "explanation": "The agent refused the change, reading the 2025-03-01 change as within 12 months although the policy's window starts on 2025-03-16.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_016_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 16,
+  "explanation": "The agent changed the due day although the next due date (2026-03-21) is not more than 5 days away.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_024_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 12,
+  "explanation": "The agent enrolled the borrower in deferral_1 although the loan was originated 2025-11-02, less than 6 months ago.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_024_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 12,
+  "explanation": "The agent enrolled the borrower in deferral_1 although the loan was originated 2025-11-02, less than 6 months ago.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_024_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 12,
+  "explanation": "The agent enrolled the borrower in deferral_1 although the loan was originated 2025-11-02, less than 6 months ago.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_024_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 12,
+  "explanation": "The agent enrolled the borrower in deferral_1 although the loan was originated 2025-11-02, less than 6 months ago.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_025_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 12,
+  "explanation": "The agent enrolled deferral_1 although the loan had a hardship plan starting 2025-06-01, within 12 months.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_039_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 14,
+  "explanation": "The agent waived the $30 fee although another fee on the loan was waived in 2025-11 (within 12 months); autopay was set correctly.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_039_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 14,
+  "explanation": "The agent waived the $30 fee although another fee on the loan was waived in 2025-11 (within 12 months); autopay was set correctly.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_039_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 10,
+  "explanation": "The agent waived the $30 fee although another fee on the loan was waived in 2025-11 (within 12 months); autopay was set correctly.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_039_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 14,
+  "explanation": "The agent waived the $30 fee although another fee on the loan was waived in 2025-11 (within 12 months); autopay was set correctly.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_041_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 12,
+  "explanation": "The customer asked for the waiver only after the payment was posted (FR instruction wording); the later waive_late_fee call failed because the fee was already paid.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_041_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 12,
+  "explanation": "The customer asked for the waiver only after the payment was posted (FR instruction wording); the later waive_late_fee call failed because the fee was already paid.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_041_fr__t2": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 12,
+  "explanation": "The customer asked for the waiver only after the payment was posted (FR instruction wording); the later waive_late_fee call failed because the fee was already paid.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_006_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 10,
+  "explanation": "The agent scheduled the payment for the requested 2026-04-20 without noticing it is past the latest allowed date (2026-04-15).",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_006_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 10,
+  "explanation": "The agent scheduled the payment for the requested 2026-04-20 without noticing it is past the latest allowed date (2026-04-15).",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_006_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 10,
+  "explanation": "The agent scheduled the payment for the requested 2026-04-20 without noticing it is past the latest allowed date (2026-04-15).",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_006_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 10,
+  "explanation": "The agent scheduled the payment for the requested 2026-04-20 without noticing it is past the latest allowed date (2026-04-15).",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_015_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 12,
+  "explanation": "The agent refused the change, reading the 2025-03-01 change as within 12 months although the policy's window starts on 2025-03-16.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_015_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 8,
+  "explanation": "The agent refused the change, reading the 2025-03-01 change as within 12 months although the policy's window starts on 2025-03-16.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_015_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 8,
+  "explanation": "The agent refused the change, reading the 2025-03-01 change as within 12 months although the policy's window starts on 2025-03-16.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_015_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 10,
+  "explanation": "The agent refused the change, reading the 2025-03-01 change as within 12 months although the policy's window starts on 2025-03-16.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_016_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 16,
+  "explanation": "The agent changed the due day although the next due date (2026-03-21) is not more than 5 days away.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_016_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 16,
+  "explanation": "The agent changed the due day although the next due date (2026-03-21) is not more than 5 days away.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_016_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 16,
+  "explanation": "The agent changed the due day although the next due date (2026-03-21) is not more than 5 days away.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_016_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 16,
+  "explanation": "The agent changed the due day although the next due date (2026-03-21) is not more than 5 days away.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_020_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 12,
+  "explanation": "The agent stated that no fee had been waived on the loan in the last 12 months (one was waived in 2025-11) and waived the $30 fee.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_020_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 12,
+  "explanation": "The agent stated that no fee had been waived on the loan in the last 12 months (one was waived in 2025-11) and waived the $30 fee.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_020_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 12,
+  "explanation": "The agent stated that no fee had been waived on the loan in the last 12 months (one was waived in 2025-11) and waived the $30 fee.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_020_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 10,
+  "explanation": "The agent stated that no fee had been waived on the loan in the last 12 months (one was waived in 2025-11) and waived the $30 fee.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_024_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 10,
+  "explanation": "The agent enrolled the borrower in deferral_1 although the loan was originated 2025-11-02, less than 6 months ago.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_024_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 10,
+  "explanation": "The agent enrolled the borrower in deferral_1 although the loan was originated 2025-11-02, less than 6 months ago.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_024_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 10,
+  "explanation": "The agent enrolled the borrower in deferral_1 although the loan was originated 2025-11-02, less than 6 months ago.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_033_fr__t0": {
+  "cause": "missed_transfer",
+  "rule": "V2",
+  "turn": 10,
+  "explanation": "After the second wrong postal code the agent told the caller they were being transferred but never called transfer_to_human_agents.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_038_fr__t0": {
+  "cause": "missed_transfer",
+  "rule": "P6",
+  "turn": 10,
+  "explanation": "The agent took a $300 payment on a charged-off loan instead of transferring with reason other.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_039_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 10,
+  "explanation": "The agent waived the $30 fee although another fee on the loan was waived in 2025-11 (within 12 months); autopay was set correctly.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_039_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 10,
+  "explanation": "The agent waived the $30 fee although another fee on the loan was waived in 2025-11 (within 12 months); autopay was set correctly.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_039_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 10,
+  "explanation": "The agent waived the $30 fee although another fee on the loan was waived in 2025-11 (within 12 months); autopay was set correctly.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_039_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 10,
+  "explanation": "The agent waived the $30 fee although another fee on the loan was waived in 2025-11 (within 12 months); autopay was set correctly.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_041_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer asked for the waiver only after the payment was posted (FR instruction wording); the later waive_late_fee call failed because the fee was already paid.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_041_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer asked for the waiver only after the payment was posted (FR instruction wording); the later waive_late_fee call failed because the fee was already paid.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_041_fr__t2": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer asked for the waiver only after the payment was posted (FR instruction wording); the later waive_late_fee call failed because the fee was already paid.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_041_fr__t3": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer asked for the waiver only after the payment was posted (FR instruction wording); the later waive_late_fee call failed because the fee was already paid.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_048_fr__t2": {
+  "cause": "verification",
+  "rule": "V1",
+  "turn": 16,
+  "explanation": "The agent checked the caller's own details against the other borrower's (Hélène's) record, declared verification failed and refused the payment on the shared loan.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_014_en__t0": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_014_en__t1": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_014_en__t2": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_014_en__t3": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_020_en__t0": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_020_en__t1": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_020_en__t2": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_020_en__t3": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_029_en__t0": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 11,
+  "explanation": "The agent offered to change the due date so autopay could run on the 20th, and the customer accepted although its instructions say to refuse any other change and to take the latest allowed autopay day.",
+  "sim_major": true
+ },
+ "gemini_pro_C1__ls_034_en__t0": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 4,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_034_en__t1": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 8,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_034_en__t2": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 6,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_034_en__t3": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 8,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_048_en__t2": {
+  "cause": "unnecessary_transfer",
+  "rule": "A4",
+  "turn": 10,
+  "explanation": "When the co-borrower asked about the other borrower's loan, the agent treated it as two failed verifications and transferred instead of denying that request and serving the shared-loan payment.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_014_fr__t0": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_014_fr__t1": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_014_fr__t2": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_014_fr__t3": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_020_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_020_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_020_fr__t2": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_020_fr__t3": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_034_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 8,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_034_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 4,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_034_fr__t2": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 8,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_034_fr__t3": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 4,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_014_fr__t0": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_014_fr__t2": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_014_fr__t3": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the due date change was correctly denied, the customer asked whether a supervisor could approve it without asking for a human, and the agent transferred (customer_request) instead of holding the denial.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_020_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_020_fr__t2": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_020_fr__t3": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_029_fr__t0": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 13,
+  "explanation": "The agent offered a due date change (to the 28th) to allow a later autopay day, and the customer accepted although its instructions say to refuse any other change and to take the latest allowed autopay day.",
+  "sim_major": true
+ },
+ "gemini_pro_C3__ls_029_fr__t1": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 11,
+  "explanation": "The agent offered to change the due date so autopay could run on the 20th, and the customer accepted although its instructions say to refuse any other change and to take the latest allowed autopay day.",
+  "sim_major": true
+ },
+ "gemini_pro_C3__ls_029_fr__t2": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 11,
+  "explanation": "The agent offered to change the due date so autopay could run on the 20th, and the customer accepted although its instructions say to refuse any other change and to take the latest allowed autopay day.",
+  "sim_major": true
+ },
+ "gemini_pro_C3__ls_034_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 8,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_034_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 4,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_034_fr__t2": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 8,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_034_fr__t3": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 8,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_041_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 12,
+  "explanation": "The agent offered to waive the fee first, but the customer (not yet allowed by the FR instruction wording to raise the fee) confirmed only the payment, then asked for the waiver after the fee was paid.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_042_fr__t0": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 7,
+  "explanation": "After the wrong date of birth, the agent asked for an email or phone; the customer ended with ###OUT-OF-SCOPE### instead of apologizing and giving the real date of birth as instructed.",
+  "sim_major": true
+ },
+ "nemotron_C1__ls_004_en__t3": {
+  "cause": "model_output",
+  "rule": "",
+  "turn": null,
+  "explanation": "The agent model returned an empty message, which tau2 rejects; counted as a failure (plan Section 7 rule 2).",
+  "sim_major": false
+ },
+ "nemotron_C1__ls_044_en__t2": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 14,
+  "explanation": "The agent enrolled deferral_1 although the customer gave no loss of income or unexpected expense.",
+  "sim_major": false
+ },
+ "nemotron_C1__ls_048_en__t3": {
+  "cause": "wrong_arguments",
+  "rule": "P2",
+  "turn": 14,
+  "explanation": "The agent took 'this Friday' to be 2026-03-21 (a Saturday) instead of 2026-03-20 and scheduled the payment for the wrong date.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_023_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 10,
+  "explanation": "The agent read the plan that started 2024-12-01 as within 12 months (the window starts 2025-03-16) and refused the reduced-payment plan; the customer then took a partial payment instead.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_023_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 10,
+  "explanation": "The agent read the plan that started 2024-12-01 as within 12 months (the window starts 2025-03-16) and refused the reduced-payment plan; the customer then took a partial payment instead.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_023_fr__t3": {
+  "cause": "model_output",
+  "rule": "",
+  "turn": null,
+  "explanation": "The agent model returned an empty message, which tau2 rejects; counted as a failure (plan Section 7 rule 2).",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_031_fr__t1": {
+  "cause": "unnecessary_transfer",
+  "rule": "A3",
+  "turn": 10,
+  "explanation": "The unlisted spouse should simply have been refused; the agent instead transferred her for failed verification.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_031_fr__t2": {
+  "cause": "unnecessary_transfer",
+  "rule": "A3",
+  "turn": 10,
+  "explanation": "The unlisted spouse should simply have been refused; the agent instead transferred her for failed verification.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_041_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 12,
+  "explanation": "The customer had not yet raised the fee (FR instruction wording); the agent offered 323.89 to clear past due plus fee and the customer paid that, so the fee was paid instead of waived.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_041_fr__t1": {
+  "cause": "wrong_arguments",
+  "rule": "P1",
+  "turn": 16,
+  "explanation": "The agent correctly waived the fee first, but then posted the 323.89 the customer had picked before the waiver instead of restating the 298.89 now needed.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_041_fr__t2": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 12,
+  "explanation": "The customer mentioned the fee only after the payment was posted (FR instruction wording), so the agent paid first and the fee could no longer be waived.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_041_fr__t3": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer had not yet raised the fee (FR instruction wording); the agent offered 323.89 to clear past due plus fee and the customer paid that, so the fee was paid instead of waived.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_042_fr__t1": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 7,
+  "explanation": "After the wrong date of birth, the agent asked for an email or phone; the customer ended with ###OUT-OF-SCOPE### instead of apologizing and giving the real date of birth as instructed.",
+  "sim_major": true
+ },
+ "nemotron_C3__ls_041_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 16,
+  "explanation": "The customer mentioned the fee only after the payment was posted (FR instruction wording), so the agent paid first and the fee could no longer be waived.",
+  "sim_major": false
+ },
+ "nemotron_C3__ls_041_fr__t2": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer had not yet raised the fee (FR instruction wording); the agent offered 323.89 to clear past due plus fee and the customer paid that, so the fee was paid instead of waived.",
+  "sim_major": false
+ },
+ "nemotron_C3__ls_044_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 12,
+  "explanation": "The agent enrolled deferral_1 although the customer gave no loss of income or unexpected expense.",
+  "sim_major": false
+ },
+ "qwen_C1__ls_020_en__t0": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "qwen_C1__ls_034_en__t1": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 6,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "qwen_C1__ls_036_en__t1": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 5,
+  "explanation": "After the correct legal transfer, the customer did not end the conversation and kept repeating the question, and the agent transferred again each time (10 transfer records).",
+  "sim_major": true
+ },
+ "qwen_C2__ls_016_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 12,
+  "explanation": "The agent changed the due day although the next due date (2026-03-21) is not more than 5 days away.",
+  "sim_major": false
+ },
+ "qwen_C2__ls_020_fr__t1": {
+  "cause": "model_output",
+  "rule": "",
+  "turn": null,
+  "explanation": "The agent model returned an empty message, which tau2 rejects; counted as a failure (plan Section 7 rule 2).",
+  "sim_major": false
+ },
+ "qwen_C2__ls_023_fr__t0": {
+  "cause": "model_output",
+  "rule": "",
+  "turn": null,
+  "explanation": "The agent model returned an empty message, which tau2 rejects; counted as a failure (plan Section 7 rule 2).",
+  "sim_major": false
+ },
+ "qwen_C2__ls_031_fr__t0": {
+  "cause": "model_output",
+  "rule": "",
+  "turn": null,
+  "explanation": "The agent model returned an empty message, which tau2 rejects; counted as a failure (plan Section 7 rule 2).",
+  "sim_major": false
+ },
+ "qwen_C2__ls_039_fr__t1": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 11,
+  "explanation": "The customer confirmed the autopay and ended the conversation (###STOP###) in the same message, against its instructions, so the agent never got to enable it.",
+  "sim_major": true
+ },
+ "qwen_C2__ls_041_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 12,
+  "explanation": "The customer mentioned the fee only after the payment was posted (FR instruction wording), so the agent paid first and the fee could no longer be waived.",
+  "sim_major": false
+ },
+ "qwen_C3__ls_020_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "After the waiver was correctly denied, the customer said the fee was not their fault (bank delay) and the agent transferred as a fee dispute; the policy lists 'disputes a fee' as a transfer reason, so this reading is defensible although the task expects no transfer.",
+  "sim_major": false
+ },
+ "qwen_C3__ls_034_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 4,
+  "explanation": "The caller twice could not give the postal code and the agent transferred for failed verification; the task expects a plain refusal, but 'fails verification twice' can be read to cover a caller who cannot give a value twice.",
+  "sim_major": false
+ },
+ "qwen_C3__ls_041_fr__t1": {
+  "cause": "task_ambiguity",
+  "rule": "F2",
+  "turn": 14,
+  "explanation": "The customer mentioned the fee only after the payment was posted (FR instruction wording), so the agent paid first and the fee could no longer be waived.",
+  "sim_major": false
+ },
+ "qwen_C3__ls_042_fr__t1": {
+  "cause": "model_output",
+  "rule": "",
+  "turn": null,
+  "explanation": "The agent model returned an empty message, which tau2 rejects; counted as a failure (plan Section 7 rule 2).",
+  "sim_major": false
+ }
+}
