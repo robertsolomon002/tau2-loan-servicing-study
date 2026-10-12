@@ -258,3 +258,5 @@ That makes 285 of Qwen's 576 planned conversations (95 per cell). Trials 3 and 4
 - The 10-test Holm correction is unchanged, since Qwen still gets both comparisons.
 
 The other four models keep the full design.
+
+**Correction (2026-10-12, Stage 4.3 close-out; arithmetic only, no design change).** The sentence "The study total drops from 2,880 to 2,595 planned conversations" is wrong. With Qwen at 2 trials, 2,592 conversations are planned (4 models × 576 + Qwen 2 trials × 48 tasks × 3 conditions = 288). Of those, 2,589 finished and the 3 Qwen conversations listed above are missing. The original sentence is left as written.

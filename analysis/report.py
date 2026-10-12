@@ -36,7 +36,7 @@ from analysis.load import (
 
 SUMMARY_CSV = REPO / "results" / "summary.csv"
 RESULTS_MD = REPO / "results" / "RESULTS.md"
-TRIALS = 4
+TRIALS = 4  # per cell in the plan; Qwen has 2 (Amendment 2, `STOPPED_TRIALS`)
 TASKS = 48
 # An agent that never writes scores up to 13/48; 11/48 if it also never reads
 # out an id (docs/DOMAIN_SPEC.md, plan Section 6.1).
@@ -110,8 +110,11 @@ class Report:
         self.df = df
         self.models = complete_models(df)
         self.rows: list[dict] = []
+        # Planned trials per model: every planned conversation is a row of df.
+        planned = df[df["model"].isin(self.models)].groupby("model", observed=True)
+        self.n_trials = [int(planned["trial"].nunique()[m]) for m in self.models]
         self.successes, self.trials = success_arrays(df, self.models)
-        self.rates = metrics.drop_incomplete(self.successes, self.trials, TRIALS)
+        self.rates = metrics.drop_incomplete(self.successes, self.trials, self.n_trials)
         self.boot = metrics.bootstrap_means(self.rates)
         with np.errstate(invalid="ignore"):
             self.pass1 = np.nanmean(self.rates, axis=0)
@@ -135,6 +138,25 @@ class Report:
 
     def mi(self, model: str) -> int:
         return self.models.index(model)
+
+    def n_tasks(self, model: str) -> int:
+        """Tasks kept for the model (Section 7 rule 1 drops the others)."""
+        return int(np.sum(~np.isnan(self.rates[:, self.mi(model), 0])))
+
+    def reduced(self) -> list[str]:
+        """Models analyzed with fewer trials or tasks than planned."""
+        return [
+            m for m in self.models
+            if self.n_trials[self.mi(m)] < TRIALS or self.n_tasks(m) < TASKS
+        ]  # fmt: skip
+
+    def reduced_note(self) -> str:
+        """e.g. 'Qwen 3.8 27B (free) has 2 trials and 45 tasks'."""
+        return "; ".join(
+            f"{MODEL_NAMES[m]} has {self.n_trials[self.mi(m)]} trials and "
+            f"{self.n_tasks(m)} tasks"
+            for m in self.reduced()
+        )
 
     def ci(self, model: str, condition: str) -> tuple[float, float]:
         return metrics.percentile_ci(
@@ -199,7 +221,7 @@ class Report:
                     self.pass1[self.mi(model), CONDITIONS.index(condition)],
                     self.ci(model, condition),
                 )
-                n = int(np.sum(~np.isnan(self.rates[:, self.mi(model), 0])))
+                n = self.n_tasks(model)
                 self.record("confirmatory", "pass^1", value, model=model,
                             condition=condition, ci=ci, n=n,
                             detail="n = tasks; paired bootstrap over tasks")  # fmt: skip
@@ -223,12 +245,9 @@ class Report:
             keep = ~np.isnan(self.rates[:, j, 0])
             sa = self.successes[keep, j, CONDITIONS.index(a)]
             sb = self.successes[keep, j, CONDITIONS.index(b)]
-            b1, c1, p = metrics.mcnemar_exact(
-                sa >= metrics.MAJORITY, sb >= metrics.MAJORITY
-            )
-            _, _, p2 = metrics.mcnemar_exact(
-                sa >= metrics.MAJORITY_SENSITIVITY, sb >= metrics.MAJORITY_SENSITIVITY
-            )
+            majority, sensitivity = metrics.MAJORITY[self.n_trials[j]]
+            b1, c1, p = metrics.mcnemar_exact(sa >= majority, sb >= majority)
+            _, _, p2 = metrics.mcnemar_exact(sa >= sensitivity, sb >= sensitivity)
             results.append([hyp, model, a, b, value, ci, b1, c1, p, p2])
         adjusted = metrics.holm([r[8] for r in results])
         out = {"H1": [], "H2": []}
@@ -236,14 +255,16 @@ class Report:
             results, adjusted, strict=True
         ):
             comp = f"{a}-{b}"
+            n = self.n_trials[self.mi(model)]
+            majority, sensitivity = metrics.MAJORITY[n]
             self.record("confirmatory", "pass^1 difference", value, model=model,
-                        comparison=comp, ci=ci, detail=hyp)  # fmt: skip
+                        comparison=comp, ci=ci, n=self.n_tasks(model), detail=hyp)  # fmt: skip
             self.record("confirmatory", "mcnemar_p", p, model=model, comparison=comp,
-                        detail=f"{hyp}; majority >=3/4; b={b1} c={c1}")  # fmt: skip
+                        detail=f"{hyp}; majority >={majority}/{n}; b={b1} c={c1}")  # fmt: skip
             self.record("confirmatory", "mcnemar_p_holm", p_holm, model=model,
                         comparison=comp, detail=f"{hyp}; Holm over {len(results)} tests")  # fmt: skip
             self.record("confirmatory", "mcnemar_p_sensitivity", p2, model=model,
-                        comparison=comp, detail=f"{hyp}; majority >=2/4")  # fmt: skip
+                        comparison=comp, detail=f"{hyp}; majority >={sensitivity}/{n}")  # fmt: skip
             j = self.mi(model)
             out[hyp].append(
                 [
@@ -261,10 +282,10 @@ class Report:
         headers = {
             "H1": ["Model", "C1", "C2", "C1 − C2, points [95% CI]", "CI excludes 0",
                    "Tasks solved only in C1 / only in C2", "McNemar p",
-                   "Holm p", "p (≥2/4)"],
+                   "Holm p", "p (sensitivity)"],
             "H2": ["Model", "C3", "C2", "C3 − C2, points [95% CI]", "CI excludes 0",
                    "Tasks solved only in C3 / only in C2", "McNemar p",
-                   "Holm p", "p (≥2/4)"],
+                   "Holm p", "p (sensitivity)"],
         }  # fmt: skip
         return table(headers["H1"], out["H1"]), table(headers["H2"], out["H2"])
 
@@ -308,6 +329,9 @@ class Report:
                 keep = ~np.isnan(self.rates[:, j, k_])
                 values = []
                 for k in range(1, TRIALS + 1):
+                    if k > self.n_trials[j]:  # Amendment 2: Qwen has k <= 2
+                        values.append("–")
+                        continue
                     v = metrics.pass_hat_k_mean(
                         self.successes[keep, j, k_], self.trials[keep, j, k_], k
                     )
@@ -331,12 +355,13 @@ class Report:
                 j = self.mi(model)
                 parts = []
                 for condition in CONDITIONS:
+                    group_rates = self.rates[idx, j, CONDITIONS.index(condition)]
                     with np.errstate(invalid="ignore"):
-                        v = float(
-                            np.nanmean(self.rates[idx, j, CONDITIONS.index(condition)])
-                        )
+                        v = float(np.nanmean(group_rates))
                     self.record("secondary", f"pass^1 by {column}", v, model=model,
-                                condition=condition, n=len(idx), detail=str(group))  # fmt: skip
+                                condition=condition,
+                                n=int(np.sum(~np.isnan(group_rates))),
+                                detail=str(group))  # fmt: skip
                     parts.append(f"{100 * v:.0f}")
                 cells.append(" / ".join(parts))
             name = {True: "hard", False: "other"}.get(group, group)
@@ -561,9 +586,31 @@ def build(df: pd.DataFrame, raw: Path) -> tuple[pd.DataFrame, str]:
     sens = rep.sensitivity_section()
     switch_pref, switch_name = rep.language_switch_section()
     n_tests = 2 * len(rep.models)
+    reduced = rep.reduced_note()
+    # Amendment 2 notes; empty when every model has the full design.
+    amended = (
+        f" Plan Amendment 2: {reduced}. A task with a missing conversation is "
+        "dropped for that model in every condition (Section 7 rule 1)."
+        if reduced
+        else ""
+    )
+    short = [m for m in rep.models if rep.n_trials[rep.mi(m)] < TRIALS]
+    short_names = ", ".join(MODEL_NAMES[m] for m in short)
+    mcnemar_note = (
+        f" ({short_names}, 2 trials: 2 of 2, and 1 of 2 for the sensitivity check)"
+        if short
+        else ""
+    )
+    pass_k_note = f" {short_names} has 2 trials, so only k = 1 and 2." if short else ""
+    h3_note = (
+        f" {short_names}'s gap rests on 2 trials per task and only its kept "
+        "tasks; the frontier model's on 4 trials and all 48 tasks (Amendment 2)."
+        if short
+        else ""
+    )
 
     status_line = (
-        "**Final:** every cell is complete."
+        "**Final:** every cell is complete." + amended
         if final
         else (
             f"**Preliminary: {len(rep.models)} of {len(configs)} models.** "
@@ -593,8 +640,8 @@ pre-registration, `docs/EXPERIMENT_PLAN.md` Sections 6 and 7.
   {as_of[:16].replace("T", " ")} UTC. Runs used study commit `{info["study_commit"]}`
   and fork commit `{info["fork_commit"]}`; user simulator `gpt-5.4-mini`.
 - pass^1 is the mean over the 48 tasks of each task's success rate over its 4
-  trials. Intervals are 95% paired-bootstrap percentile intervals over tasks
-  (10,000 resamples, seed 2026).
+  trials{f" ({reduced})" if reduced else ""}. Intervals are 95% paired-bootstrap
+  percentile intervals over tasks (10,000 resamples, seed 2026).
 - **Do-nothing baseline:** an agent that never writes scores up to
   {pct(DO_NOTHING[0])} (13/48), or {pct(DO_NOTHING[1])} if it also never reads
   out an id.
@@ -615,8 +662,8 @@ pre-registration, `docs/EXPERIMENT_PLAN.md` Sections 6 and 7.
 ### H1: is C2 (English policy, French customer) below C1 (English throughout)?
 
 Positive differences mean French customers did worse. McNemar: exact test on
-tasks solved in at least 3 of 4 trials; the last column uses at least 2 of 4.
-Holm adjusts over the {n_tests} H1 and H2 tests run so far.
+tasks solved in at least 3 of 4 trials; the last column uses at least 2 of 4{mcnemar_note}.
+Holm adjusts over the {n_tests} H1 and H2 tests{"" if final else " run so far"}.
 
 {h1}
 
@@ -628,7 +675,7 @@ Positive differences mean the French policy did better.
 
 ### H3: is the C1 − C2 gap larger for the smaller and open models than for the frontier model?
 
-Positive values mean a larger French gap than {MODEL_NAMES[FRONTIER]}'s.
+Positive values mean a larger French gap than {MODEL_NAMES[FRONTIER]}'s.{h3_note}
 
 {h3}
 
@@ -641,7 +688,7 @@ Pending: needs the Stage 5.2 failure classification.
 ### pass^k (k = 1 to 4)
 
 pass^k is the chance that k trials of a task all succeed, averaged over tasks
-(tau2's formula). It shows consistency, not just average success.
+(tau2's formula). It shows consistency, not just average success.{pass_k_note}
 
 {pass_k}
 

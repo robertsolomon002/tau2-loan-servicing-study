@@ -13,6 +13,10 @@ Each conversation's `status` follows plan Section 7:
   drops the task for that model in every condition.
 - `pending`: not run yet (the free models are still running).
 
+Plan Amendment 2: OpenRouter withdrew the free Qwen endpoint after Qwen's
+second trial, so Qwen is planned with 2 trials (`STOPPED_TRIALS`), and its
+unfinished conversations in them are `missing`, not `pending`.
+
 Language columns use the Stage 3.3 detector and cleaning
 (`scripts/user_sim_eval.py`): ids, numbers, emails, postal codes, DB names and
 markdown are removed, tau2's fixed English greeting and turns with fewer than
@@ -49,6 +53,8 @@ MODEL_NAMES = {
     "gemini_pro": "Gemini 3.1 Pro",
 }
 FRONTIER = "gemini_pro"
+# Plan Amendment 2: models stopped early, with the trials they are analyzed on.
+STOPPED_TRIALS = {"qwen": 2}
 
 # For the exploratory C1 language-switch analysis (plan Section 6.3): Rob's
 # alternative explanation is a French name rather than `preferred_language`.
@@ -152,9 +158,15 @@ def read_attempts(cell_path: Path) -> dict[tuple[str, int], list[dict]]:
 
 
 def load_cell(
-    raw: Path, model: str, condition: str, trials: int, max_attempts: int
+    raw: Path,
+    model: str,
+    condition: str,
+    trials: int,
+    max_attempts: int,
+    stopped: bool = False,
 ) -> list[dict]:
-    """Rows for every planned conversation of one cell."""
+    """Rows for every planned conversation of one cell. In a stopped model's
+    cell, a conversation that never finished is missing (Amendment 2)."""
     cell = f"{model}_{condition}"
     cell_path = raw / cell
     lang = "en" if condition == "C1" else "fr"
@@ -206,7 +218,9 @@ def load_cell(
                     r["outcome"] not in ("done", "model_failure") for r in recs
                 )
                 row["status"] = (
-                    "missing" if failed_attempts >= max_attempts else "pending"
+                    "missing"
+                    if stopped or failed_attempts >= max_attempts
+                    else "pending"
                 )
             rows.append(row)
     return rows
@@ -229,8 +243,11 @@ def load(
     ]
     rows = []
     for model, cfg in model_configs(configs).items():
+        trials = STOPPED_TRIALS.get(model, cfg["trials"])
         for condition in cfg["conditions"]:
-            rows += load_cell(raw, model, condition, cfg["trials"], max_attempts)
+            rows += load_cell(
+                raw, model, condition, trials, max_attempts, model in STOPPED_TRIALS
+            )
     df = pd.DataFrame(rows)
     df = df.join(task_table(), on="task")
     df["model"] = pd.Categorical(df["model"], categories=MODELS, ordered=True)

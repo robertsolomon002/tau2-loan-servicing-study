@@ -55,6 +55,18 @@ def test_incomplete_task_is_dropped_for_that_model_in_every_condition():
     assert not np.isnan(rates[0]).any()
 
 
+def test_planned_trials_can_differ_per_model():
+    # Amendment 2: model 0 has 4 planned trials, model 1 has 2.
+    successes = np.full((2, 2, 3), 2.0)
+    trials = np.full((2, 2, 3), 2.0)
+    trials[:, 0] = 4
+    trials[1, 1, 0] = 1  # task 2, model 1, C1: one of its 2 conversations missing
+    rates = metrics.drop_incomplete(successes, trials, [4, 2])
+    assert not np.isnan(rates[:, 0]).any()
+    assert np.allclose(rates[0, 1], 1.0)  # 2 of 2 is complete for model 1
+    assert np.isnan(rates[1, 1]).all()
+
+
 def test_bootstrap_is_deterministic_and_paired():
     rng = np.random.default_rng(0)
     c1 = rng.integers(0, 5, size=48) / 4
@@ -189,16 +201,34 @@ def test_load_cell_statuses_languages_and_costs(tmp_path):
     assert rows[("ls_002_en", 1)]["status"] == "pending"
 
 
+def test_load_cell_stopped_model_marks_unfinished_as_missing(tmp_path):
+    # Amendment 2: a stopped model's unfinished conversations are missing,
+    # even after fewer than max_attempts attempts.
+    cell = tmp_path / "qwen_C1"
+    (cell / "sims").mkdir(parents=True)
+    (cell / "cell.json").write_text(
+        json.dumps({"task_ids": ["ls_001_en"]}), encoding="utf-8"
+    )
+    _write_sim(cell / "sims" / "ls_001_en__t0.json", [])
+    (cell / "attempts.jsonl").write_text(
+        json.dumps({"task_id": "ls_001_en", "trial": 1, "outcome": "provider_error",
+                    "cost": {}, "time": "2026-10-05T21:00:00+00:00"}),
+        encoding="utf-8",
+    )  # fmt: skip
+    rows = load_cell(tmp_path, "qwen", "C1", trials=2, max_attempts=6, stopped=True)
+    assert [r["status"] for r in rows] == ["done", "missing"]
+
+
 # ---------- report ----------
 
 
-def _synthetic_df(model: str, seed: int = 0) -> pd.DataFrame:
-    """A complete model: 48 tasks x 3 conditions x 4 trials."""
+def _synthetic_df(model: str, seed: int = 0, trials: int = TRIALS) -> pd.DataFrame:
+    """A complete model: 48 tasks x 3 conditions x `trials` trials."""
     rng = np.random.default_rng(seed)
     rows = []
     for condition in CONDITIONS:
         for task in range(1, TASKS + 1):
-            for trial in range(TRIALS):
+            for trial in range(trials):
                 success = bool(rng.random() < 0.85)
                 rows.append(
                     {
@@ -238,3 +268,45 @@ def test_report_numbers_match_a_direct_computation(tmp_path):
     assert h1.iloc[0]["value"] == pytest.approx(pass1["C1"] - pass1["C2"])
     assert "Preliminary: 1 of 5 models" in md
     assert not math.isnan(h1.iloc[0]["ci_low"])
+
+
+def test_report_with_a_two_trial_model(tmp_path):
+    """Amendment 2: Qwen with 2 trials and one missing conversation (task 20)."""
+    qwen = _synthetic_df("qwen", seed=1, trials=2)
+    missing = (qwen["task"] == 20) & (qwen["condition"] == "C2") & (qwen["trial"] == 0)
+    qwen["success"] = qwen["success"].astype(object)  # as in load(): NaN if unfinished
+    qwen.loc[missing, ["status", "success", "reward"]] = ["missing", np.nan, np.nan]
+    df = pd.concat([_synthetic_df("gemini_pro"), qwen], ignore_index=True)
+    df["model"] = pd.Categorical(df["model"], categories=MODELS, ordered=True)
+    summary, md = build(df, tmp_path)
+
+    def get(metric, **kw):
+        rows = summary[(summary["metric"] == metric) & (summary["model"] == "qwen")]
+        for k, v in kw.items():
+            rows = rows[rows[k] == v]
+        return rows
+
+    # Task 20 is dropped in every condition; pass^1 is over the other 47.
+    kept = qwen[qwen["task"] != 20]
+    pass1 = (
+        kept.groupby(["condition", "task"])["success"]
+        .mean()
+        .groupby("condition")
+        .mean()
+    )
+    got = get("pass^1", section="confirmatory")
+    assert set(got["n"]) == {47}
+    for _, row in got.iterrows():
+        assert row["value"] == pytest.approx(pass1[row["condition"]])
+    # pass^k only up to k = 2; McNemar majorities 2/2 and 1/2.
+    assert len(get("pass^2")) == 3 and get("pass^3").empty
+    assert get("mcnemar_p")["detail"].str.contains(">=2/2").all()
+    assert get("mcnemar_p_sensitivity")["detail"].str.contains(">=1/2").all()
+    gemini = summary[
+        (summary["metric"] == "mcnemar_p") & (summary["model"] == "gemini_pro")
+    ]
+    assert gemini["detail"].str.contains(">=3/4").all()
+    by_hard = get("pass^1 by hard", condition="C1")
+    assert by_hard["n"].sum() == 47
+    assert "Qwen 3.8 27B (free) has 2 trials and 47 tasks" in md
+    assert "only k = 1 and 2" in md

@@ -15,9 +15,10 @@ import numpy as np
 N_RESAMPLES = 10_000
 SEED = 2026
 # Plan Section 6.3: a task is solved in a condition if it succeeded in at least
-# 3 of its 4 trials; the sensitivity check uses at least 2 of 4.
-MAJORITY = 3
-MAJORITY_SENSITIVITY = 2
+# 3 of its 4 trials; the sensitivity check uses at least 2 of 4. Amendment 2
+# (Qwen, 2 trials): 2 of 2, and 1 of 2 for the sensitivity check.
+# Trials -> (majority, sensitivity majority).
+MAJORITY = {4: (3, 2), 2: (2, 1)}
 
 
 def pass_hat_k(num_trials: int, success_count: int, k: int) -> float:
@@ -38,11 +39,13 @@ def pass_hat_k_mean(successes: np.ndarray, trials: np.ndarray, k: int) -> float:
     return float(np.mean(values)) if values else math.nan
 
 
-def drop_incomplete(successes: np.ndarray, trials: np.ndarray, planned: int):
+def drop_incomplete(successes: np.ndarray, trials: np.ndarray, planned):
     """Per-task success rates [task, model, condition]; a task with any
-    conversation missing for a model is NaN in every condition of that model."""
-    rates = successes / trials
-    incomplete = (trials < planned).any(axis=2, keepdims=True)
+    conversation missing for a model is NaN in every condition of that model.
+    `planned` is the planned trials: one number, or one per model."""
+    with np.errstate(invalid="ignore", divide="ignore"):
+        rates = successes / trials
+    incomplete = (trials < np.reshape(planned, (1, -1, 1))).any(axis=2, keepdims=True)
     return np.where(incomplete, np.nan, rates)
 
 
