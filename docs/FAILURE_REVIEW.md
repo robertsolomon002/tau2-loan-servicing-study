@@ -1,6 +1,6 @@
 # Failure review (Stage 5.2, for Rob)
 
-**Status:** Claude has labelled all 153 failed conversations (`data/failure_labels.json`). Rob's blind labels on the 40-conversation sample are pending.
+**Status:** Claude has labelled all 153 failed conversations (`data/failure_labels.json`). On 2026-10-13 Rob chose not to label the sample; two independent AI labellers labelled it blind instead (see Agreement and `docs/LOG.md`). The labelling instructions for Rob below are kept for the record.
 
 ## What this is
 
@@ -45,4 +45,12 @@ Every answer is saved at once to `data/failure_labels_rob.json`. To keep the lab
 
 ## Agreement
 
-*To be filled in after Rob labels the sample.*
+Labelled blind by a fresh Claude Code subagent and by OpenAI `gpt-6.1-sol` (`scripts/label_failures_ai.py`; $0.17). Primary cause, 40 conversations:
+
+| Pair | Same cause | Cohen's kappa |
+|---|---|---|
+| Claude vs subagent | 22/40 | 0.43 |
+| Claude vs GPT | 26/40 | 0.55 |
+| Subagent vs GPT | 31/40 | 0.69 |
+
+Fleiss' kappa across all three: 0.54. Under the rule fixed before labelling (both kappas with Claude at least 0.6), Claude's labels do not pass, so `docs/FAILURES.md` reports the majority label on the 40. Post-hoc: 16 of the 20 items with any disagreement are tasks 41, 34 and 20, where Claude labelled `task_ambiguity` and the other labellers named the surface cause. No human labelled the sample.

@@ -1,0 +1,282 @@
+{
+ "deepseek_C1__ls_014_en__t0": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "The agent interpreted asking whether a supervisor could approve an exception as an explicit request for a human and transferred, although the customer had only challenged the policy denial.",
+  "sim_major": false
+ },
+ "deepseek_C1__ls_014_en__t3": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 14,
+  "explanation": "The agent treated a question about whether a supervisor could approve an exception as an explicit request for a human and transferred, instead of maintaining the due-date-change refusal.",
+  "sim_major": false
+ },
+ "deepseek_C2__ls_041_fr__t0": {
+  "cause": "user_sim_error",
+  "rule": "F2",
+  "turn": 1,
+  "explanation": "The simulator omitted the required fee-waiver request from its first message and raised it only after payment, preventing the agent from waiving the fee before it was paid.",
+  "sim_major": true
+ },
+ "deepseek_C2__ls_041_fr__t2": {
+  "cause": "user_sim_error",
+  "rule": "F2",
+  "turn": 1,
+  "explanation": "The simulator omitted the required fee-waiver request from its first message and raised it only after confirming and completing the payment, preventing the required waiver-before-payment sequence.",
+  "sim_major": true
+ },
+ "deepseek_C3__ls_048_fr__t3": {
+  "cause": "wrong_arguments",
+  "rule": "",
+  "turn": 12,
+  "explanation": "The agent incorrectly resolved “this Friday” as 2026-03-21 instead of 2026-03-20 and consequently scheduled the payment for the wrong date.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_015_en__t2": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 14,
+  "explanation": "The agent incorrectly treated the previous due date change on 2025-03-01 as within the last 12 months, although it was before the 2025-03-16 cutoff, and denied an eligible change to day 20.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_034_en__t0": {
+  "cause": "user_sim_error",
+  "rule": "V2",
+  "turn": 9,
+  "explanation": "Instead of simply saying he would call back later as instructed, the simulator explicitly requested another verification attempt, creating a second failure that required a transfer under V2.",
+  "sim_major": true
+ },
+ "flash_lite_C1__ls_034_en__t2": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 10,
+  "explanation": "The expected outcome forbids any transfer, but V2 reasonably permits counting the caller’s repeated inability to supply the postal code as two failed verifications requiring transfer.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_039_en__t3": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 8,
+  "explanation": "The agent incorrectly declared the late fee eligible and then waived it despite a waiver on the same loan within the last 12 months.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_040_en__t3": {
+  "cause": "rule_misapplied",
+  "rule": "C3",
+  "turn": 16,
+  "explanation": "The agent sent a statement after updating the borrower's email in the same conversation, despite the security rule forbidding documents during that call.",
+  "sim_major": false
+ },
+ "flash_lite_C1__ls_042_en__t2": {
+  "cause": "verification",
+  "rule": "V1",
+  "turn": 2,
+  "explanation": "The agent invented a date of birth instead of asking for it, then counted its unsuccessful lookups as a caller verification failure and transferred after only one actual failed attempt.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_006_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 8,
+  "explanation": "The agent accepted and sought confirmation for 2026-04-20 instead of refusing the out-of-range date and offering the latest permitted date, 2026-04-15.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_006_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 8,
+  "explanation": "The agent offered to confirm the prohibited payment date of 2026-04-20 instead of refusing it and allowing the borrower to choose the latest permitted date, 2026-04-15.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_024_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 10,
+  "explanation": "The agent offered a hardship plan despite the loan’s 2025-11-02 origination date making it less than six months old and therefore ineligible.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_024_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 10,
+  "explanation": "The agent offered a hardship plan despite the loan's 2025-11-02 origination date making it less than six months old and therefore ineligible.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_025_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 10,
+  "explanation": "The agent offered a hardship deferral despite a prior hardship plan starting on 2025-06-01, within the last 12 months, which made the loan ineligible.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_039_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 8,
+  "explanation": "The agent incorrectly declared the $30 fee eligible for a waiver despite a prior waiver on the loan within the last 12 months, then waived it.",
+  "sim_major": false
+ },
+ "flash_lite_C2__ls_041_fr__t0": {
+  "cause": "user_sim_error",
+  "rule": "F2",
+  "turn": 1,
+  "explanation": "The simulator omitted the required fee-waiver request from its first message and raised it only after the payment had paid the fee, preventing the intended waiver-before-payment sequence.",
+  "sim_major": true
+ },
+ "flash_lite_C3__ls_006_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "P2",
+  "turn": 8,
+  "explanation": "The agent offered to confirm the prohibited payment date 2026-04-20 instead of refusing it and offering the latest allowed date, 2026-04-15.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_015_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 12,
+  "explanation": "The agent incorrectly treated the previous due-date change on 2025-03-01 as within the last 12 months, although it precedes the 2025-03-16 cutoff, and denied an eligible change to day 20.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_015_fr__t1": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 8,
+  "explanation": "The agent incorrectly treated the change on 2025-03-01 as within the last 12 months, although it predates the 2025-03-16 cutoff, and denied the eligible due-date change.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_016_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "D1",
+  "turn": 16,
+  "explanation": "The agent changed the due date even though the next due date was 2026-03-21, exactly five days away, and D1 requires it to be more than five days away.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_020_fr__t0": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 10,
+  "explanation": "The agent incorrectly declared the fee eligible for waiver despite a prior waiver on the same loan in November 2025, within the last 12 months, and then waived it.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_020_fr__t3": {
+  "cause": "rule_misapplied",
+  "rule": "F1",
+  "turn": 8,
+  "explanation": "The agent incorrectly declared the fee eligible for waiver despite another fee on the loan having been waived in November 2025, within the last 12 months, and then waived it.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_024_fr__t2": {
+  "cause": "rule_misapplied",
+  "rule": "H1",
+  "turn": 8,
+  "explanation": "The agent offered hardship enrollment despite the loan originating on 2025-11-02, making it less than six months old and ineligible.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_038_fr__t0": {
+  "cause": "missed_transfer",
+  "rule": "P6",
+  "turn": 10,
+  "explanation": "The agent made a $300 payment on a charged-off loan instead of transferring the request with reason other.",
+  "sim_major": false
+ },
+ "flash_lite_C3__ls_041_fr__t2": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 1,
+  "explanation": "The simulator omitted the required waiver request from its first message and raised it only after confirming and completing the payment, which had already paid the fee and made it ineligible for waiver.",
+  "sim_major": true
+ },
+ "flash_lite_C3__ls_041_fr__t3": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 1,
+  "explanation": "The simulator omitted the required fee-waiver request from its first message and raised it only after the payment had paid the fee, preventing the intended waiver-before-payment sequence.",
+  "sim_major": true
+ },
+ "gemini_pro_C1__ls_034_en__t0": {
+  "cause": "unnecessary_transfer",
+  "rule": "V2",
+  "turn": 4,
+  "explanation": "The agent incorrectly counted the caller's repeated statement that he did not know his postal code as two failed verification attempts and transferred him instead of simply declining the payment.",
+  "sim_major": false
+ },
+ "gemini_pro_C1__ls_034_en__t3": {
+  "cause": "unnecessary_transfer",
+  "rule": "V2",
+  "turn": 8,
+  "explanation": "The agent treated the caller’s initial disclosure that they did not know the postal code as a separate failed verification attempt and transferred after only one actual verification attempt instead of refusing the payment.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_020_fr__t2": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "The agent treated pushback requesting an exception to a correctly denied waiver as a dispute and transferred, although a denied waiver is not a transfer reason.",
+  "sim_major": false
+ },
+ "gemini_pro_C2__ls_034_fr__t2": {
+  "cause": "unnecessary_transfer",
+  "rule": "V2",
+  "turn": 8,
+  "explanation": "The agent incorrectly counted the caller’s initial disclosure that he did not know his postal code as a failed verification attempt and transferred after only one actual verification attempt.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_020_fr__t0": {
+  "cause": "unnecessary_transfer",
+  "rule": "T1",
+  "turn": 12,
+  "explanation": "The agent treated pushback on a correctly denied fee waiver as a dispute and transferred, although the customer only requested an exception and did not ask for a human agent.",
+  "sim_major": false
+ },
+ "gemini_pro_C3__ls_029_fr__t0": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 13,
+  "explanation": "The simulator agreed to change the due date to 28 despite explicit instructions not to accept any other change and to choose the latest allowed autopay day, which was 11.",
+  "sim_major": true
+ },
+ "gemini_pro_C3__ls_034_fr__t0": {
+  "cause": "unnecessary_transfer",
+  "rule": "V2",
+  "turn": 8,
+  "explanation": "The agent incorrectly counted the caller's initial statement that they did not know their postal code and their subsequent response as two failed verification attempts, triggering an unwarranted transfer instead of refusing the payment.",
+  "sim_major": false
+ },
+ "nemotron_C1__ls_048_en__t3": {
+  "cause": "wrong_arguments",
+  "rule": "",
+  "turn": 16,
+  "explanation": "The agent scheduled the payment for 2026-03-21 instead of 2026-03-20 after incorrectly interpreting this Friday as March 21.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_031_fr__t1": {
+  "cause": "verification",
+  "rule": "A2",
+  "turn": 2,
+  "explanation": "The agent incorrectly required Claire’s own date of birth and postal code instead of her name plus Samuel’s verification details to check third-party authorization, leading to an unwarranted failed-verification transfer.",
+  "sim_major": false
+ },
+ "nemotron_C2__ls_041_fr__t1": {
+  "cause": "user_sim_error",
+  "rule": "",
+  "turn": 11,
+  "explanation": "The simulator agreed to pay $323.89 instead of the requested $298.89 past-due amount, violating its instruction not to agree to any other change and causing the incorrect payment.",
+  "sim_major": true
+ },
+ "qwen_C1__ls_034_en__t1": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 6,
+  "explanation": "The expected outcome excludes a transfer, but the policy does not define separate verification failures, so the caller’s repeated inability to provide the postal code reasonably supports the agent’s two-failure interpretation.",
+  "sim_major": false
+ },
+ "qwen_C3__ls_034_fr__t0": {
+  "cause": "task_ambiguity",
+  "rule": "V2",
+  "turn": 4,
+  "explanation": "The policy does not define a verification attempt, so the agent could reasonably count the caller's two statements that they cannot provide the postal code as two failures requiring transfer, despite the task expecting no changes.",
+  "sim_major": false
+ }
+}

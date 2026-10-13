@@ -260,6 +260,20 @@ def cohen_kappa(a: list[str], b: list[str]) -> float:
     return 1.0 if expected == 1 else (observed - expected) / (1 - expected)
 
 
+def fleiss_kappa(rows: list[tuple[str, ...]]) -> float:
+    """Fleiss' kappa for a fixed number of raters per item (one tuple per item)."""
+    n, m = len(rows), len(rows[0])
+    counts = [Counter(r) for r in rows]
+    p_bar = (
+        sum((sum(v * v for v in c.values()) - m) / (m * (m - 1)) for c in counts) / n
+    )
+    totals = Counter()
+    for c in counts:
+        totals.update(c)
+    p_e = sum((v / (n * m)) ** 2 for v in totals.values())
+    return 1.0 if p_e == 1 else (p_bar - p_e) / (1 - p_e)
+
+
 def agreement(sample: list[str], ours: dict, rob: dict) -> dict:
     done = [k for k in sample if k in rob]
     a = [ours[k]["cause"] for k in done]

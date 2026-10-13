@@ -67,3 +67,14 @@ def test_committed_labels_are_valid():
     labels = failures.load_labels()
     assert labels, "data/failure_labels.json is missing"
     assert failures.validate(labels) == []
+
+
+def test_fleiss_kappa():
+    # Perfect agreement, and agreement no better than chance.
+    assert failures.fleiss_kappa([("a", "a", "a"), ("b", "b", "b")]) == 1.0
+    rows = [("a", "b"), ("b", "a")]
+    assert failures.fleiss_kappa(rows) == -1.0
+    # Two raters: Fleiss equals Scott's pi; check against a hand computation.
+    rows = [("a", "a"), ("a", "a"), ("a", "b"), ("b", "b")]
+    # p_bar = 3/4; p_e = (5/8)^2 + (3/8)^2 = 34/64; kappa = (48-34)/(64-34)
+    assert abs(failures.fleiss_kappa(rows) - 14 / 30) < 1e-12
