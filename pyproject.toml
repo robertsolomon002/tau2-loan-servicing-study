@@ -8,6 +8,7 @@ license = "MIT"
 dependencies = [
     "google-auth>=2.59.1",
     "lingua-language-detector>=2.2.0",
+    "matplotlib>=3.11.2",
     "tau2",
     # tau2 at the pinned commit imports websockets from core code, but only
     # declares it in its optional "voice" extra; without it `import tau2` fails.

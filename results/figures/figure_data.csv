@@ -1,0 +1,143 @@
+section,model,condition,comparison,metric,value,ci_low,ci_high,n,detail
+confirmatory,qwen,C1,,pass^1,0.988889,0.965909,1.0,45.0,n = tasks; paired bootstrap over tasks
+confirmatory,qwen,C2,,pass^1,0.944444,0.895306,0.988636,45.0,n = tasks; paired bootstrap over tasks
+confirmatory,qwen,C3,,pass^1,0.977778,0.944444,1.0,45.0,n = tasks; paired bootstrap over tasks
+confirmatory,nemotron,C1,,pass^1,0.984375,0.963542,1.0,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,nemotron,C2,,pass^1,0.947917,0.885417,0.994792,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,nemotron,C3,,pass^1,0.984375,0.958333,1.0,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,deepseek,C1,,pass^1,0.979167,0.942708,1.0,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,deepseek,C2,,pass^1,0.958333,0.901042,1.0,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,deepseek,C3,,pass^1,0.963542,0.916667,1.0,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,flash_lite,C1,,pass^1,0.921875,0.864583,0.96875,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,flash_lite,C2,,pass^1,0.901042,0.817708,0.96875,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,flash_lite,C3,,pass^1,0.84375,0.739583,0.932292,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,gemini_pro,C1,,pass^1,0.927083,0.848958,0.989583,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,gemini_pro,C2,,pass^1,0.9375,0.854167,1.0,48.0,n = tasks; paired bootstrap over tasks
+confirmatory,gemini_pro,C3,,pass^1,0.921875,0.848958,0.979167,48.0,n = tasks; paired bootstrap over tasks
+secondary,qwen,C1,,pass^1,0.988889,,,45.0,
+secondary,qwen,C1,,pass^2,0.977778,,,45.0,
+secondary,qwen,C2,,pass^1,0.944444,,,45.0,
+secondary,qwen,C2,,pass^2,0.888889,,,45.0,
+secondary,qwen,C3,,pass^1,0.977778,,,45.0,
+secondary,qwen,C3,,pass^2,0.955556,,,45.0,
+secondary,nemotron,C1,,pass^1,0.984375,,,48.0,
+secondary,nemotron,C1,,pass^2,0.96875,,,48.0,
+secondary,nemotron,C1,,pass^3,0.953125,,,48.0,
+secondary,nemotron,C1,,pass^4,0.9375,,,48.0,
+secondary,nemotron,C2,,pass^1,0.947917,,,48.0,
+secondary,nemotron,C2,,pass^2,0.930556,,,48.0,
+secondary,nemotron,C2,,pass^3,0.921875,,,48.0,
+secondary,nemotron,C2,,pass^4,0.916667,,,48.0,
+secondary,nemotron,C3,,pass^1,0.984375,,,48.0,
+secondary,nemotron,C3,,pass^2,0.972222,,,48.0,
+secondary,nemotron,C3,,pass^3,0.963542,,,48.0,
+secondary,nemotron,C3,,pass^4,0.958333,,,48.0,
+secondary,deepseek,C1,,pass^1,0.979167,,,48.0,
+secondary,deepseek,C1,,pass^2,0.96875,,,48.0,
+secondary,deepseek,C1,,pass^3,0.963542,,,48.0,
+secondary,deepseek,C1,,pass^4,0.958333,,,48.0,
+secondary,deepseek,C2,,pass^1,0.958333,,,48.0,
+secondary,deepseek,C2,,pass^2,0.947917,,,48.0,
+secondary,deepseek,C2,,pass^3,0.942708,,,48.0,
+secondary,deepseek,C2,,pass^4,0.9375,,,48.0,
+secondary,deepseek,C3,,pass^1,0.963542,,,48.0,
+secondary,deepseek,C3,,pass^2,0.947917,,,48.0,
+secondary,deepseek,C3,,pass^3,0.942708,,,48.0,
+secondary,deepseek,C3,,pass^4,0.9375,,,48.0,
+secondary,flash_lite,C1,,pass^1,0.921875,,,48.0,
+secondary,flash_lite,C1,,pass^2,0.875,,,48.0,
+secondary,flash_lite,C1,,pass^3,0.854167,,,48.0,
+secondary,flash_lite,C1,,pass^4,0.854167,,,48.0,
+secondary,flash_lite,C2,,pass^1,0.901042,,,48.0,
+secondary,flash_lite,C2,,pass^2,0.878472,,,48.0,
+secondary,flash_lite,C2,,pass^3,0.864583,,,48.0,
+secondary,flash_lite,C2,,pass^4,0.854167,,,48.0,
+secondary,flash_lite,C3,,pass^1,0.84375,,,48.0,
+secondary,flash_lite,C3,,pass^2,0.822917,,,48.0,
+secondary,flash_lite,C3,,pass^3,0.807292,,,48.0,
+secondary,flash_lite,C3,,pass^4,0.791667,,,48.0,
+secondary,gemini_pro,C1,,pass^1,0.927083,,,48.0,
+secondary,gemini_pro,C1,,pass^2,0.916667,,,48.0,
+secondary,gemini_pro,C1,,pass^3,0.90625,,,48.0,
+secondary,gemini_pro,C1,,pass^4,0.895833,,,48.0,
+secondary,gemini_pro,C2,,pass^1,0.9375,,,48.0,
+secondary,gemini_pro,C2,,pass^2,0.9375,,,48.0,
+secondary,gemini_pro,C2,,pass^3,0.9375,,,48.0,
+secondary,gemini_pro,C2,,pass^4,0.9375,,,48.0,
+secondary,gemini_pro,C3,,pass^1,0.921875,,,48.0,
+secondary,gemini_pro,C3,,pass^2,0.895833,,,48.0,
+secondary,gemini_pro,C3,,pass^3,0.885417,,,48.0,
+secondary,gemini_pro,C3,,pass^4,0.875,,,48.0,
+confirmatory,qwen,,C1-C2,pass^1 difference,0.0444444,0.0,0.0978261,45.0,H1
+confirmatory,nemotron,,C1-C2,pass^1 difference,0.0364583,-0.015625,0.0989583,48.0,H1
+confirmatory,deepseek,,C1-C2,pass^1 difference,0.0208333,-0.00520833,0.0572917,48.0,H1
+confirmatory,flash_lite,,C1-C2,pass^1 difference,0.0208333,-0.0572917,0.109375,48.0,H1
+confirmatory,gemini_pro,,C1-C2,pass^1 difference,-0.0104167,-0.0260417,0.0,48.0,H1
+confirmatory,qwen,,C3-C2,pass^1 difference,0.0333333,-0.0111111,0.0833333,45.0,H2
+confirmatory,nemotron,,C3-C2,pass^1 difference,0.0364583,0.0,0.0833333,48.0,H2
+confirmatory,deepseek,,C3-C2,pass^1 difference,0.00520833,-0.0416667,0.0520833,48.0,H2
+confirmatory,flash_lite,,C3-C2,pass^1 difference,-0.0572917,-0.119792,-0.00520833,48.0,H2
+confirmatory,gemini_pro,,C3-C2,pass^1 difference,-0.015625,-0.0572917,0.015625,48.0,H2
+confirmatory,,C1,,failure type count,1.0,,,12.0,H4; verification; majority label on the review sample
+confirmatory,,C1,,failure type count,0.0,,,12.0,H4; no_confirmation; majority label on the review sample
+confirmatory,,C1,,failure type count,3.0,,,12.0,H4; rule_misapplied; majority label on the review sample
+confirmatory,,C1,,failure type count,1.0,,,12.0,H4; wrong_arguments; majority label on the review sample
+confirmatory,,C1,,failure type count,0.0,,,12.0,H4; missed_transfer; majority label on the review sample
+confirmatory,,C1,,failure type count,4.0,,,12.0,H4; unnecessary_transfer; majority label on the review sample
+confirmatory,,C1,,failure type count,0.0,,,12.0,H4; wrong_info; majority label on the review sample
+confirmatory,,C1,,failure type count,0.0,,,12.0,H4; language_mismatch; majority label on the review sample
+confirmatory,,C1,,failure type count,0.0,,,12.0,H4; user_sim_error; majority label on the review sample
+confirmatory,,C1,,failure type count,2.0,,,12.0,H4; task_ambiguity; majority label on the review sample
+confirmatory,,C1,,failure type count,1.0,,,12.0,H4; no_majority; majority label on the review sample
+confirmatory,,C2,,failure type count,0.0,,,13.0,H4; verification; majority label on the review sample
+confirmatory,,C2,,failure type count,0.0,,,13.0,H4; no_confirmation; majority label on the review sample
+confirmatory,,C2,,failure type count,6.0,,,13.0,H4; rule_misapplied; majority label on the review sample
+confirmatory,,C2,,failure type count,1.0,,,13.0,H4; wrong_arguments; majority label on the review sample
+confirmatory,,C2,,failure type count,0.0,,,13.0,H4; missed_transfer; majority label on the review sample
+confirmatory,,C2,,failure type count,3.0,,,13.0,H4; unnecessary_transfer; majority label on the review sample
+confirmatory,,C2,,failure type count,0.0,,,13.0,H4; wrong_info; majority label on the review sample
+confirmatory,,C2,,failure type count,0.0,,,13.0,H4; language_mismatch; majority label on the review sample
+confirmatory,,C2,,failure type count,3.0,,,13.0,H4; user_sim_error; majority label on the review sample
+confirmatory,,C2,,failure type count,0.0,,,13.0,H4; task_ambiguity; majority label on the review sample
+confirmatory,,C2,,failure type count,0.0,,,13.0,H4; no_majority; majority label on the review sample
+confirmatory,,C3,,failure type count,0.0,,,15.0,H4; verification; majority label on the review sample
+confirmatory,,C3,,failure type count,0.0,,,15.0,H4; no_confirmation; majority label on the review sample
+confirmatory,,C3,,failure type count,7.0,,,15.0,H4; rule_misapplied; majority label on the review sample
+confirmatory,,C3,,failure type count,1.0,,,15.0,H4; wrong_arguments; majority label on the review sample
+confirmatory,,C3,,failure type count,1.0,,,15.0,H4; missed_transfer; majority label on the review sample
+confirmatory,,C3,,failure type count,2.0,,,15.0,H4; unnecessary_transfer; majority label on the review sample
+confirmatory,,C3,,failure type count,0.0,,,15.0,H4; wrong_info; majority label on the review sample
+confirmatory,,C3,,failure type count,0.0,,,15.0,H4; language_mismatch; majority label on the review sample
+confirmatory,,C3,,failure type count,3.0,,,15.0,H4; user_sim_error; majority label on the review sample
+confirmatory,,C3,,failure type count,1.0,,,15.0,H4; task_ambiguity; majority label on the review sample
+confirmatory,,C3,,failure type count,0.0,,,15.0,H4; no_majority; majority label on the review sample
+secondary,qwen,C1,,agent turns in customer language,1.0,,,350.0,
+secondary,qwen,C2,,agent turns in customer language,1.0,,,301.0,
+secondary,qwen,C3,,agent turns in customer language,1.0,,,306.0,
+secondary,nemotron,C1,,agent turns in customer language,0.96291,,,701.0,
+secondary,nemotron,C2,,agent turns in customer language,1.0,,,640.0,
+secondary,nemotron,C3,,agent turns in customer language,1.0,,,643.0,
+secondary,deepseek,C1,,agent turns in customer language,0.970297,,,707.0,
+secondary,deepseek,C2,,agent turns in customer language,1.0,,,661.0,
+secondary,deepseek,C3,,agent turns in customer language,1.0,,,664.0,
+secondary,flash_lite,C1,,agent turns in customer language,0.836795,,,674.0,
+secondary,flash_lite,C2,,agent turns in customer language,1.0,,,647.0,
+secondary,flash_lite,C3,,agent turns in customer language,1.0,,,631.0,
+secondary,gemini_pro,C1,,agent turns in customer language,1.0,,,651.0,
+secondary,gemini_pro,C2,,agent turns in customer language,1.0,,,610.0,
+secondary,gemini_pro,C3,,agent turns in customer language,1.0,,,623.0,
+secondary,qwen,C1,,cost per success,0.00319161,,,95.0,"USD, LiteLLM estimate, all attempts"
+secondary,qwen,C2,,cost per success,0.00327073,,,95.0,"USD, LiteLLM estimate, all attempts"
+secondary,qwen,C3,,cost per success,0.00329666,,,95.0,"USD, LiteLLM estimate, all attempts"
+secondary,nemotron,C1,,cost per success,0.0034215,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,nemotron,C2,,cost per success,0.00359518,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,nemotron,C3,,cost per success,0.00346139,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C1,,cost per success,0.00429904,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C2,,cost per success,0.00464235,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,deepseek,C3,,cost per success,0.00475814,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C1,,cost per success,0.0069266,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C2,,cost per success,0.00734742,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,flash_lite,C3,,cost per success,0.00648365,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C1,,cost per success,0.0887901,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C2,,cost per success,0.0868236,,,192.0,"USD, LiteLLM estimate, all attempts"
+secondary,gemini_pro,C3,,cost per success,0.0691637,,,192.0,"USD, LiteLLM estimate, all attempts"
