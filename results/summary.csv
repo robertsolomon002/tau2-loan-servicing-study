@@ -511,29 +511,134 @@ secondary,gemini_pro,C3,,total cost,12.242,,,192,"USD, LiteLLM estimate, all att
 secondary,gemini_pro,C3,,cost per success,0.0691637,,,192,"USD, LiteLLM estimate, all attempts"
 sensitivity,qwen,,C1-C2,pass^1 difference,0.0444444,0,0.0978261,,rule 4(a): user turns in the wrong language dropped
 sensitivity,qwen,,C3-C2,pass^1 difference,0.0333333,-0.0111111,0.0833333,,rule 4(a): user turns in the wrong language dropped
-sensitivity,qwen,C1,,pass^1,0.988889,,,0,rule 4(a); n = conversations dropped
-sensitivity,qwen,C2,,pass^1,0.944444,,,0,rule 4(a); n = conversations dropped
-sensitivity,qwen,C3,,pass^1,0.977778,,,0,rule 4(a); n = conversations dropped
+sensitivity,qwen,C1,,pass^1,0.988889,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,qwen,C2,,pass^1,0.944444,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,qwen,C3,,pass^1,0.977778,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
 sensitivity,nemotron,,C1-C2,pass^1 difference,0.0364583,-0.015625,0.0989583,,rule 4(a): user turns in the wrong language dropped
 sensitivity,nemotron,,C3-C2,pass^1 difference,0.0364583,0,0.0833333,,rule 4(a): user turns in the wrong language dropped
-sensitivity,nemotron,C1,,pass^1,0.984375,,,7,rule 4(a); n = conversations dropped
-sensitivity,nemotron,C2,,pass^1,0.947917,,,0,rule 4(a); n = conversations dropped
-sensitivity,nemotron,C3,,pass^1,0.984375,,,0,rule 4(a); n = conversations dropped
+sensitivity,nemotron,C1,,pass^1,0.984375,,,7,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,nemotron,C2,,pass^1,0.947917,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,nemotron,C3,,pass^1,0.984375,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
 sensitivity,deepseek,,C1-C2,pass^1 difference,0.0208333,-0.00520833,0.0572917,,rule 4(a): user turns in the wrong language dropped
 sensitivity,deepseek,,C3-C2,pass^1 difference,0.00520833,-0.0416667,0.0520833,,rule 4(a): user turns in the wrong language dropped
-sensitivity,deepseek,C1,,pass^1,0.979167,,,3,rule 4(a); n = conversations dropped
-sensitivity,deepseek,C2,,pass^1,0.958333,,,0,rule 4(a); n = conversations dropped
-sensitivity,deepseek,C3,,pass^1,0.963542,,,0,rule 4(a); n = conversations dropped
+sensitivity,deepseek,C1,,pass^1,0.979167,,,3,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,deepseek,C2,,pass^1,0.958333,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,deepseek,C3,,pass^1,0.963542,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
 sensitivity,flash_lite,,C1-C2,pass^1 difference,0.0191711,-0.0609526,0.104167,,rule 4(a): user turns in the wrong language dropped
 sensitivity,flash_lite,,C3-C2,pass^1 difference,-0.0572917,-0.119792,-0.00520833,,rule 4(a): user turns in the wrong language dropped
-sensitivity,flash_lite,C1,,pass^1,0.920213,,,16,rule 4(a); n = conversations dropped
-sensitivity,flash_lite,C2,,pass^1,0.901042,,,0,rule 4(a); n = conversations dropped
-sensitivity,flash_lite,C3,,pass^1,0.84375,,,0,rule 4(a); n = conversations dropped
+sensitivity,flash_lite,C1,,pass^1,0.920213,,,16,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,flash_lite,C2,,pass^1,0.901042,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,flash_lite,C3,,pass^1,0.84375,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
 sensitivity,gemini_pro,,C1-C2,pass^1 difference,-0.0121528,-0.03125,0,,rule 4(a): user turns in the wrong language dropped
 sensitivity,gemini_pro,,C3-C2,pass^1 difference,-0.015625,-0.0572917,0.015625,,rule 4(a): user turns in the wrong language dropped
-sensitivity,gemini_pro,C1,,pass^1,0.925347,,,5,rule 4(a); n = conversations dropped
-sensitivity,gemini_pro,C2,,pass^1,0.9375,,,0,rule 4(a); n = conversations dropped
-sensitivity,gemini_pro,C3,,pass^1,0.921875,,,0,rule 4(a); n = conversations dropped
+sensitivity,gemini_pro,C1,,pass^1,0.925347,,,5,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,gemini_pro,C2,,pass^1,0.9375,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,gemini_pro,C3,,pass^1,0.921875,,,0,rule 4(a): user turns in the wrong language dropped; n = conversations dropped
+sensitivity,qwen,,C1-C2,pass^1 difference,0.0444444,0.0108638,0.0909091,,rule 4(b): Claude's major simulator errors dropped
+sensitivity,qwen,,C3-C2,pass^1 difference,0.0222222,-0.0217391,0.0666667,,rule 4(b): Claude's major simulator errors dropped
+sensitivity,qwen,C1,,pass^1,1,,,1,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,qwen,C2,,pass^1,0.955556,,,1,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,qwen,C3,,pass^1,0.977778,,,0,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,nemotron,,C1-C2,pass^1 difference,0.03125,-0.015625,0.09375,,rule 4(b): Claude's major simulator errors dropped
+sensitivity,nemotron,,C3-C2,pass^1 difference,0.03125,-0.00520833,0.078125,,rule 4(b): Claude's major simulator errors dropped
+sensitivity,nemotron,C1,,pass^1,0.984375,,,0,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,nemotron,C2,,pass^1,0.953125,,,1,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,nemotron,C3,,pass^1,0.984375,,,0,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,deepseek,,C1-C2,pass^1 difference,0.015625,-0.0104167,0.0520833,,rule 4(b): Claude's major simulator errors dropped
+sensitivity,deepseek,,C3-C2,pass^1 difference,0,-0.046875,0.046875,,rule 4(b): Claude's major simulator errors dropped
+sensitivity,deepseek,C1,,pass^1,0.979167,,,0,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,deepseek,C2,,pass^1,0.963542,,,1,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,deepseek,C3,,pass^1,0.963542,,,0,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,flash_lite,,C1-C2,pass^1 difference,0.0208333,-0.0572917,0.109375,,rule 4(b): Claude's major simulator errors dropped
+sensitivity,flash_lite,,C3-C2,pass^1 difference,-0.0572917,-0.119792,-0.00520833,,rule 4(b): Claude's major simulator errors dropped
+sensitivity,flash_lite,C1,,pass^1,0.921875,,,0,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,flash_lite,C2,,pass^1,0.901042,,,0,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,flash_lite,C3,,pass^1,0.84375,,,0,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,gemini_pro,,C1-C2,pass^1 difference,-0.00520833,-0.015625,0,,rule 4(b): Claude's major simulator errors dropped
+sensitivity,gemini_pro,,C3-C2,pass^1 difference,0.00520833,-0.0104167,0.0208333,,rule 4(b): Claude's major simulator errors dropped
+sensitivity,gemini_pro,C1,,pass^1,0.932292,,,1,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,gemini_pro,C2,,pass^1,0.9375,,,0,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,gemini_pro,C3,,pass^1,0.942708,,,4,rule 4(b): Claude's major simulator errors dropped; n = conversations dropped
+sensitivity,qwen,,C1-C2,pass^1 difference,0.0444444,0.0108638,0.0909091,,"rule 4(b): major simulator errors dropped, majority flag on the sample"
+sensitivity,qwen,,C3-C2,pass^1 difference,0.0222222,-0.0217391,0.0666667,,"rule 4(b): major simulator errors dropped, majority flag on the sample"
+sensitivity,qwen,C1,,pass^1,1,,,1,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,qwen,C2,,pass^1,0.955556,,,1,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,qwen,C3,,pass^1,0.977778,,,0,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,nemotron,,C1-C2,pass^1 difference,0.03125,-0.015625,0.09375,,"rule 4(b): major simulator errors dropped, majority flag on the sample"
+sensitivity,nemotron,,C3-C2,pass^1 difference,0.03125,-0.00520833,0.078125,,"rule 4(b): major simulator errors dropped, majority flag on the sample"
+sensitivity,nemotron,C1,,pass^1,0.984375,,,0,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,nemotron,C2,,pass^1,0.953125,,,1,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,nemotron,C3,,pass^1,0.984375,,,0,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,deepseek,,C1-C2,pass^1 difference,0.0104167,-0.0104167,0.0364583,,"rule 4(b): major simulator errors dropped, majority flag on the sample"
+sensitivity,deepseek,,C3-C2,pass^1 difference,-0.00520833,-0.0520833,0.0416667,,"rule 4(b): major simulator errors dropped, majority flag on the sample"
+sensitivity,deepseek,C1,,pass^1,0.979167,,,0,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,deepseek,C2,,pass^1,0.96875,,,3,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,deepseek,C3,,pass^1,0.963542,,,0,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,flash_lite,,C1-C2,pass^1 difference,0.0190972,-0.0590278,0.102474,,"rule 4(b): major simulator errors dropped, majority flag on the sample"
+sensitivity,flash_lite,,C3-C2,pass^1 difference,-0.0590278,-0.123264,-0.00694444,,"rule 4(b): major simulator errors dropped, majority flag on the sample"
+sensitivity,flash_lite,C1,,pass^1,0.921875,,,0,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,flash_lite,C2,,pass^1,0.902778,,,1,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,flash_lite,C3,,pass^1,0.84375,,,2,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,gemini_pro,,C1-C2,pass^1 difference,-0.00520833,-0.015625,0,,"rule 4(b): major simulator errors dropped, majority flag on the sample"
+sensitivity,gemini_pro,,C3-C2,pass^1 difference,0.00520833,-0.0104167,0.0208333,,"rule 4(b): major simulator errors dropped, majority flag on the sample"
+sensitivity,gemini_pro,C1,,pass^1,0.932292,,,1,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,gemini_pro,C2,,pass^1,0.9375,,,0,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+sensitivity,gemini_pro,C3,,pass^1,0.942708,,,4,"rule 4(b): major simulator errors dropped, majority flag on the sample; n = conversations dropped"
+confirmatory,,C1,,failure type count,1,,,12,H4; verification; majority label on the review sample
+confirmatory,,C2,,failure type count,0,,,13,H4; verification; majority label on the review sample
+confirmatory,,C3,,failure type count,0,,,15,H4; verification; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,-0.0833333,,,,H4; verification
+confirmatory,,C1,,failure type count,0,,,12,H4; no_confirmation; majority label on the review sample
+confirmatory,,C2,,failure type count,0,,,13,H4; no_confirmation; majority label on the review sample
+confirmatory,,C3,,failure type count,0,,,15,H4; no_confirmation; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,0,,,,H4; no_confirmation
+confirmatory,,C1,,failure type count,3,,,12,H4; rule_misapplied; majority label on the review sample
+confirmatory,,C2,,failure type count,6,,,13,H4; rule_misapplied; majority label on the review sample
+confirmatory,,C3,,failure type count,7,,,15,H4; rule_misapplied; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,0.214103,,,,H4; rule_misapplied
+confirmatory,,C1,,failure type count,1,,,12,H4; wrong_arguments; majority label on the review sample
+confirmatory,,C2,,failure type count,1,,,13,H4; wrong_arguments; majority label on the review sample
+confirmatory,,C3,,failure type count,1,,,15,H4; wrong_arguments; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,-0.0115385,,,,H4; wrong_arguments
+confirmatory,,C1,,failure type count,0,,,12,H4; missed_transfer; majority label on the review sample
+confirmatory,,C2,,failure type count,0,,,13,H4; missed_transfer; majority label on the review sample
+confirmatory,,C3,,failure type count,1,,,15,H4; missed_transfer; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,0.0333333,,,,H4; missed_transfer
+confirmatory,,C1,,failure type count,4,,,12,H4; unnecessary_transfer; majority label on the review sample
+confirmatory,,C2,,failure type count,3,,,13,H4; unnecessary_transfer; majority label on the review sample
+confirmatory,,C3,,failure type count,2,,,15,H4; unnecessary_transfer; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,-0.151282,,,,H4; unnecessary_transfer
+confirmatory,,C1,,failure type count,0,,,12,H4; wrong_info; majority label on the review sample
+confirmatory,,C2,,failure type count,0,,,13,H4; wrong_info; majority label on the review sample
+confirmatory,,C3,,failure type count,0,,,15,H4; wrong_info; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,0,,,,H4; wrong_info
+confirmatory,,C1,,failure type count,0,,,12,H4; language_mismatch; majority label on the review sample
+confirmatory,,C2,,failure type count,0,,,13,H4; language_mismatch; majority label on the review sample
+confirmatory,,C3,,failure type count,0,,,15,H4; language_mismatch; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,0,,,,H4; language_mismatch
+confirmatory,,C1,,failure type count,0,,,12,H4; user_sim_error; majority label on the review sample
+confirmatory,,C2,,failure type count,3,,,13,H4; user_sim_error; majority label on the review sample
+confirmatory,,C3,,failure type count,3,,,15,H4; user_sim_error; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,0.215385,,,,H4; user_sim_error
+confirmatory,,C1,,failure type count,2,,,12,H4; task_ambiguity; majority label on the review sample
+confirmatory,,C2,,failure type count,0,,,13,H4; task_ambiguity; majority label on the review sample
+confirmatory,,C3,,failure type count,1,,,15,H4; task_ambiguity; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,-0.133333,,,,H4; task_ambiguity
+confirmatory,,C1,,failure type count,1,,,12,H4; no_majority; majority label on the review sample
+confirmatory,,C2,,failure type count,0,,,13,H4; no_majority; majority label on the review sample
+confirmatory,,C3,,failure type count,0,,,15,H4; no_majority; majority label on the review sample
+confirmatory,,,"mean(C2,C3)-C1",failure type share change,-0.0833333,,,,H4; no_majority
+confirmatory,,,,H4 holds,0,,,,"top two increases: rule_misapplied, user_sim_error"
+exploratory,qwen,,C1-C2,pass^1 difference,0.0340909,-0.0113636,0.0851064,,task 41 dropped
+exploratory,qwen,,C3-C2,pass^1 difference,0.0340909,-0.0116279,0.0853659,,task 41 dropped
+exploratory,nemotron,,C1-C2,pass^1 difference,0.0159574,-0.0212766,0.0638298,,task 41 dropped
+exploratory,nemotron,,C3-C2,pass^1 difference,0.0265957,-0.00543478,0.0706522,,task 41 dropped
+exploratory,deepseek,,C1-C2,pass^1 difference,0.00531915,-0.0108696,0.0227273,,task 41 dropped
+exploratory,deepseek,,C3-C2,pass^1 difference,0.00531915,-0.0425532,0.0520833,,task 41 dropped
+exploratory,flash_lite,,C1-C2,pass^1 difference,0.00531915,-0.0677083,0.0851064,,task 41 dropped
+exploratory,flash_lite,,C3-C2,pass^1 difference,-0.0531915,-0.119565,0,,task 41 dropped
+exploratory,gemini_pro,,C1-C2,pass^1 difference,-0.0106383,-0.0265957,0,,task 41 dropped
+exploratory,gemini_pro,,C3-C2,pass^1 difference,-0.0106383,-0.0520833,0.0208333,,task 41 dropped
 exploratory,qwen,,,C1 conversations with a French agent turn,0,,,38,preferred_language=fr
 exploratory,qwen,,,C1 conversations with a French agent turn,0,,,57,preferred_language=en
 exploratory,nemotron,,,C1 conversations with a French agent turn,0.106667,,,75,preferred_language=fr

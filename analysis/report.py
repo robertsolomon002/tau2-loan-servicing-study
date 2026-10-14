@@ -14,13 +14,14 @@ from __future__ import annotations
 import argparse
 import json
 import math
+from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-from analysis import metrics
+from analysis import failures, metrics
 from analysis.load import (
     CONDITIONS,
     CUSTOMER_LANG,
@@ -462,12 +463,11 @@ class Report:
             rows,
         )  # fmt: skip
 
-    def sensitivity_section(self) -> str:
-        """Plan Section 7 rule 4(a): drop conversations with any user turn in
-        the wrong language. Rule 4(b) needs the Stage 5.2 labels."""
+    def drop_table(self, drop: pd.Series, rule: str) -> str:
+        """pass^1 and the paired differences with the conversations in `drop`
+        removed (plan Section 7 rule 4)."""
         df = self.df
-        wrong = df["status"].eq("done") & (df["user_other_lang"].fillna(0) > 0)
-        successes, trials = success_arrays(df[~wrong], self.models)
+        successes, trials = success_arrays(df[~drop], self.models)
         with np.errstate(invalid="ignore", divide="ignore"):
             rates = np.where(
                 np.isnan(self.rates) | (trials == 0), np.nan, successes / trials
@@ -478,7 +478,7 @@ class Report:
         for model in self.models:
             j = self.mi(model)
             dropped = [
-                int((wrong & (df["model"] == model) & (df["condition"] == c)).sum())
+                int((drop & (df["model"] == model) & (df["condition"] == c)).sum())
                 for c in CONDITIONS
             ]
             cells = []
@@ -487,13 +487,12 @@ class Report:
                 value = pass1[j, ka] - pass1[j, kb]
                 ci = metrics.percentile_ci(boot[:, j, ka] - boot[:, j, kb])
                 self.record("sensitivity", "pass^1 difference", value, model=model,
-                            comparison=f"{a}-{b}", ci=ci,
-                            detail="rule 4(a): user turns in the wrong language dropped")  # fmt: skip
+                            comparison=f"{a}-{b}", ci=ci, detail=rule)  # fmt: skip
                 cells.append(f"{pts(value)} {ci_pts(ci)}")
             for k_, condition in enumerate(CONDITIONS):
                 self.record("sensitivity", "pass^1", pass1[j, k_], model=model,
                             condition=condition, n=dropped[k_],
-                            detail="rule 4(a); n = conversations dropped")  # fmt: skip
+                            detail=f"{rule}; n = conversations dropped")  # fmt: skip
             rows.append(
                 [MODEL_NAMES[model], " / ".join(map(str, dropped)),
                  " / ".join(pct(pass1[j, k]) for k in range(3)), *cells]
@@ -501,6 +500,106 @@ class Report:
         return table(
             ["Model", "Dropped (C1 / C2 / C3)", "pass^1 (C1 / C2 / C3)",
              "C1 − C2 [95% CI]", "C3 − C2 [95% CI]"],
+            rows,
+        )  # fmt: skip
+
+    def sensitivity_section(self) -> str:
+        """Plan Section 7 rule 4(a): drop conversations with any user turn in
+        the wrong language."""
+        df = self.df
+        wrong = df["status"].eq("done") & (df["user_other_lang"].fillna(0) > 0)
+        return self.drop_table(
+            wrong, "rule 4(a): user turns in the wrong language dropped"
+        )
+
+    def keys(self) -> pd.Series:
+        return pd.Series(
+            [failures.key(r) for r in self.df.itertuples()], index=self.df.index
+        )
+
+    def sim_error_section(self) -> tuple[str, str, int, int]:
+        """Plan Section 7 rule 4(b): drop conversations with a major simulator
+        error. Only failed conversations were labelled. Two flag sets: Claude's
+        on all failures, and the same with the three labellers' majority flag
+        on the 40-conversation sample (docs/LOG.md, 2026-10-13)."""
+        claude = {k for k, v in failures.load_labels().items() if v["sim_major"]}
+        maj = failures.majority(failures.sample_labels(failures.failed(self.df)))
+        merged = (claude - set(maj)) | {k for k, v in maj.items() if v["sim_major"]}
+        keys = self.keys()
+        a = self.drop_table(
+            keys.isin(claude), "rule 4(b): Claude's major simulator errors dropped"
+        )
+        b = self.drop_table(
+            keys.isin(merged),
+            "rule 4(b): major simulator errors dropped, majority flag on the sample",
+        )
+        return a, b, len(claude), len(merged)
+
+    def h4_section(self) -> tuple[str, bool]:
+        """H4 (plan Section 6.3): which failure types increase most from C1 to
+        the French conditions. Kappa was below the bar, so the counts are the
+        three labellers' majority labels on the 40-conversation sample."""
+        fails = failures.failed(self.df)
+        maj = failures.majority(failures.sample_labels(fails))
+        cond = {
+            c: [k for k in maj if fails.loc[k, "condition"] == c] for c in CONDITIONS
+        }
+        counts = {c: Counter(maj[k]["cause"] for k in ks) for c, ks in cond.items()}
+        causes = [
+            c for c in [*failures.CAUSES, failures.NO_MAJORITY] if c != "model_output"
+        ]
+        change = {}
+        rows = []
+        for cause in causes:
+            share = {c: counts[c][cause] / len(cond[c]) for c in CONDITIONS}
+            change[cause] = (share["C2"] + share["C3"]) / 2 - share["C1"]
+            for c in CONDITIONS:
+                self.record("confirmatory", "failure type count", counts[c][cause],
+                            condition=c, n=len(cond[c]),
+                            detail=f"H4; {cause}; majority label on the review sample")  # fmt: skip
+            self.record("confirmatory", "failure type share change", change[cause],
+                        comparison="mean(C2,C3)-C1", detail=f"H4; {cause}")  # fmt: skip
+            rows.append(
+                [f"`{cause}`", *(f"{counts[c][cause]} ({pct(share[c])})" for c in CONDITIONS),
+                 pts(change[cause])]
+            )  # fmt: skip
+        order = sorted(range(len(causes)), key=lambda i: -change[causes[i]])
+        top_two = {causes[i] for i in order[:2]}
+        holds = top_two == {"verification", "language_mismatch"}
+        self.record("confirmatory", "H4 holds", float(holds),
+                    detail="top two increases: " + ", ".join(sorted(top_two)))  # fmt: skip
+        headers = ["Primary cause", *(f"{c} (n = {len(cond[c])})" for c in CONDITIONS),
+                   "Change in share, French − C1 (points)"]  # fmt: skip
+        return table(headers, [rows[i] for i in order]), holds
+
+    def task41_section(self) -> str:
+        """Exploratory, not pre-specified (docs/LOG.md, 2026-10-13): the C1 − C2
+        and C3 − C2 differences without task 41, whose French wording made the
+        customer raise the fee only after the payment."""
+        rates = self.rates.copy()
+        rates[41 - 1] = np.nan
+        boot = metrics.bootstrap_means(rates)
+        with np.errstate(invalid="ignore"):
+            pass1 = np.nanmean(rates, axis=0)
+        rows = []
+        for model in self.models:
+            j = self.mi(model)
+            cells = []
+            for a, b in (("C1", "C2"), ("C3", "C2")):
+                ka, kb = CONDITIONS.index(a), CONDITIONS.index(b)
+                full, full_ci = self.diff(model, a, b)
+                value = pass1[j, ka] - pass1[j, kb]
+                ci = metrics.percentile_ci(boot[:, j, ka] - boot[:, j, kb])
+                self.record("exploratory", "pass^1 difference", value, model=model,
+                            comparison=f"{a}-{b}", ci=ci, detail="task 41 dropped")  # fmt: skip
+                cells += [
+                    f"{pts(full)} {ci_pts(full_ci)}",
+                    f"{pts(value)} {ci_pts(ci)}",
+                ]
+            rows.append([MODEL_NAMES[model], *cells])
+        return table(
+            ["Model", "C1 − C2, all tasks", "C1 − C2, without 41",
+             "C3 − C2, all tasks", "C3 − C2, without 41"],
             rows,
         )  # fmt: skip
 
@@ -584,6 +683,14 @@ def build(df: pd.DataFrame, raw: Path) -> tuple[pd.DataFrame, str]:
     conv = rep.conversation_section()
     cost = rep.cost_section()
     sens = rep.sensitivity_section()
+    if failures.labels_complete(failures.failed(df)):
+        sim_claude, sim_merged, n_sim_claude, n_sim_merged = rep.sim_error_section()
+        h4, h4_holds = rep.h4_section()
+    else:  # data without the Stage 5.2 labels
+        sim_claude = sim_merged = h4 = "No Stage 5.2 labels for this data."
+        n_sim_claude = n_sim_merged = 0
+        h4_holds = False
+    task41 = rep.task41_section()
     switch_pref, switch_name = rep.language_switch_section()
     n_tests = 2 * len(rep.models)
     reduced = rep.reduced_note()
@@ -681,7 +788,20 @@ Positive values mean a larger French gap than {MODEL_NAMES[FRONTIER]}'s.{h3_note
 
 ### H4: French-specific failure types
 
-Pending: needs the Stage 5.2 failure classification.
+Primary causes of the failed conversations in the 40-conversation review sample
+(Stage 5.2), counted by condition. Rob did not label the sample; Claude's
+labels on all failures did not reach the agreement bar (Cohen's kappa 0.43 and
+0.55 against two blind AI labellers, bar 0.6), so by the rule fixed beforehand
+these are the majority labels of the three AI labellers on the sample only, not
+proportions over all failures (`docs/FAILURES.md`, `docs/LOG.md` 2026-10-13).
+No human validated these labels. Sorted by the change in share from C1 to the
+mean of C2 and C3.
+
+{h4}
+
+**H4 {"holds" if h4_holds else "does not hold"}:** H4 needs `verification` and
+`language_mismatch` to show the two largest increases. With 12 to 15 sampled
+failures per condition, small shifts in these counts are not meaningful.
 
 ## 2. Secondary
 
@@ -733,8 +853,18 @@ Google Cloud trial credit.
 
 {sens}
 
-(b) Conversations with a major user-simulator error dropped: pending (needs the
-Stage 5.2 labels).
+(b) Conversations with a major user-simulator error dropped. Only failed
+conversations were labelled, so this can only remove failures and raises
+pass^1 where it drops anything. First with Claude's flags on all failures
+({n_sim_claude} conversations):
+
+{sim_claude}
+
+Then with the three labellers' majority flag replacing Claude's on the 40
+sampled conversations ({n_sim_merged} conversations; most added ones are task
+41 in French, see Section 4):
+
+{sim_merged}
 
 ## 3. Exploratory (pre-specified)
 
@@ -753,6 +883,19 @@ language and the surname (French-Canadian surnames of the DB generator;
 `en` + `french` row should show it.
 
 {switch_name}
+
+## 4. Exploratory (not pre-specified)
+
+### Task 41 without its French wording defect
+
+Found in Stage 5.2: the French text of task 41 (« et seulement ensuite
+mentionnez ») made the customer raise the late fee only after the payment was
+posted, so the fee was paid and could no longer be waived; the English text
+did not. Rob decided (`docs/LOG.md`, 2026-10-13) to keep the registered
+results above unchanged and to show this check beside them. The French text is
+fixed in the fork for later users; these runs used the original text.
+
+{task41}
 """
     return pd.DataFrame(rep.rows), md
 

@@ -29,9 +29,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from analysis.failures import (
     CAUSES,
     DIGESTS,
+    GPT_LABELS,
     KAPPA_BAR,
     LABELS,
     REPO,
+    SUBAGENT_LABELS,
     cohen_kappa,
     failed,
     fleiss_kappa,
@@ -41,8 +43,6 @@ from analysis.failures import (
     validate,
 )
 
-GPT_LABELS = REPO / "data" / "failure_labels_gpt.json"
-SUBAGENT_LABELS = REPO / "data" / "failure_labels_subagent.json"
 POLICY = REPO.parent / "tau2-bench" / "data" / "tau2" / "domains" / "loan_servicing"
 DOMAIN_SPEC = REPO / "docs" / "DOMAIN_SPEC.md"
 

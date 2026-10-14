@@ -44,6 +44,11 @@ from analysis.load import RAW, REPO, load
 DIGESTS = REPO / "results" / "raw" / "failures"
 LABELS = REPO / "data" / "failure_labels.json"
 ROB_LABELS = REPO / "data" / "failure_labels_rob.json"
+# Rob did not label the sample; two blind AI labellers did (docs/LOG.md,
+# 2026-10-13, `scripts/label_failures_ai.py`).
+SUBAGENT_LABELS = REPO / "data" / "failure_labels_subagent.json"
+GPT_LABELS = REPO / "data" / "failure_labels_gpt.json"
+NO_MAJORITY = "no_majority"
 SAMPLE_SIZE = 40
 SEED = 2026
 KAPPA_BAR = 0.6
@@ -283,6 +288,43 @@ def agreement(sample: list[str], ours: dict, rob: dict) -> dict:
         "agree": sum(x == y for x, y in zip(a, b)),
         "kappa": cohen_kappa(a, b) if done else float("nan"),
     }
+
+
+def sample_labels(fails: pd.DataFrame) -> dict[str, dict[str, dict]]:
+    """The three labellers' labels on the review sample, by labeller."""
+    sample = review_sample(fails)
+    raters = {"claude": LABELS, "subagent": SUBAGENT_LABELS, "gpt": GPT_LABELS}
+    return {
+        name: {k: lab[k] for k in sample}
+        for name, lab in ((n, load_labels(p)) for n, p in raters.items())
+    }
+
+
+def labels_complete(fails: pd.DataFrame) -> bool:
+    """Whether every labeller has labelled this data's review sample (false
+    for data other than the main runs, such as the test fixtures)."""
+    try:
+        sample = review_sample(fails)
+    except ValueError:  # fewer failures than the sample size
+        return False
+    paths = (LABELS, SUBAGENT_LABELS, GPT_LABELS)
+    return all(set(sample) <= set(load_labels(p)) for p in paths)
+
+
+def majority(labels: dict[str, dict[str, dict]]) -> dict[str, dict]:
+    """Majority primary cause (or NO_MAJORITY) and majority simulator flag per
+    conversation. Kappa below the bar, so these are the reported labels
+    (docs/LOG.md, 2026-10-13)."""
+    keys = next(iter(labels.values()))
+    out = {}
+    for k in keys:
+        votes = [lab[k] for lab in labels.values()]
+        cause, n = Counter(v["cause"] for v in votes).most_common(1)[0]
+        out[k] = {
+            "cause": cause if 2 * n > len(votes) else NO_MAJORITY,
+            "sim_major": 2 * sum(v["sim_major"] for v in votes) > len(votes),
+        }
+    return out
 
 
 def main(argv: list[str] | None = None) -> None:

@@ -1443,7 +1443,7 @@ wheels = [
 [[package]]
 name = "tau2"
 version = "1.0.1"
-source = { git = "https://github.com/robertsolomon002/tau2-bench?rev=66e179c8ca6cbf18a0af1f047086615c64890c85#66e179c8ca6cbf18a0af1f047086615c64890c85" }
+source = { git = "https://github.com/robertsolomon002/tau2-bench?rev=8a42a408d93fe4a0692dd0c63f5089b87d535b48#8a42a408d93fe4a0692dd0c63f5089b87d535b48" }
 dependencies = [
     { name = "addict" },
     { name = "deepdiff" },
@@ -1487,7 +1487,7 @@ dev = [
 requires-dist = [
     { name = "google-auth", specifier = ">=2.59.1" },
     { name = "lingua-language-detector", specifier = ">=2.2.0" },
-    { name = "tau2", git = "https://github.com/robertsolomon002/tau2-bench?rev=66e179c8ca6cbf18a0af1f047086615c64890c85" },
+    { name = "tau2", git = "https://github.com/robertsolomon002/tau2-bench?rev=8a42a408d93fe4a0692dd0c63f5089b87d535b48" },
     { name = "websockets", specifier = ">=13.0" },
 ]
 

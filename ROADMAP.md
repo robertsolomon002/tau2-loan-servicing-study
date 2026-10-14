@@ -309,7 +309,7 @@ Minimum resume-ready cut if time runs short: the domain and PR (Stages 0 to 3 pl
 - [x] 2.1 Tasks, linter, replay · [x] 2.2 Solvability pilot · [x] 2.3 Task review [Rob]
 - [x] 3.1 French policy · [x] 3.2 French tasks · [x] 3.3 User simulator · [x] 3.4 French review [Rob]
 - [x] 4.1 Cost pilot and pre-registration (Rob approves) · [x] 4.2 Runner · [x] 4.3 Main runs
-- [x] 5.1 Metrics · [ ] 5.2 Failures · [ ] 5.3 Figures
+- [x] 5.1 Metrics · [x] 5.2 Failures · [ ] 5.3 Figures
 - [ ] 6.1 Upstream PR · [ ] 6.2 Repro polish · [ ] 6.3 Report · [ ] 6.4 Blog and resume
 
 ## 14. Open items

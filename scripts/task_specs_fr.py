@@ -528,8 +528,9 @@ FR: dict[int, FrText] = {
         "vous voulez faire retirer.",
         _end(
             "Dans votre premier message, demandez de payer le montant en retard "
-            "aujourd'hui, et seulement ensuite mentionnez que vous voulez aussi "
-            "faire retirer les frais de retard. Ne dites pas quoi faire en premier. "
+            "aujourd'hui, puis, dans ce même premier message, mentionnez que vous "
+            "voulez aussi faire retirer les frais de retard. Ne dites pas quoi "
+            "faire en premier. "
             "Confirmez chaque action quand l'agent en énonce les détails.",
             ASK_PAYMENT_REF,
         ),
