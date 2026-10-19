@@ -68,7 +68,8 @@ in [`docs/FAILURES.md`](docs/FAILURES.md), and all figures are in
 - **Domain code:** [robertsolomon002/tau2-bench](https://github.com/robertsolomon002/tau2-bench),
   pinned in `pyproject.toml`. Upstream proposal:
   [sierra-research/tau2-bench#579](https://github.com/sierra-research/tau2-bench/issues/579);
-  upstream pull request: to be linked.
+  upstream pull request:
+  [sierra-research/tau2-bench#638](https://github.com/sierra-research/tau2-bench/pull/638).
 - **Trajectories (all 2,589 conversations):** [robsol/tau2-loan-servicing-trajectories](https://huggingface.co/datasets/robsol/tau2-loan-servicing-trajectories)
   on Hugging Face (CC BY 4.0).
 - **Technical report:** `report/` (in progress).
