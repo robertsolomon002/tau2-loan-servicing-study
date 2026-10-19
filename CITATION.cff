@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this study or its loan_servicing domain, please cite it as below."
+title: "τ-Loan: English vs Quebec French policy compliance on a loan-servicing domain for τ²-bench"
+type: software
+authors:
+  - given-names: Robert
+    family-names: Solomon
+license: MIT
+repository-code: "https://github.com/robertsolomon002/tau2-loan-servicing-study"
+date-released: "2026-10-19"
+keywords:
+  - tau2-bench
+  - LLM agents
+  - tool use
+  - multilingual evaluation
+  - Quebec French
+references:
+  - type: software
+    title: "tau2-bench"
+    authors:
+      - name: "Sierra Research"
+    repository-code: "https://github.com/sierra-research/tau2-bench"

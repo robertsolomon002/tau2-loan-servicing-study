@@ -365,3 +365,19 @@ def test_health_stall_alert(env, monkeypatch):
     state.waiting = 1
     run_matrix.heartbeat_loop(done)
     assert fails(env) == [] and env.pings_sent[0][0] == ""
+
+
+def test_cell_option_keeps_one_cell(tmp_path, monkeypatch, capsys):
+    """`--cell` plans (or runs) one cell of a model config, as the README's
+    reproduce command does."""
+    monkeypatch.setattr(run_matrix, "RUN", run_matrix.RunState())
+    root = run_matrix.Path(__file__).resolve().parents[1]
+    config = str(root / "configs" / "main" / "deepseek.toml")
+    out = ["--out", str(tmp_path / "out")]
+    run_matrix.main(["plan", config, "--cell", "deepseek_C2", *out])
+    printed = capsys.readouterr().out
+    assert "deepseek_C2" in printed and "deepseek_C1" not in printed
+    assert "192 conversations left." in printed
+    monkeypatch.setattr(run_matrix, "RUN", run_matrix.RunState())
+    with pytest.raises(SystemExit, match="Unknown cell"):
+        run_matrix.main(["plan", config, "--cell", "deepseek_C4", *out])

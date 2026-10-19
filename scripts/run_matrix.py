@@ -13,6 +13,7 @@ Usage:
     python scripts/run_matrix.py run CONFIG...       # run (resumable)
     python scripts/run_matrix.py status CONFIG...    # rewrite progress.md
     python scripts/run_matrix.py collect CONFIG...   # tau2 results.json per cell
+    --cell NAME (repeatable) keeps only that cell, e.g. --cell deepseek_C2
 
 Configs: configs/main/*.toml (one per model) and configs/runner.toml (shared
 settings). Results: results/raw/main/<cell>/; live status: results/progress.md.
@@ -1099,6 +1100,10 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--progress", type=Path, default=None)
     parser.add_argument("--settings", type=Path, default=RUNNER_TOML)
     parser.add_argument(
+        "--cell", action="append", default=None, metavar="NAME",
+        help="only this cell, e.g. deepseek_C2 (repeatable)",
+    )  # fmt: skip
+    parser.add_argument(
         "--max-conversations", type=int, default=None,
         help="stop after starting this many conversations (for tests)",
     )  # fmt: skip
@@ -1112,6 +1117,11 @@ def main(argv: list[str] | None = None) -> None:
     RUN.configure(settings, out, progress)
     RUN.max_conversations = args.max_conversations
     cells = load_cells(args.configs, settings["budget_factor"])
+    if args.cell:
+        unknown = set(args.cell) - {c.name for c in cells}
+        if unknown:
+            sys.exit(f"Unknown cell(s): {sorted(unknown)}")
+        cells = [c for c in cells if c.name in args.cell]
     load_state(cells)
     if args.command == "plan":
         plan(cells)

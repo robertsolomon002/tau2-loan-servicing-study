@@ -1,0 +1,383 @@
+{
+  "study": "tau2-loan-servicing-study (English vs Quebec French policy compliance)",
+  "runs": {
+    "study_repo": "https://github.com/robertsolomon002/tau2-loan-servicing-study",
+    "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+    "fork_repo": "https://github.com/robertsolomon002/tau2-bench",
+    "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85",
+    "conversations_planned": 2592,
+    "conversations_finished": 2589,
+    "first_attempt_utc": "2026-10-01T21:47:00+00:00",
+    "last_attempt_utc": "2026-10-08T23:13:12+00:00",
+    "runner": "scripts/run_matrix.py with configs/main/*.toml and configs/runner.toml"
+  },
+  "fork_pinned_now": {
+    "commit": "8a42a408d93fe4a0692dd0c63f5089b87d535b48",
+    "note": "pyproject.toml now pins the fork one commit after the runs, which rewords the French user text of task ls_041 (docs/LOG.md, Stage 5.2). To rerun exactly what was measured, use fork_commit under runs."
+  },
+  "tau2_settings": {
+    "agent": "llm_agent (tau2 default), temperature 0",
+    "user": "user_simulator, temperature 0",
+    "max_steps": 200,
+    "max_errors": 10,
+    "seed": 300
+  },
+  "models": {
+    "agents": [
+      "openrouter/deepseek/deepseek-v4-flash",
+      "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free",
+      "openrouter/qwen/qwen3.8-27b:free",
+      "vertex_ai/gemini-3.1-flash-lite",
+      "vertex_ai/gemini-3.1-pro-preview"
+    ],
+    "user_simulator": [
+      "gpt-5.4-mini"
+    ],
+    "failure_labellers": [
+      "Claude Code (Claude Opus 5.5), main session and a blind subagent",
+      "gpt-6.1-sol (scripts/label_failures_ai.py)"
+    ],
+    "notes": [
+      "openrouter/qwen/qwen3.8-27b:free was withdrawn by OpenRouter on 2026-10-05; the same weights are now the paid slug openrouter/qwen/qwen3.8-27b (plan Amendment 2).",
+      "vertex_ai/gemini-3.1-pro-preview is a preview model and may change or be withdrawn."
+    ]
+  },
+  "packages": {
+    "tau2": "1.0.1",
+    "litellm": "1.82.6",
+    "lingua-language-detector": "2.2.0"
+  },
+  "trajectories": "https://huggingface.co/datasets/robsol/tau2-loan-servicing-trajectories",
+  "cells": [
+    {
+      "cell": "deepseek_C1",
+      "condition": "C1",
+      "domain": "loan_servicing",
+      "split": "en_user",
+      "agent_llm": "openrouter/deepseek/deepseek-v4-flash",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-01T21:47:00+00:00",
+      "last_attempt_utc": "2026-10-02T00:34:49+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "deepseek_C2",
+      "condition": "C2",
+      "domain": "loan_servicing",
+      "split": "fr_user",
+      "agent_llm": "openrouter/deepseek/deepseek-v4-flash",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-01T22:06:10+00:00",
+      "last_attempt_utc": "2026-10-02T01:05:48+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "deepseek_C3",
+      "condition": "C3",
+      "domain": "loan_servicing_fr",
+      "split": "fr_user",
+      "agent_llm": "openrouter/deepseek/deepseek-v4-flash",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-01T22:24:29+00:00",
+      "last_attempt_utc": "2026-10-02T01:26:15+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "flash_lite_C1",
+      "condition": "C1",
+      "domain": "loan_servicing",
+      "split": "en_user",
+      "agent_llm": "vertex_ai/gemini-3.1-flash-lite",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-01T21:47:02+00:00",
+      "last_attempt_utc": "2026-10-01T23:24:17+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "flash_lite_C2",
+      "condition": "C2",
+      "domain": "loan_servicing",
+      "split": "fr_user",
+      "agent_llm": "vertex_ai/gemini-3.1-flash-lite",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-01T21:56:16+00:00",
+      "last_attempt_utc": "2026-10-01T23:33:18+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "flash_lite_C3",
+      "condition": "C3",
+      "domain": "loan_servicing_fr",
+      "split": "fr_user",
+      "agent_llm": "vertex_ai/gemini-3.1-flash-lite",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-01T22:07:39+00:00",
+      "last_attempt_utc": "2026-10-01T23:40:47+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "gemini_pro_C1",
+      "condition": "C1",
+      "domain": "loan_servicing",
+      "split": "en_user",
+      "agent_llm": "vertex_ai/gemini-3.1-pro-preview",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-01T21:47:21+00:00",
+      "last_attempt_utc": "2026-10-02T02:17:13+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "gemini_pro_C2",
+      "condition": "C2",
+      "domain": "loan_servicing",
+      "split": "fr_user",
+      "agent_llm": "vertex_ai/gemini-3.1-pro-preview",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-01T22:23:06+00:00",
+      "last_attempt_utc": "2026-10-02T02:41:14+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "gemini_pro_C3",
+      "condition": "C3",
+      "domain": "loan_servicing_fr",
+      "split": "fr_user",
+      "agent_llm": "vertex_ai/gemini-3.1-pro-preview",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-01T23:02:17+00:00",
+      "last_attempt_utc": "2026-10-02T03:08:18+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "nemotron_C1",
+      "condition": "C1",
+      "domain": "loan_servicing",
+      "split": "en_user",
+      "agent_llm": "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-01T21:48:00+00:00",
+      "last_attempt_utc": "2026-10-07T23:35:48+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "nemotron_C2",
+      "condition": "C2",
+      "domain": "loan_servicing",
+      "split": "fr_user",
+      "agent_llm": "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-02T21:47:10+00:00",
+      "last_attempt_utc": "2026-10-08T00:51:46+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "nemotron_C3",
+      "condition": "C3",
+      "domain": "loan_servicing_fr",
+      "split": "fr_user",
+      "agent_llm": "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 4,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 192,
+      "first_attempt_utc": "2026-10-03T00:58:32+00:00",
+      "last_attempt_utc": "2026-10-08T23:13:12+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "qwen_C1",
+      "condition": "C1",
+      "domain": "loan_servicing",
+      "split": "en_user",
+      "agent_llm": "openrouter/qwen/qwen3.8-27b:free",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 2,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 95,
+      "first_attempt_utc": "2026-10-01T21:47:48+00:00",
+      "last_attempt_utc": "2026-10-04T00:38:03+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "qwen_C2",
+      "condition": "C2",
+      "domain": "loan_servicing",
+      "split": "fr_user",
+      "agent_llm": "openrouter/qwen/qwen3.8-27b:free",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 2,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 95,
+      "first_attempt_utc": "2026-10-02T00:46:41+00:00",
+      "last_attempt_utc": "2026-10-04T23:28:15+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    },
+    {
+      "cell": "qwen_C3",
+      "condition": "C3",
+      "domain": "loan_servicing_fr",
+      "split": "fr_user",
+      "agent_llm": "openrouter/qwen/qwen3.8-27b:free",
+      "user_llm": "gpt-5.4-mini",
+      "trials_planned": 4,
+      "trials_analyzed": 2,
+      "seeds": [
+        626729,
+        373753,
+        361454,
+        1567
+      ],
+      "tasks": 48,
+      "conversations_finished": 95,
+      "first_attempt_utc": "2026-10-02T23:32:15+00:00",
+      "last_attempt_utc": "2026-10-05T21:46:55+00:00",
+      "study_commit": "b925a51e5668f651623aa56bd702e69d2dbb4306",
+      "fork_commit": "66e179c8ca6cbf18a0af1f047086615c64890c85"
+    }
+  ]
+}

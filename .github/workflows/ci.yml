@@ -1,0 +1,65 @@
+# Lint, tests, the task linter, and a smoke test that makes no API calls.
+# The study scripts read the fork's data from a sibling folder (scripts/study_env.py),
+# so both repos are checked out side by side, the fork at the commit pinned in
+# pyproject.toml.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONUTF8: "1"
+      PYTHONIOENCODING: utf-8
+    defaults:
+      run:
+        working-directory: tau2-loan-servicing-study
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: tau2-loan-servicing-study
+
+      - name: Read the pinned fork commit
+        id: fork
+        run: |
+          rev=$(python3 -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['tool']['uv']['sources']['tau2']['rev'])")
+          echo "rev=$rev" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          repository: robertsolomon002/tau2-bench
+          ref: ${{ steps.fork.outputs.rev }}
+          path: tau2-bench
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: tau2-loan-servicing-study/uv.lock
+
+      - name: Install
+        run: uv sync --locked
+
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check scripts analysis tests
+
+      - name: Task linter
+        run: uv run python scripts/lint_tasks.py
+
+      - name: Tests
+        run: uv run pytest -q
+
+      - name: Smoke test (no API calls)
+        run: |
+          # Rebuilding the DB and the tasks (every task replayed) must reproduce
+          # the committed files exactly.
+          uv run python scripts/generate_db.py
+          uv run python scripts/build_tasks.py
+          git diff --exit-code
+          git -C ../tau2-bench diff --exit-code
+          # Every cell of the main experiment loads, with its tasks and seeds.
+          uv run python scripts/run_matrix.py plan configs/main/*.toml --out "$RUNNER_TEMP/plan"

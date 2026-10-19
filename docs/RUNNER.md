@@ -13,7 +13,7 @@ uv run --no-sync python scripts/run_matrix.py status configs/main/*.toml   # rew
 uv run --no-sync python scripts/run_matrix.py collect configs/main/*.toml  # one tau2 results.json per cell
 ```
 
-To run only some models, pass only their configs, for example `configs/main/qwen.toml configs/main/nemotron.toml`.
+To run only some models, pass only their configs, for example `configs/main/qwen.toml configs/main/nemotron.toml`. To run one cell, add `--cell NAME` (repeatable), for example `--cell deepseek_C2`.
 
 ## Running it on the Google Cloud VM (the plan for Stage 4.3)
 

@@ -16,7 +16,6 @@ from collections import defaultdict
 
 import study_env  # noqa: F401  (sets TAU2_DATA_DIR; must come before tau2 imports)
 from task_specs import SPECS
-
 from tau2.domains.loan_servicing.tools import LoanServicingTools
 from tau2.environment.toolkit import ToolType
 
@@ -45,7 +44,9 @@ def transcript(sim: dict) -> str:
         role = m["role"]
         if m.get("tool_calls"):
             for tc in m["tool_calls"]:
-                lines.append(f"[{role} TOOL] {tc['name']}({json.dumps(tc['arguments'])})")
+                lines.append(
+                    f"[{role} TOOL] {tc['name']}({json.dumps(tc['arguments'])})"
+                )
         elif role == "tool":
             lines.append(f"    -> {(m.get('content') or '')[:220]}")
         else:
@@ -58,7 +59,8 @@ def main() -> None:
     parser.add_argument("results")
     parser.add_argument("--show", nargs="*", default=[])
     args = parser.parse_args()
-    data = json.load(open(args.results, encoding="utf-8"))
+    with open(args.results, encoding="utf-8") as f:
+        data = json.load(f)
     tasks = {t["id"]: t for t in data["tasks"]}
 
     rows = []
