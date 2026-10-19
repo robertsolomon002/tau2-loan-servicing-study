@@ -3,8 +3,8 @@ message: "If you use this study or its loan_servicing domain, please cite it as 
 title: "τ-Loan: English vs Quebec French policy compliance on a loan-servicing domain for τ²-bench"
 type: software
 authors:
-  - given-names: Robert
-    family-names: Solomon
+  - alias: robertsolomon002
+    website: "https://github.com/robertsolomon002"
 license: MIT
 repository-code: "https://github.com/robertsolomon002/tau2-loan-servicing-study"
 date-released: "2026-10-19"
